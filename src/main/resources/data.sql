@@ -43,3 +43,5 @@ INSERT INTO comment (com_created, com_modified, com_content, com_id, post_id, us
                                                                                            ('2024-03-27 10:00:00.000000', '2024-03-27 10:35:00.000000', 'Amazing photo!', 'com_0007', 'post_0003', 'user_0004'),
                                                                                            ('2024-03-27 10:00:00.000000', '2024-03-27 10:40:00.000000', 'Love the composition.', 'com_0008', 'post_0003', 'user_0006'),
                                                                                            ('2024-03-27 10:00:00.000000', '2024-03-27 10:45:00.000000', 'Where was this taken?', 'com_0009', 'post_0003', 'user_0008');
+
+INSERT INTO post (category, post_title, post_content, post_created, post_modified) VALUES ('notice', 'title1', 'content1', NOW(), NOW());
