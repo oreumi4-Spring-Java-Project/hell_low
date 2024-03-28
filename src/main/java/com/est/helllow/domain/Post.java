@@ -19,7 +19,6 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
     @Id
-    feature/create_post_api
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
