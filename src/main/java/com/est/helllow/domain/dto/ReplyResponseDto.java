@@ -13,7 +13,7 @@ public class ReplyResponseDto {
     private String nickname;
     private Long postId;
     private LocalDateTime comCreated;
-
+  
     @Builder
     public ReplyResponseDto (Reply reply){
         this.comId=reply.getComId();

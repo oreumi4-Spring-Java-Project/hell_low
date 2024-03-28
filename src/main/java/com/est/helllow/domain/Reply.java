@@ -23,6 +23,7 @@ public class Reply {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "COM_ID", updatable = false)
     private Long comId;
 
     @ManyToOne //게시글과 댓글은 다대일 관계
@@ -43,8 +44,7 @@ public class Reply {
     @LastModifiedDate
     @Column(name = "COM_MODIFIED")
     private LocalDateTime comModified;
-
-
+  
 //    @PrePersist
 //    public void generateComId() {
 //        if (this.comId == null) {
