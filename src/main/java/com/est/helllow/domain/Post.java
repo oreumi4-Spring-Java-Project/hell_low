@@ -22,26 +22,26 @@ public class Post {
     private String category;
 
     @Column(name = "POST_TITLE", nullable = false)
-    private String post_title;
+    private String postTitle;
 
     @Column(name = "POST_CONTENT")
-    private String post_content;
+    private String postContent;
 
     @Column(name = "LIKE_COUNTS", nullable = false)
-    private String like_counts;
+    private String likeCounts;
 
     @Column(name = "VIEW_COUNTS", nullable = false)
-    private String view_counts;
+    private String viewCounts;
 
     @Column(name = "POST_FILE", nullable = false)
-    private String post_file;
+    private String postFile;
 
     @CreatedDate
     @Column(name = "POST_CREATED", nullable = false)
-    private LocalDateTime post_created;
+    private LocalDateTime postCreated;
 
     @LastModifiedDate
     @Column(name = "POST_MODIFIED")
-    private LocalDateTime post_modified;
+    private LocalDateTime postModified;
 
 }
