@@ -8,12 +8,12 @@ import lombok.Getter;
 @Builder
 @Getter
 @AllArgsConstructor
-public class AddPostResponse {
+public class PostResponseDto {
     private String category;
     private String postTitle;
     private String postContent;
 
-    public AddPostResponse(Post post){
+    public PostResponseDto(Post post){
         this.category = post.getCategory();
         this.postTitle = post.getPostTitle();
         this.postContent = post.getPostContent();
