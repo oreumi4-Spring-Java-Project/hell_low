@@ -15,15 +15,15 @@ public class PostDTO {
     private String category;
     private String postTitle;
     private String postContent;
-    private String likeCounts;
-    private String viewCounts;
+    private Integer likeCounts;
+    private Integer viewCounts;
     private String postFile;
     private LocalDateTime postCreated;
     private LocalDateTime postModified;
 
     public static PostDTO toDTO(Post post) {
         return PostDTO.builder()
-                .postId(post.getPostId())
+                .postId(post.getId())
                 .postModified(post.getPostModified())
                 .postContent(post.getPostContent())
                 .postCreated(post.getPostCreated())

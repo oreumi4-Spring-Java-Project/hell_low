@@ -20,7 +20,7 @@ import java.util.UUID;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
+    @Column(name = "POST_ID", updatable = false)
     private Long id;
   
     /*
@@ -29,11 +29,11 @@ public class Post {
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(name = "post_id", columnDefinition = "BINARY(16)", nullable = false)
     private UUID post_id;
+     */
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
-     */
 
     @Column(name = "CATEGORY", nullable = false)
     private String category;
