@@ -16,18 +16,17 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "POST_ID", updatable = false)
-    private Long id;
+    private Long postId;
   
-    /*
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name="uuid2", strategy = "uuid2")
-    @Column(name = "post_id", columnDefinition = "BINARY(16)", nullable = false)
-    private UUID post_id;
-     */
+//    @Id
+//    @GeneratedValue(generator = "uuid2")
+//    @GenericGenerator(name="uuid2", strategy = "uuid2")
+//    @Column(name = "post_id", columnDefinition = "BINARY(16)", nullable = false)
+//    private UUID post_id;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
@@ -53,7 +52,6 @@ public class Post {
 
     @CreatedDate
     @Column(name = "POST_CREATED")
-
     private LocalDateTime postCreated;
 
     @LastModifiedDate
