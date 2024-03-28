@@ -12,22 +12,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ReplyRequestDto {
-    private String comId;
-    private String content;
-    private LocalDateTime comCreated;
-    private LocalDateTime comModified;
-    private User user;
-    private Post post;
 
-    public Reply toEntity(String postId){
-        Reply reply=Reply.builder()
-                .comId(comId)
+    private String content;
+
+
+    public Reply toEntity(Post post,User user){
+        return Reply.builder()
                 .content(content)
-                .comCreated(comCreated)
-                .comModified(comModified)
                 .user(user)
                 .post(post)
                 .build();
-        return reply;
     }
 }
