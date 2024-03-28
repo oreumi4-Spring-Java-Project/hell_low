@@ -1,0 +1,1 @@
+INSERT INTO post (category, post_title, post_content, post_created, post_modified) VALUES ('notice', 'title1', 'content1', NOW(), NOW());
