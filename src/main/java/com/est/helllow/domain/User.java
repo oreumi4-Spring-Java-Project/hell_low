@@ -33,6 +33,6 @@ public class User {
     private String userImg;
 
     @CreatedDate
-    @Column(name = "USER_CREATED", nullable = false)
+    @Column(name = "USER_CREATED")
     private LocalDateTime userCreated;
 }

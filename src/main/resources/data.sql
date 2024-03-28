@@ -1,5 +1,10 @@
---INSERT INTO post (category, post_title, post_content) VALUES ('notice', 'title1', 'content1');
+INSERT INTO post (category, post_title, post_content)
+VALUES ('notice', 'title1', 'content1');
 
+INSERT INTO user (user_email, user_pw, user_name, user_grade, user_img, user_created)
+    VALUES('user1@example.com', 'password1', 'user1', 'lifts-500', 'image1.jpg', '2024-01-05 08:23:17.000000');
+
+/*
 INSERT INTO user (user_created, user_email, user_grade, user_img, user_name, user_pw, user_sns_id)
 VALUES ('2024-01-05 08:23:17.000000', 'user1@example.com', 'lifts-500', 'image1.jpg', 'User 1', 'password1', NULL),
        ('2023-11-12 14:45:32.000000', 'user2@example.com', 'lifts-400', 'image2.jpg', 'User 2', 'password2', NULL),
@@ -11,7 +16,7 @@ VALUES ('2024-01-05 08:23:17.000000', 'user1@example.com', 'lifts-500', 'image1.
        ('2024-02-10 07:08:37.000000', 'user8@example.com', 'non-members', 'image8.jpg', 'User 8', 'password8', NULL),
        ('2023-11-30 18:42:15.000000', 'user9@example.com', 'lifts-500', 'image9.jpg', 'User 9', 'password9', NULL),
        ('2024-01-20 12:04:56.000000', 'user10@example.com', 'lifts-400', 'image10.jpg', 'User 10', 'password10', NULL);
-=======
+
 INSERT INTO user (user_created, user_email, user_grade, user_id, user_img, user_name, user_pw, user_sns_id) VALUES
                                                                                                                 ('2024-01-05 08:23:17.000000', 'user1@example.com', 'lifts-500', 1, 'image1.jpg', 'User 1', 'password1', NULL),
                                                                                                                 ('2023-11-12 14:45:32.000000', 'user2@example.com', 'lifts-400', 2, 'image2.jpg', 'User 2', 'password2', NULL),
@@ -50,3 +55,4 @@ INSERT INTO comment (com_created, com_modified, com_content, com_id, post_id, us
                                                                                            ('2024-03-27 10:00:00.000000', '2024-03-27 10:35:00.000000', 'Amazing photo!', 7, 3, 4),
                                                                                            ('2024-03-27 10:00:00.000000', '2024-03-27 10:40:00.000000', 'Love the composition.', 8, 3, 6),
                                                                                            ('2024-03-27 10:00:00.000000', '2024-03-27 10:45:00.000000', 'Where was this taken?', 9, 3, 8);
+ */
