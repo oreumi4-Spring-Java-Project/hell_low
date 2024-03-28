@@ -24,10 +24,11 @@ public class ReplyService {
     private final UserRepository userRepository;
 
     @Transactional
-      public Reply replySave(Long postId,Long userId,ReplyRequestDto replyRequestDto){
-        Post post = postRepository.findById(postId).orElseThrow(null); //todo -> 예외처리 예정
-        User user = userRepository.findById(userId).orElseThrow(null);//todo -> 예외처리 예정
-        Reply reply = replyRequestDto.toEntity(post,user);
+  
+    public Reply replySave(Long postId,Long userId,ReplyRequestDto replyRequestDto){
+    Post post = postRepository.findById(postId).orElseThrow(null); //todo -> 예외처리 예정
+    User user = userRepository.findById(userId).orElseThrow(null);//todo -> 예외처리 예정
+    Reply reply = replyRequestDto.toEntity(post,user);
 
         return replyRepository.save(reply);
     }

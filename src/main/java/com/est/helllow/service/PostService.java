@@ -1,9 +1,11 @@
 package com.est.helllow.service;
 
 import com.est.helllow.domain.Post;
-import com.est.helllow.domain.dto.AddPostRequest;
+import com.est.helllow.domain.dto.PostRequestDto;
 import com.est.helllow.repository.PostRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PostService {
@@ -13,7 +15,11 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public Post save(AddPostRequest request){
+    public Post save(PostRequestDto request){
         return postRepository.save(request.toEntity());
+    }
+
+    public List<Post> findAll(){
+        return postRepository.findAll();
     }
 }

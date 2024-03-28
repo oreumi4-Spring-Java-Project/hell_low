@@ -14,8 +14,13 @@ import java.time.LocalDateTime;
 public class ReplyRequestDto {
     private Long comId;
     private String content;
-    
+  
   /*
+    private LocalDateTime comCreated;
+    private LocalDateTime comModified;
+    private User user;
+    private Post post;
+
       public Reply toEntity(Long postId){
       Reply reply=Reply.builder()
                 .comId(comId)

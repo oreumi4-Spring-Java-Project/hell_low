@@ -15,28 +15,13 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class UserDTO {
-
     private Long userId;
-
-
     private String userEmail;
-
-
     private String userPw;
-
-
     private String userSnsId;
-
-
     private String userName;
-
-
     private String userGrade;
-
-
     private String userImg;
-
-
     private LocalDateTime userCreated;
 
     public static UserDTO toDTO(User user) {

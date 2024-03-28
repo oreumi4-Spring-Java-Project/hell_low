@@ -1,17 +1,15 @@
 package com.est.helllow.domain;
 
-import com.est.helllow.domain.dto.AddPostResponse;
+import com.est.helllow.domain.dto.PostResponseDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -68,8 +66,8 @@ public class Post {
         this.postContent = content;
     }
 
-    public AddPostResponse toResponse() {
-        return AddPostResponse.builder()
+    public PostResponseDto toResponse() {
+        return PostResponseDto.builder()
                 .category(category)
                 .postTitle(postTitle)
                 .postContent(postContent)
