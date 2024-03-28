@@ -19,7 +19,7 @@ public class ReplyController {
     private final ReplyService replyService;
 
     @PostMapping("/post/{postId}/replies")
-    public ResponseEntity<ReplyResponseDto> replySave(@PathVariable(name = "postId") String postId, @RequestBody ReplyRequestDto replyRequestDto){
+    public ResponseEntity<ReplyResponseDto> replySave(@PathVariable(name = "postId") Long postId, @RequestBody ReplyRequestDto replyRequestDto){
         Reply reply = replyService.replySave(postId, replyRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ReplyResponseDto(reply));
 

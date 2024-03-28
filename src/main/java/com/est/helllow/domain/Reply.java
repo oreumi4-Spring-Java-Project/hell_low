@@ -20,7 +20,9 @@ import java.time.LocalDateTime;
 public class Reply {
 
     @Id
-    private String comId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "COM_ID", updatable = false)
+    private Long comId;
 
     @ManyToOne //게시글과 댓글은 다대일 관계
     @JoinColumn(name = "POST_ID", nullable = false)
@@ -43,17 +45,17 @@ public class Reply {
 
 
 
-    @PrePersist
-    public void generateComId() {
-        if (this.comId == null) {
-            this.comId = "com_" + String.format("%04d", getNextCommentId());
-        }
-    }
-
-    private static int commentIdCounter = 0;
-
-    private synchronized static int getNextCommentId() {
-        return ++commentIdCounter;
-    }
+//    @PrePersist
+//    public void generateComId() {
+//        if (this.comId == null) {
+//            this.comId = "com_" + String.format("%04d", getNextCommentId());
+//        }
+//    }
+//
+//    private static int commentIdCounter = 0;
+//
+//    private synchronized static int getNextCommentId() {
+//        return ++commentIdCounter;
+//    }
 
 }
