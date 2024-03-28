@@ -10,9 +10,9 @@ import java.time.LocalDateTime;
 @Getter
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="USER_ID", updatable = false)
     private Long userId;
-
 
     @Column(name = "USER_EMAIL", nullable = false)
     private String userEmail;

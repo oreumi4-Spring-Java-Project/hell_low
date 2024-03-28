@@ -19,7 +19,7 @@ public class ReplyService {
     private final PostRepository postRepository;
 
     @Transactional
-    public Reply replySave(String postId, ReplyRequestDto replyRequestDto){
+    public Reply replySave(Long postId, ReplyRequestDto replyRequestDto){
         Reply reply = replyRequestDto.toEntity(postId);
 
         return replyRepository.save(reply);

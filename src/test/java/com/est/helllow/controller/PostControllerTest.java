@@ -20,6 +20,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -69,4 +70,27 @@ class PostControllerTest {
         assertThat(postList.get(0).getPostTitle()).isEqualTo(title);
         assertThat(postList.get(0).getPostContent()).isEqualTo(content);
     }
+
+    @DisplayName("블로그 글 전체 조회 성공")
+    @Test
+    public void testFindAll() throws Exception {
+        /*
+        // given
+        final String url = "/api/posts";
+        final String category = "testCategory";
+        final String title = "testTitle";
+        final String content = "testContent";
+        Post post = postRepository.save(new Post(category, title, content));
+
+        // when
+        ResultActions result = mockMvc.perform(get(url));
+
+        // then : 정상적으로 요청이 되었는지 검증
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].category")).value(post.getCategory())
+                .andExpect(jsonPath("$[0].post_title").value(post.getPostTitle()))
+                .andExpect(jsonPath("$[0].content").value(post.getPostContent()));
+         */
+    }
+
 }

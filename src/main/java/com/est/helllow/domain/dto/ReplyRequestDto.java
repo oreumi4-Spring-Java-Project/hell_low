@@ -19,7 +19,7 @@ public class ReplyRequestDto {
     private User user;
     private Post post;
 
-    public Reply toEntity(String postId){
+    public Reply toEntity(Long postId){
         Reply reply=Reply.builder()
                 .comId(comId)
                 .content(content)
