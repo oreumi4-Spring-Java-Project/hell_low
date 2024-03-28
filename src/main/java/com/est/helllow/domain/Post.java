@@ -56,12 +56,14 @@ public class Post {
 
     @CreatedDate
     @Column(name = "POST_CREATED")
+
     private LocalDateTime postCreated;
 
     @LastModifiedDate
     @Column(name = "POST_MODIFIED")
     private LocalDateTime postModified;
-
+  
+    
     @Builder
     public Post(String category, String title, String content) {
         this.category = category;
@@ -84,6 +86,5 @@ public class Post {
         this.viewCounts = this.viewCounts == null ? 0 : this.viewCounts;
         this.postFile = this.postFile == null ? "logo.png" : this.postFile;
     }
-
 
 }
