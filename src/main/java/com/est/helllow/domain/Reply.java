@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -17,10 +18,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Reply {
 
     @Id
-    private String comId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long comId;
 
     @ManyToOne //게시글과 댓글은 다대일 관계
     @JoinColumn(name = "POST_ID", nullable = false)
@@ -42,18 +45,17 @@ public class Reply {
     private LocalDateTime comModified;
 
 
-
-    @PrePersist
-    public void generateComId() {
-        if (this.comId == null) {
-            this.comId = "com_" + String.format("%04d", getNextCommentId());
-        }
-    }
-
-    private static int commentIdCounter = 0;
-
-    private synchronized static int getNextCommentId() {
-        return ++commentIdCounter;
-    }
+//    @PrePersist
+//    public void generateComId() {
+//        if (this.comId == null) {
+//            this.comId = "com_" + String.format("%04d", getNextCommentId());
+//        }
+//    }
+//
+//    private static int commentIdCounter = 0;
+//
+//    private synchronized static int getNextCommentId() {
+//        return ++commentIdCounter;
+//    }
 
 }

@@ -2,25 +2,25 @@ package com.est.helllow.domain.dto;
 
 import com.est.helllow.domain.Reply;
 import lombok.Builder;
+import lombok.Getter;
 
 import javax.xml.stream.events.Comment;
 import java.time.LocalDateTime;
-
+@Getter
 public class ReplyResponseDto {
-    private String comId;
+    private Long comId;
     private String content;
-
-    private LocalDateTime comCreated;
-    private LocalDateTime comModified;
     private String nickname;
-    private String postId;
+    private Long postId;
+    private LocalDateTime comCreated;
+
     @Builder
     public ReplyResponseDto (Reply reply){
         this.comId=reply.getComId();
         this.content=reply.getContent();
-        this.comCreated=reply.getComCreated();
         this.nickname=reply.getUser().getUserName();
-        this.postId=reply.getPost().getPost_id();
+        this.postId=reply.getPost().getPostId();
+        this.comCreated=reply.getComCreated();
     }
 
 }

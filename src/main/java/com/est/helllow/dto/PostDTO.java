@@ -15,8 +15,8 @@ public class PostDTO {
     private String category;
     private String postTitle;
     private String postContent;
-    private String likeCounts;
-    private String viewCounts;
+    private int likeCounts;
+    private int viewCounts;
     private String postFile;
     private LocalDateTime postCreated;
     private LocalDateTime postModified;
@@ -32,7 +32,7 @@ public class PostDTO {
                 .category(post.getCategory())
                 .likeCounts(post.getLikeCounts())
                 .viewCounts(post.getViewCounts())
-                .user( UserDTO.toDTO(post.getUser()) )
+                .user(UserDTO.toDTO(post.getUser()))   //post.getUser()
                 .build();
     }
 }
