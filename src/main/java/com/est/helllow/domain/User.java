@@ -11,27 +11,27 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @Column(name="USER_ID", updatable = false)
-    private String user_id;
+    private Long userId;
 
     @Column(name = "USER_EMAIL", nullable = false)
-    private String user_email;
+    private String userEmail;
 
     @Column(name = "USER_PW", nullable = false)
-    private String user_pw;
+    private String userPw;
 
     @Column(name = "USER_SNS_ID")
-    private String user_sns_id;
+    private String userSnsId;
 
     @Column(name = "USER_NAME", nullable = false)
-    private String user_name;
+    private String userName;
 
     @Column(name = "USER_GRADE", nullable = false)
-    private String user_grade;
+    private String userGrade;
 
     @Column(name = "USER_IMG", nullable = false)
-    private String user_img;
+    private String userImg;
 
     @CreatedDate
     @Column(name = "USER_CREATED", nullable = false)
-    private LocalDateTime user_created;
+    private LocalDateTime userCreated;
 }
