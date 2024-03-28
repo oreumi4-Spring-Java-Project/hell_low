@@ -18,22 +18,21 @@ import java.util.UUID;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
-    private Long id;
+    @Column(name = "POST_ID", updatable = false)
+    private Long postId;
   
-
 //    @Id
 //    @GeneratedValue(generator = "uuid2")
 //    @GenericGenerator(name="uuid2", strategy = "uuid2")
 //    @Column(name = "post_id", columnDefinition = "BINARY(16)", nullable = false)
 //    private UUID post_id;
-//
+
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
-
 
     @Column(name = "CATEGORY", nullable = false)
     private String category;
@@ -55,7 +54,6 @@ public class Post {
 
     @CreatedDate
     @Column(name = "POST_CREATED")
-
     private LocalDateTime postCreated;
 
     @LastModifiedDate
