@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @Column(name="USER_ID", updatable = false)
-    private String userId;
+    private Long userId;
 
     @Column(name = "USER_EMAIL", nullable = false)
     private String userEmail;
 
     @Column(name = "USER_PW", nullable = false)
-    private String userPW;
+    private String userPw;
 
     @Column(name = "USER_SNS_ID")
     private String userSnsId;

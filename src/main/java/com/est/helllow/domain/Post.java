@@ -19,17 +19,17 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
     @Id
+    feature/create_post_api
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
-
+  
     /*
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(name = "post_id", columnDefinition = "BINARY(16)", nullable = false)
     private UUID post_id;
-
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
@@ -41,7 +41,7 @@ public class Post {
 
     @Column(name = "POST_TITLE", nullable = false)
     private String postTitle;
-
+  
     @Column(name = "POST_CONTENT", nullable = false)
     private String postContent;
 
@@ -84,5 +84,6 @@ public class Post {
         this.viewCounts = this.viewCounts == null ? 0 : this.viewCounts;
         this.postFile = this.postFile == null ? "logo.png" : this.postFile;
     }
+
 
 }
