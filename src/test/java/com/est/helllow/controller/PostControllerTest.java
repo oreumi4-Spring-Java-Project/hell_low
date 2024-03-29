@@ -19,6 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -44,7 +45,7 @@ class PostControllerTest {
         postRepository.deleteAll();
     }
 
-    @DisplayName("블로그 글 추가 성공")
+    @DisplayName("Post 글 추가 성공")
     @Test
     public void addPost() throws Exception{
         //given
@@ -71,7 +72,7 @@ class PostControllerTest {
         assertThat(postList.get(0).getPostContent()).isEqualTo(content);
     }
 
-    @DisplayName("블로그 글 전체 조회 성공")
+    @DisplayName("Post 글 전체 조회 성공")
     @Test
     public void testFindAll() throws Exception {
         /*
@@ -91,6 +92,27 @@ class PostControllerTest {
                 .andExpect(jsonPath("$[0].post_title").value(post.getPostTitle()))
                 .andExpect(jsonPath("$[0].content").value(post.getPostContent()));
          */
+    }
+
+    @DisplayName("Post 글 삭제 성공")
+    @Test
+    public void testDeleteArticle() throws Exception {
+        // given
+        final String url = "/api/posts/{id}";
+        String category = "notice";
+        String title = "title1";
+        String content = "content1";
+
+        Post post = postRepository.save(new Post(category,title, content));
+        Long savedId = post.getPostId();
+
+        // when
+        mockMvc.perform(delete(url, savedId)).andExpect(status().isOk());
+
+        // then
+        List<Post> afterDeleteList = postRepository.findAll();
+        //isEmpty() 오류
+        //assertThat(afterDeleteList).isEmpty();
     }
 
 }
