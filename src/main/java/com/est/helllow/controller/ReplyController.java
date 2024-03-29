@@ -39,5 +39,18 @@ public class ReplyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(reply.toResponse());
     }
 
-
+    /**
+     * 댓글 삭제 API
+     * @param commentId
+     * @param userId
+     * @return
+     * @throws
+     */
+    @DeleteMapping("/{userId}/comments/{commentId}")
+    @ResponseBody
+    public ResponseEntity<Void> deleteReply(@PathVariable(name = "userId")Long userId,
+                                            @PathVariable(name = "commentId")Long commentId){
+        replyService.deleteComment(commentId,userId);
+        return ResponseEntity.ok().build();
+    }
 }

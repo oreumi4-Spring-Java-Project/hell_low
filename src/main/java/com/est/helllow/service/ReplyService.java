@@ -34,4 +34,29 @@ public class ReplyService {
         return replyRepository.save(reply);
     }
 
+    @Transactional
+    public Long deleteComment(Long commentId,Long userId) {
+        Reply findReply = replyRepository.findById(commentId).orElseThrow(null);//todo -> 예외처리 예정
+
+        // 예외처리 예정 부분
+        // 해당 댓글 작성자 여부 판단
+        validateReply(userId, findReply);
+
+        replyRepository.delete(findReply);
+        return commentId;
+    }
+
+    // 댓글 작성 or 수정 시
+    // 댓글 작성자 판단 및 댓글 존재 여부 판단
+    private static void validateReply(Long userId, Reply findReply) {
+        if(!findReply.getUser().equals(userId)){
+            log.error("예외 발생");
+        }
+
+        // 댓글 존재 여부
+        if(findReply.getComId()==null){
+            log.error("예외 발생");
+        }
+    }
+
 }
