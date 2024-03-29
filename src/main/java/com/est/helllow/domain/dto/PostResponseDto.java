@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
 @NoArgsConstructor
@@ -14,10 +16,21 @@ public class PostResponseDto {
     private String category;
     private String postTitle;
     private String postContent;
+    private Integer likeCounts;
+    private Integer viewCounts;
+    private String postFile;
+    private LocalDateTime postCreated;
+    private LocalDateTime postModified;
+
 
     public PostResponseDto(Post post){
         this.category = post.getCategory();
         this.postTitle = post.getPostTitle();
         this.postContent = post.getPostContent();
+        this.likeCounts = post.getLikeCounts();
+        this.viewCounts = post.getViewCounts();
+        this.postFile = post.getPostFile();
+        this.postCreated = post.getPostCreated();
+        this.postModified = post.getPostModified();
     }
 }
