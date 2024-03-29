@@ -35,18 +35,13 @@ public class ReplyController {
 //        return ResponseEntity.ok(post);
 //    }
 
-    @GetMapping("api/post/{postId}")
-    public ResponseEntity<PostRes> getPost(@PathVariable(name = "postId")Long postId){
-        PostRes postRes = replyService.getPost(postId);
-        return ResponseEntity.status(HttpStatus.OK).body(postRes);
-    }
-
-    @GetMapping("{postId}/comments")
-    @ResponseBody
-    public ResponseEntity<List<Reply>> getRepliesByPostId(@PathVariable(name = "postId")Long postId){
-        List<Reply> replies = replyService.getRepliesByPostId(postId);
-        return ResponseEntity.ok(replies);
-    }
+//
+//    @GetMapping("{postId}/comments")
+//    @ResponseBody
+//    public ResponseEntity<List<Reply>> getRepliesByPostId(@PathVariable(name = "postId")Long postId){
+//        List<Reply> replies = replyService.getRepliesByPostId(postId);
+//        return ResponseEntity.ok(replies);
+//    }
 
 
     /**
