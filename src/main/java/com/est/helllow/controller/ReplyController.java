@@ -53,4 +53,22 @@ public class ReplyController {
         replyService.deleteComment(commentId,userId);
         return ResponseEntity.ok().build();
     }
+
+    /**
+     * 댓글 수정 API
+     * @param replyRequestDto
+     * @param postId
+     * @param userId
+     * @return
+     * @throws
+     */
+    @PutMapping("/{userId}/comments/{commentId}")
+    public ResponseEntity<ReplyResponseDto> updateReply(@PathVariable(name = "postId")Long postId,
+                                                        @PathVariable(name = "userId")Long userId,
+                                                        @PathVariable(name = "commentId")Long commentId,
+                                                        @RequestBody ReplyRequestDto replyRequestDto){
+        Reply reply = replyService.updateReply(postId,commentId, userId, replyRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(reply.toResponse());
+    }
+
 }

@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 
 
 @Service
@@ -45,6 +44,22 @@ public class ReplyService {
         replyRepository.delete(findReply);
         return commentId;
     }
+
+    @Transactional
+    public Reply updateReply(Long postId,Long commentId,Long userId,ReplyRequestDto replyRequestDto){
+        Post post = postRepository.findById(postId).orElseThrow(null);//todo -> 예외처리 예정
+        User user = userRepository.findById(userId).orElseThrow(null);//todo -> 예외처리 예정
+        Reply reply = replyRepository.findById(commentId).orElseThrow(null);//todo -> 예외처리 예정
+        validateReply(userId, reply);
+
+
+        Reply modifiedReply = replyRequestDto.toEntity(post, user);
+        Reply findReply = replyRepository.findById(commentId).orElseThrow();
+        findReply.updateReply(modifiedReply.getContent());
+
+        return reply;
+    }
+
 
     // 댓글 작성 or 수정 시
     // 댓글 작성자 판단 및 댓글 존재 여부 판단
