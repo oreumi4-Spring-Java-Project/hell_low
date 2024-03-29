@@ -13,5 +13,5 @@ import java.util.List;
 @Repository
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
       List<Reply> findByUser_userId(Long userId);
-      //List<Reply> findByPost_PostId(Long postId);
+      List<Reply> findByPost_PostId(Long postId);
 }
