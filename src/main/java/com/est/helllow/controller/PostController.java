@@ -7,10 +7,7 @@ import com.est.helllow.domain.dto.PostResponseDto;
 import com.est.helllow.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,5 +35,25 @@ public class PostController {
                 .body(postList);
     }
 
+    @GetMapping("api/posts/{postId}")
+    public ResponseEntity<PostResponseDto> findOnePost(@PathVariable Long postId){
+        PostResponseDto post = postService.findById(postId).toResponse();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(post);
+    }
+
+    @DeleteMapping("/api/posts/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId){
+        postService.delete(postId);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/api/posts/{postId}")
+    public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody PostRequestDto request){
+        Post updatedPost = postService.update(postId, request);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(updatedPost);
+    }
 
 }

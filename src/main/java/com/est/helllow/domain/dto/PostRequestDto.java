@@ -13,6 +13,11 @@ public class PostRequestDto {
     private String postTitle;
     private String postContent;
 
+    public PostRequestDto(String title, String content){
+        this.postTitle = title;
+        this.postContent = content;
+    }
+
     public Post toEntity(){
         return Post.builder()
                 .category(category)
