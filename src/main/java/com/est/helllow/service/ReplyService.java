@@ -4,6 +4,8 @@ package com.est.helllow.service;
 import com.est.helllow.domain.Post;
 import com.est.helllow.domain.Reply;
 import com.est.helllow.domain.User;
+//import com.est.helllow.domain.dto.PostRes;
+import com.est.helllow.domain.dto.PostRes;
 import com.est.helllow.domain.dto.ReplyRequestDto;
 import com.est.helllow.repository.PostRepository;
 import com.est.helllow.repository.ReplyRepository;
@@ -14,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 
 
 @Service
@@ -23,6 +26,24 @@ public class ReplyService {
     private final ReplyRepository replyRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+
+
+//    // 게시물 조회용
+//    public PostRes getPost(Long postId){
+//        Post findPost = postRepository.findById(postId).orElseThrow(null);// todo -> 예외처리 예정
+//
+//
+//    }
+//
+    public PostRes getPost(Long postId){
+        Post findPost = postRepository.findById(postId).orElseThrow(null);
+        List<Reply> replies = getRepliesByPostId(postId);
+        return new PostRes(findPost,replies);
+    }
+
+    public List<Reply> getRepliesByPostId(Long postId){
+        return replyRepository.findByPost_PostId(postId);
+    }
 
     @Transactional
     public Reply replySave(Long postId,Long userId,ReplyRequestDto replyRequestDto){
@@ -73,5 +94,7 @@ public class ReplyService {
             log.error("예외 발생");
         }
     }
+
+
 
 }

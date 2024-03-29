@@ -23,7 +23,7 @@ public class PostDTO {
 
     public static PostDTO toDTO(Post post) {
         return PostDTO.builder()
-                .postId(post.getId())
+                .postId(post.getPostId())
                 .postModified(post.getPostModified())
                 .postContent(post.getPostContent())
                 .postCreated(post.getPostCreated())
