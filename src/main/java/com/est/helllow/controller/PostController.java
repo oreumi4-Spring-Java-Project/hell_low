@@ -42,4 +42,11 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/api/posts/{postId}")
+    public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody PostRequestDto request){
+        Post updatedPost = postService.update(postId, request);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(updatedPost);
+    }
+
 }

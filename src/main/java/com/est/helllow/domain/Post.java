@@ -74,6 +74,11 @@ public class Post {
                 .build();
     }
 
+    public void update(String title, String content){
+        this.postTitle = title;
+        this.postContent = content;
+    }
+
     //디폴트값 설정
     @PrePersist
     public void prePersist() {
