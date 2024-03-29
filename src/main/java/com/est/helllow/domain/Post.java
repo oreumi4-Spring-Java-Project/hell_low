@@ -71,6 +71,11 @@ public class Post {
                 .category(category)
                 .postTitle(postTitle)
                 .postContent(postContent)
+                .likeCounts(likeCounts)
+                .viewCounts(viewCounts)
+                .postFile(postFile)
+                .postCreated(postCreated)
+                .postModified(postModified)
                 .build();
     }
 

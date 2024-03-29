@@ -24,6 +24,11 @@ public class PostService {
         return postRepository.findAll();
     }
 
+    public Post findById(Long id){
+        return postRepository.findById(id)
+                .orElseThrow(()-> new IllegalArgumentException("not found" + id + "post"));
+    }
+
     public void delete(long id){
         postRepository.deleteById(id);
     }

@@ -35,6 +35,13 @@ public class PostController {
                 .body(postList);
     }
 
+    @GetMapping("api/posts/{postId}")
+    public ResponseEntity<PostResponseDto> findOnePost(@PathVariable Long postId){
+        PostResponseDto post = postService.findById(postId).toResponse();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(post);
+    }
+
     @DeleteMapping("/api/posts/{postId}")
     public ResponseEntity<Void> deletePost(@PathVariable Long postId){
         postService.delete(postId);
