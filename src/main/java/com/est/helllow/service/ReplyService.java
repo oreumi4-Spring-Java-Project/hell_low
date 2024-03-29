@@ -10,6 +10,7 @@ import com.est.helllow.repository.ReplyRepository;
 import com.est.helllow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,34 +19,19 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReplyService {
     private final ReplyRepository replyRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
     @Transactional
-  
     public Reply replySave(Long postId,Long userId,ReplyRequestDto replyRequestDto){
-    Post post = postRepository.findById(postId).orElseThrow(null); //todo -> 예외처리 예정
+    Post post = postRepository.findById(postId).orElseThrow(null); //todo -> 예외처리 예정 (컨트롤러쪽으로 예외전파??)
     User user = userRepository.findById(userId).orElseThrow(null);//todo -> 예외처리 예정
     Reply reply = replyRequestDto.toEntity(post,user);
 
         return replyRepository.save(reply);
     }
 
-    public void deleteComment(Long userId) {
-
-    }
-
-//    public boolean isReplyWriter(Long postId,Long userId,Long commentId){
-//        Optional<Post> validate1 = postRepository.findById(postId);
-//        if(!validate1.isPresent()){
-//            return false; // 해당하는 댓글 x, 해당 게시물의 댓글 아님
-//        }
-//        Post post = validate1.get();
-//
-//        replyRepository.find(commentId,post);
-//
-//
-//    }
 }

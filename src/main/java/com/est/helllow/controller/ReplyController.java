@@ -14,10 +14,20 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/post/{postId}")
+@RequestMapping("/{postId}")
 public class ReplyController {
 
     private final ReplyService replyService;
+
+
+    /**
+     * 댓글 작성 API
+     * @param replyRequestDto
+     * @param postId
+     * @param userId
+     * @return
+     * @throws
+     */
 
     @PostMapping("/{userId}/comments")
     @ResponseBody
@@ -26,16 +36,8 @@ public class ReplyController {
                                                       @RequestBody ReplyRequestDto replyRequestDto){
         Reply reply = replyService.replySave(postId,userId,replyRequestDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ReplyResponseDto(reply));
+        return ResponseEntity.status(HttpStatus.CREATED).body(reply.toResponse());
     }
-//    @DeleteMapping("/{userId}/comments/{commentId}")
-//    @ResponseBody
-//    public ResponseEntity<Void> deleteReply(@PathVariable(name = "postId")Long postId,
-//                                            @PathVariable(name = "userId")Long userId,
-//                                            @PathVariable(name = "commentId")Long commentId){
-//
-//        replyService.deleteComment(commentId);
-//        return ResponseEntity.ok().build();
-//    }
+
 
 }
