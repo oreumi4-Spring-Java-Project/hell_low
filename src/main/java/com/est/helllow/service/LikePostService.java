@@ -20,7 +20,7 @@ public class LikePostService {
     private final LikePostRepository likePostRepository;
 
     @Transactional
-    public LikePost likePost(Long postId, Long userId) {
+    public int likePost(Long postId, Long userId) {
         User findUser = userRepository.findById(userId).orElseThrow(null);// todo-> 예외처리 예정
         Post findPost = postRepository.findById(postId).orElseThrow(null);// todo-> 예외처리 예정
 
@@ -36,12 +36,12 @@ public class LikePostService {
         }
 
         LikePost likePost = new LikePost(findUser,findPost);
-        return likePostRepository.save(likePost);
-
+        likePostRepository.save(likePost);
+        return findPost.incLikeCount();
     }
 
     @Transactional
-    public void unLikePost(Long postId,Long userId){
+    public int unLikePost(Long postId,Long userId){
         User findUser = userRepository.findById(userId).orElseThrow(null);// todo-> 예외처리 예정
         Post findPost = postRepository.findById(postId).orElseThrow(null);// todo-> 예외처리 예정
 
@@ -58,5 +58,6 @@ public class LikePostService {
         }
 
         likePostRepository.delete(existLikePost);
+        return findPost.decLikeCount();
     }
 }

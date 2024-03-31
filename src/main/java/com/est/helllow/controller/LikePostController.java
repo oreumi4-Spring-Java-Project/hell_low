@@ -27,10 +27,10 @@ public class LikePostController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<LikePost> likePost(@PathVariable(name = "postId") Long postId,
+    public ResponseEntity<Integer> likePost(@PathVariable(name = "postId") Long postId,
                                              @PathVariable(name = "userId") Long userId) {
-        LikePost likePost = likePostService.likePost(postId, userId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(likePost);
+        int likePostCount = likePostService.likePost(postId, userId);
+        return ResponseEntity.ok().body(likePostCount);
     }
 
     /**
@@ -43,9 +43,9 @@ public class LikePostController {
      */
 
     @DeleteMapping
-    public ResponseEntity<LikePost> unLikePost(@PathVariable(name = "postId") Long postId,
+    public ResponseEntity<Integer> unLikePost(@PathVariable(name = "postId") Long postId,
                                                @PathVariable(name = "userId") Long userId){
-        likePostService.unLikePost(postId,userId);
-        return ResponseEntity.ok().build();
+        int likePostCount = likePostService.unLikePost(postId, userId);
+        return ResponseEntity.ok().body(likePostCount);
     }
 }
