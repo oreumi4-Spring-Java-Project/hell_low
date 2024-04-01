@@ -5,6 +5,7 @@ import com.est.helllow.domain.dto.PostRequestDto;
 import com.est.helllow.domain.dto.PostRes;
 import com.est.helllow.domain.dto.PostResponseDto;
 
+import com.est.helllow.domain.dto.PostSearchCondition;
 import com.est.helllow.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,10 +49,21 @@ public class PostController {
      * @return
      * @throws
      */
-    @GetMapping("api/post/{postId}")
+    @GetMapping("api/posts/{postId}")
     public ResponseEntity<PostRes> getPost(@PathVariable(name = "postId")Long postId){
         PostRes postRes = postService.getPost(postId);
         return ResponseEntity.status(HttpStatus.OK).body(postRes);
+    }
+
+    /**
+     * 게시물 검색 기능 API
+     * 테스트 위한 구조 , 이후 변경 예정
+     * @return
+     */
+    @GetMapping("api/posts/search")
+    public ResponseEntity<List<Post>> searchPost(@RequestBody PostSearchCondition postSearchCondition){
+        List<Post> posts = postService.searchPost(postSearchCondition);
+        return ResponseEntity.status(HttpStatus.OK).body(posts);
     }
 
 

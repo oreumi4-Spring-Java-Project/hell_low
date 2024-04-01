@@ -2,10 +2,7 @@ package com.est.helllow.service;
 
 import com.est.helllow.domain.Post;
 import com.est.helllow.domain.Reply;
-import com.est.helllow.domain.dto.PostRequestDto;
-import com.est.helllow.domain.dto.PostRes;
-import com.est.helllow.domain.dto.PostResponseDto;
-import com.est.helllow.domain.dto.ReplyResponseDto;
+import com.est.helllow.domain.dto.*;
 import com.est.helllow.repository.PostRepository;
 import com.est.helllow.repository.ReplyRepository;
 import jakarta.transaction.Transactional;
@@ -21,6 +18,11 @@ public class PostService {
     private final PostRepository postRepository;
     private final ReplyRepository replyRepository;
 
+
+    // 게시물 검색
+    public List<Post> searchPost(PostSearchCondition postSearchCondition){
+        return postRepository.search(postSearchCondition);
+    }
 
     public PostRes getPost(Long postId){
         Post findPost = postRepository.findById(postId).orElseThrow(null);

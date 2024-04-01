@@ -1,9 +1,7 @@
 package com.est.helllow.controller;
 
-import com.est.helllow.domain.LikePost;
 import com.est.helllow.service.LikePostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
