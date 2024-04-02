@@ -57,10 +57,11 @@ public class Post extends BaseTimeEntity {
 
     
     @Builder
-    public Post(String category, String title, String content) {
+    public Post(String category, String title, String content, String file) {
         this.category = category;
         this.postTitle = title;
         this.postContent = content;
+        this.postFile = file;
     }
 
     public PostResponseDto toResponse() {
@@ -96,7 +97,7 @@ public class Post extends BaseTimeEntity {
         //    디폴트값 설정
         this.likeCounts = this.likeCounts == null ? 0 : this.likeCounts;
         this.viewCounts = this.viewCounts == null ? 0 : this.viewCounts;
-        this.postFile = this.postFile == null ? "logo.png" : this.postFile;
+        //this.postFile = this.postFile == null ? "logo.png" : this.postFile;
     }
 
 }
