@@ -49,7 +49,7 @@ class PostControllerTest {
     @Test
     public void addPost() throws Exception {
         //given
-        String url = "/api/post";
+        String url = "/api/posts";
 
         String category = "category";
         String title = "title";
@@ -66,10 +66,14 @@ class PostControllerTest {
         //then
         result.andExpect(status().isCreated());
         List<Post> postList = postRepository.findAll();
+        for (Post post : postList) {
+            System.out.println(post.getPostId());
+        }
 
         assertThat(postList.size()).isEqualTo(1);
         assertThat(postList.get(0).getPostTitle()).isEqualTo(title);
         assertThat(postList.get(0).getPostContent()).isEqualTo(content);
+
     }
 
     @DisplayName("Post 글 전체 조회 성공")
@@ -104,8 +108,8 @@ class PostControllerTest {
         String content = "content1";
         String file = "file";
 
-        Post post = postRepository.save(new Post(category, title, content, file));
-        Long savedId = post.getPostId();
+        Post post = postRepository.save(new Post(category, title, content));
+        String savedId = post.getPostId();
 
         // when
         mockMvc.perform(delete(url, savedId)).andExpect(status().isOk());

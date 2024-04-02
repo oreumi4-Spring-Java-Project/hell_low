@@ -1,6 +1,8 @@
 package com.est.helllow.domain;
 
+import com.est.helllow.config.BaseTimeEntity;
 import com.est.helllow.domain.dto.PostResponseDto;
+import com.est.helllow.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,12 +21,11 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Post {
+public class Post extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "POST_ID", updatable = false)
-    private Long postId;
+    private String postId;
   
 //    @Id
 //    @GeneratedValue(generator = "uuid2")
@@ -32,7 +33,7 @@ public class Post {
 //    @Column(name = "post_id", columnDefinition = "BINARY(16)", nullable = false)
 //    private UUID post_id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
@@ -45,25 +46,15 @@ public class Post {
     @Column(name = "POST_CONTENT", nullable = false)
     private String postContent;
 
-    @ColumnDefault("0") //디폴트 값 0으로 지정 가능
     @Column(name = "LIKE_COUNTS")
     private Integer likeCounts;
 
-    @ColumnDefault("0")
     @Column(name = "VIEW_COUNTS")
     private Integer viewCounts;
 
     @Column(name = "POST_FILE")
     private String postFile;
 
-    @CreatedDate
-    @Column(name = "POST_CREATED")
-    private LocalDateTime postCreated;
-
-    @LastModifiedDate
-    @Column(name = "POST_MODIFIED")
-    private LocalDateTime postModified;
-  
     
     @Builder
     public Post(String category, String title, String content) {
@@ -80,8 +71,8 @@ public class Post {
                 .likeCounts(likeCounts)
                 .viewCounts(viewCounts)
                 .postFile(postFile)
-                .postCreated(postCreated)
-                .postModified(postModified)
+                .postCreated(getCreatedAt())
+                .postModified(getModifiedAt())
                 .build();
     }
 
@@ -98,9 +89,11 @@ public class Post {
         return --likeCounts;
     }
 
-//    디폴트값 설정
+
     @PrePersist
     public void prePersist() {
+        this.postId = IdGenerator.generatePostId(this.category);
+        //    디폴트값 설정
         this.likeCounts = this.likeCounts == null ? 0 : this.likeCounts;
         this.viewCounts = this.viewCounts == null ? 0 : this.viewCounts;
         this.postFile = this.postFile == null ? "logo.png" : this.postFile;

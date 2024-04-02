@@ -44,7 +44,7 @@ public class ReplyService {
 //    }
 
     @Transactional
-    public Reply replySave(Long postId,Long userId,ReplyRequestDto replyRequestDto){
+    public Reply replySave(String postId,Long userId,ReplyRequestDto replyRequestDto){
     Post post = postRepository.findById(postId).orElseThrow(null); //todo -> 예외처리 예정 (컨트롤러쪽으로 예외전파??)
     User user = userRepository.findById(userId).orElseThrow(null);//todo -> 예외처리 예정
     Reply reply = replyRequestDto.toEntity(post,user);
@@ -53,7 +53,7 @@ public class ReplyService {
     }
 
     @Transactional
-    public Long deleteComment(Long commentId,Long userId) {
+    public String deleteComment(String commentId,Long userId) {
         Reply findReply = replyRepository.findById(commentId).orElseThrow(null);//todo -> 예외처리 예정
 
         // 예외처리 예정 부분
@@ -65,7 +65,7 @@ public class ReplyService {
     }
 
     @Transactional
-    public Reply updateReply(Long postId,Long commentId,Long userId,ReplyRequestDto replyRequestDto){
+    public Reply updateReply(String postId,String commentId,Long userId,ReplyRequestDto replyRequestDto){
         Post post = postRepository.findById(postId).orElseThrow(null);//todo -> 예외처리 예정
         User user = userRepository.findById(userId).orElseThrow(null);//todo -> 예외처리 예정
         Reply reply = replyRepository.findById(commentId).orElseThrow(null);//todo -> 예외처리 예정

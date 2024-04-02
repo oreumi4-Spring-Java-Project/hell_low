@@ -27,7 +27,7 @@ public class PostRepositoryImpl implements PostCustomRepository {
                 .where(titleLike(postSearchCondition.getSearchText())
                         .or(writerEq(postSearchCondition.getSearchText()))
                         .or(categoryEq(postSearchCondition.getSearchText())))
-                .orderBy(post.postCreated.desc())
+                .orderBy(post.createdAt.desc())
                 .fetch();
     }
 

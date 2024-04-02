@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LikePostRepository extends JpaRepository<LikePost, Long> {
-    LikePost findLikePostByPost_PostIdAndUser_UserId(Long postId,Long userId);
+public interface LikePostRepository extends JpaRepository<LikePost, String> {
+    LikePost findLikePostByPost_PostIdAndUser_UserId(String postId,Long userId);
 }

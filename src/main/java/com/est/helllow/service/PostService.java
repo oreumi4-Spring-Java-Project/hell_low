@@ -24,7 +24,7 @@ public class PostService {
         return postRepository.search(postSearchCondition);
     }
 
-    public PostRes getPost(Long postId){
+    public PostRes getPost(String postId){
         Post findPost = postRepository.findById(postId).orElseThrow(null);
         PostResponseDto responsePost = findPost.toResponse();
 
@@ -57,17 +57,17 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public Post findById(Long id){
+    public Post findById(String id){
         return postRepository.findById(id)
                 .orElseThrow(()-> new IllegalArgumentException("not found" + id + "post"));
     }
 
-    public void delete(long id){
+    public void delete(String id){
         postRepository.deleteById(id);
     }
 
     @Transactional
-    public Post update(Long id, PostRequestDto request){
+    public Post update(String id, PostRequestDto request){
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found" + id + "post"));
         post.update(request.getPostTitle(), request.getPostContent());
