@@ -33,13 +33,13 @@ public class MyInfoController {
         return map;
     }
 
-    @PutMapping("myinfo/{userId}")
-    public ResponseDTO updateMyInfo(@PathVariable Long userId, @RequestBody UserDTO userDTO) {
-        userDTO.setUserId(userId);
-        UserDTO userDTO1 = myInfoService.updateUser(userDTO);
-        if(userDTO1 != null)
-            return new ResponseDTO("success", "update ok");
-        else
-            return new ResponseDTO("fail", "update fail");
-    }
+//    @PutMapping("myinfo/{userId}")
+//    public ResponseDTO updateMyInfo(@PathVariable Long userId, @RequestBody UserDTO userDTO) {
+//        userDTO.setUserId(userId);
+//        UserDTO userDTO1 = myInfoService.updateUser(userDTO);
+//        if(userDTO1 != null)
+//            return new ResponseDTO("success", "update ok");
+//        else
+//            return new ResponseDTO("fail", "update fail");
+//    }
 }

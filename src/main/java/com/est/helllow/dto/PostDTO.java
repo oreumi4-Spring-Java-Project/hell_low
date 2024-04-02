@@ -32,7 +32,7 @@ public class PostDTO {
                 .category(post.getCategory())
                 .likeCounts(post.getLikeCounts())
                 .viewCounts(post.getViewCounts())
-                .user(UserDTO.toDTO(post.getUser()))   //post.getUser()
+//                .user(UserDTO.toDTO(post.getUser()))   //post.getUser()
                 .build();
     }
 }
