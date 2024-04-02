@@ -30,7 +30,7 @@ public class PostResponseDto {
         this.likeCounts = post.getLikeCounts();
         this.viewCounts = post.getViewCounts();
         this.postFile = post.getPostFile();
-        this.postCreated = post.getPostCreated();
-        this.postModified = post.getPostModified();
+        this.postCreated = post.getCreatedAt();
+        this.postModified = post.getModifiedAt();
     }
 }

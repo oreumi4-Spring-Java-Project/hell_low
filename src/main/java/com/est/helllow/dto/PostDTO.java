@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class PostDTO {
-    private Long postId;
+    private String postId;
     private UserDTO user;
     private String category;
     private String postTitle;
@@ -24,9 +24,9 @@ public class PostDTO {
     public static PostDTO toDTO(Post post) {
         return PostDTO.builder()
                 .postId(post.getPostId())
-                .postModified(post.getPostModified())
+                .postModified(post.getModifiedAt())
                 .postContent(post.getPostContent())
-                .postCreated(post.getPostCreated())
+                .postCreated(post.getCreatedAt())
                 .postFile(post.getPostFile())
                 .postTitle(post.getPostTitle())
                 .category(post.getCategory())

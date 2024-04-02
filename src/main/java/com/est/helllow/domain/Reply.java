@@ -1,6 +1,8 @@
 package com.est.helllow.domain;
 
+import com.est.helllow.config.BaseTimeEntity;
 import com.est.helllow.domain.dto.ReplyResponseDto;
+import com.est.helllow.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,43 +13,36 @@ import java.time.LocalDateTime;
 
 @Table(name = "COMMENT")
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Reply {
+public class Reply extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COM_ID", updatable = false)
-    private Long comId;
+    private String comId;
 
-    @ManyToOne //게시글과 댓글은 다대일 관계
+    @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩 (엔티티 사용 전까지 연관 엔티티 로딩 x)
     @JoinColumn(name = "POST_ID", nullable = false)
     private Post post;
 
-    @ManyToOne(targetEntity = User.class) // 사용자와 댓글은 다대일 관계
+    @ManyToOne(fetch = FetchType.LAZY,targetEntity = User.class) // 사용자와 댓글은 다대일 관계
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
     @Column(name = "COM_CONTENT",nullable = false,length = 500)
     private String content;
 
-    @CreatedDate
-    @Column(name = "COM_CREATED",updatable = false)// 생성일은 업데이트 x
-    private LocalDateTime comCreated;
-
-    @LastModifiedDate
-    @Column(name = "COM_MODIFIED")
-    private LocalDateTime comModified;
 
     public ReplyResponseDto toResponse(){
         return new ReplyResponseDto().builder()
                 .postId(post.getPostId())
                 .nickname(user.getUserName())
-                .comCreated(comCreated)
-                .comModified(comModified)
+                .comCreated(getCreatedAt())
+                .comModified(getModifiedAt())
                 .content(content)
                 .comId(comId)
                 .build();
@@ -56,17 +51,9 @@ public class Reply {
         this.content=content;
     }
 
-//    @PrePersist
-//    public void generateComId() {
-//        if (this.comId == null) {
-//            this.comId = "com_" + String.format("%04d", getNextCommentId());
-//        }
-//    }
-//
-//    private static int commentIdCounter = 0;
-//
-//    private synchronized static int getNextCommentId() {
-//        return ++commentIdCounter;
-//    }
+    @PrePersist
+    public void prePersist() {
+        this.comId= IdGenerator.generateCommentId(this.post.getCategory());
+    }
 
 }
