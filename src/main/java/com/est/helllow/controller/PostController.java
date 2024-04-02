@@ -29,16 +29,8 @@ public class PostController {
     }
 
     @PostMapping("api/posts")
-    public ResponseEntity<PostResponseDto> addPost(@RequestBody PostRequestDto request) {
-        Post newPost = postService.save(request);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(newPost.toResponse());
-    }
-
-    @PostMapping("api/upload/post")
-    public ResponseEntity<PostResponseDto> uploadPost(@RequestPart(value = "postRequest") PostRequestDto request,
+    public ResponseEntity<PostResponseDto> addPost(@RequestPart(value = "postRequest") PostRequestDto request,
                                                       @RequestPart(value = "img", required = false) MultipartFile file){
-        //파일이 있을 경우
         try{
             String imgUrl = s3Service.uploadImg(file);
             Post newPost = postService.savePost(request,imgUrl);
@@ -47,44 +39,6 @@ public class PostController {
         } catch(IOException e){
             return null;
         }
-    }
-
-    //form-data 각자 따로 입력
-    @PostMapping("api/posts2")
-    public String addPostImg(@RequestPart("file") MultipartFile file,
-                             @RequestPart("title") String title,
-                             @RequestPart("content") String content,
-                             @RequestPart("category") String category) throws IOException {
-        String bucketName = "hell-low";
-        String key = file.getOriginalFilename();
-        InputStream inputStream = file.getInputStream();
-        ObjectMetadata metadata = new ObjectMetadata();
-
-        s3Service.uploadFile(bucketName, key, inputStream, metadata);
-
-        String preSignedUrl = s3Service.imageUrl(bucketName, key);
-
-        postService.savePostWithImageUrlAndContent(title, content, category, preSignedUrl);
-
-        return "Upload Successful!";
-    }
-
-    @PostMapping("api/posts3")
-    public String addPost3(@RequestPart(value = "postRequest") PostRequestDto request,
-                           @RequestPart(value = "boardImg", required = false) MultipartFile file) throws IOException {
-        String bucketName = "hell-low";
-        String key = file.getOriginalFilename();
-        InputStream inputStream = file.getInputStream();
-        ObjectMetadata metadata = new ObjectMetadata();
-
-        s3Service.uploadFile(bucketName, key, inputStream, metadata);
-
-        String preSignedUrl = s3Service.imageUrl(bucketName, key);
-
-        postService.savePostWithImageUrlAndContent(request.getPostTitle(), request.getPostContent(), request.getCategory(), preSignedUrl);
-
-        return "Success upload File!!";
-
     }
 
     @GetMapping("api/posts")

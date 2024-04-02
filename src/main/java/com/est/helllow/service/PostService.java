@@ -34,27 +34,9 @@ public class PostService {
         return new PostRes(responsePost,replies);
     }
 
-
-//    public PostService(PostRepository postRepository){
-//        this.postRepository = postRepository;
-//    }
-
-    public Post save(PostRequestDto request){
-        return postRepository.save(request.toEntity());
-    }
-
+    //게시물 저장
     public Post savePost(PostRequestDto request, String imgUrl){
         return postRepository.save(request.toEntity(imgUrl));
-    }
-
-    public void savePostWithImageUrlAndContent(String title, String content, String category,String imageUrl) {
-        Post post = new Post();
-        post.setPostTitle(title);
-        post.setPostContent(content);
-        post.setCategory(category);
-        post.setPostFile(imageUrl);
-
-        postRepository.save(post);
     }
 
     public List<Post> findAll(){

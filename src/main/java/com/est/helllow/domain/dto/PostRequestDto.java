@@ -26,7 +26,6 @@ public class PostRequestDto {
                 .build();
     }
 
-
     public Post toEntity(String imgURL){
         return Post.builder()
                 .category(category)
