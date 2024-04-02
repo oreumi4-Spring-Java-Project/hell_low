@@ -1,6 +1,7 @@
 package com.est.helllow.domain;
 
 import com.est.helllow.domain.dto.ReplyResponseDto;
+import com.est.helllow.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Table(name = "COMMENT")
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,9 +21,8 @@ import java.time.LocalDateTime;
 public class Reply {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COM_ID", updatable = false)
-    private Long comId;
+    private String comId;
 
     @ManyToOne //게시글과 댓글은 다대일 관계
     @JoinColumn(name = "POST_ID", nullable = false)
@@ -56,17 +57,9 @@ public class Reply {
         this.content=content;
     }
 
-//    @PrePersist
-//    public void generateComId() {
-//        if (this.comId == null) {
-//            this.comId = "com_" + String.format("%04d", getNextCommentId());
-//        }
-//    }
-//
-//    private static int commentIdCounter = 0;
-//
-//    private synchronized static int getNextCommentId() {
-//        return ++commentIdCounter;
-//    }
+    @PrePersist
+    public void prePersist() {
+        this.comId= IdGenerator.generateCommentId(this.post.getCategory());
+    }
 
 }

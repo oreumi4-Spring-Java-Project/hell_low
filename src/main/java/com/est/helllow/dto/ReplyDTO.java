@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class ReplyDTO {
-    private Long comId;
+    private String comId;
     private Post post;
     private User user;
     private String content;

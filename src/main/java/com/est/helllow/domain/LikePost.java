@@ -1,5 +1,6 @@
 package com.est.helllow.domain;
 
+import com.est.helllow.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,8 +17,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class LikePost {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String likeId;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID",nullable = false)
@@ -38,5 +38,10 @@ public class LikePost {
     public LikePost(User user, Post post) {
         this.user = user;
         this.post = post;
+    }
+
+    @PrePersist
+    public void prePersist(){
+        this.likeId= IdGenerator.generateLikePostId(this.post.getCategory());
     }
 }

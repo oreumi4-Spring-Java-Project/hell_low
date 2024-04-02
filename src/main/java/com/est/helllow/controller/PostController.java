@@ -50,7 +50,7 @@ public class PostController {
      * @throws
      */
     @GetMapping("api/posts/{postId}")
-    public ResponseEntity<PostRes> getPost(@PathVariable(name = "postId")Long postId){
+    public ResponseEntity<PostRes> getPost(@PathVariable(name = "postId")String postId){
         PostRes postRes = postService.getPost(postId);
         return ResponseEntity.status(HttpStatus.OK).body(postRes);
     }
@@ -68,14 +68,14 @@ public class PostController {
 
 
     @DeleteMapping("/api/posts/{postId}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long postId){
+    public ResponseEntity<Void> deletePost(@PathVariable String postId){
         postService.delete(postId);
 
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/api/posts/{postId}")
-    public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody PostRequestDto request){
+    public ResponseEntity<Post> updatePost(@PathVariable String postId, @RequestBody PostRequestDto request){
         Post updatedPost = postService.update(postId, request);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(updatedPost);

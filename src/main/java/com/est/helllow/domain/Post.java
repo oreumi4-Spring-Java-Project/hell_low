@@ -1,6 +1,7 @@
 package com.est.helllow.domain;
 
 import com.est.helllow.domain.dto.PostResponseDto;
+import com.est.helllow.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,9 +23,8 @@ import java.time.LocalDateTime;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "POST_ID", updatable = false)
-    private Long postId;
+    private String postId;
   
 //    @Id
 //    @GeneratedValue(generator = "uuid2")
@@ -101,6 +101,7 @@ public class Post {
 //    디폴트값 설정
     @PrePersist
     public void prePersist() {
+        this.postId = IdGenerator.generatePostId(this.category);
         this.likeCounts = this.likeCounts == null ? 0 : this.likeCounts;
         this.viewCounts = this.viewCounts == null ? 0 : this.viewCounts;
         this.postFile = this.postFile == null ? "logo.png" : this.postFile;

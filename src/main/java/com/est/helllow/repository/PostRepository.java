@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long>,PostCustomRepository{
+public interface PostRepository extends JpaRepository<Post, String>,PostCustomRepository{
     List<Post> findByUser_userId(Long userId);
 
     Long countAllByUser_userId(Long userId);

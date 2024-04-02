@@ -20,7 +20,7 @@ public class LikePostService {
     private final LikePostRepository likePostRepository;
 
     @Transactional
-    public int likePost(Long postId, Long userId) {
+    public int likePost(String postId, Long userId) {
         User findUser = userRepository.findById(userId).orElseThrow(null);// todo-> 예외처리 예정
         Post findPost = postRepository.findById(postId).orElseThrow(null);// todo-> 예외처리 예정
 
@@ -41,7 +41,7 @@ public class LikePostService {
     }
 
     @Transactional
-    public int unLikePost(Long postId,Long userId){
+    public int unLikePost(String postId,Long userId){
         User findUser = userRepository.findById(userId).orElseThrow(null);// todo-> 예외처리 예정
         Post findPost = postRepository.findById(postId).orElseThrow(null);// todo-> 예외처리 예정
 

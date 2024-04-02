@@ -10,17 +10,17 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class ReplyResponseDto {
-    private Long comId;
+    private String comId;
     private String content;
     private String nickname;
-    private Long postId;
+    private String postId;
     private LocalDateTime comCreated;
     private LocalDateTime comModified;
     @Builder
-    public ReplyResponseDto(Long comId,
+    public ReplyResponseDto(String comId,
                             String content,
                             String nickname,
-                            Long postId,
+                            String postId,
                             LocalDateTime comCreated,
                             LocalDateTime comModified) {
         this.comId = comId;
