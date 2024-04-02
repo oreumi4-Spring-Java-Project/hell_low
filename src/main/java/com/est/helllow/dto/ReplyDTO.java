@@ -25,8 +25,8 @@ public class ReplyDTO {
                 .post(reply.getPost())
                 .user(reply.getUser())
                 .content(reply.getContent())
-                .comCreated(reply.getComCreated())
-                .comModified(reply.getComModified())
+                .comCreated(reply.getCreatedAt())
+                .comModified(reply.getModifiedAt())
                 .build();
 
     }

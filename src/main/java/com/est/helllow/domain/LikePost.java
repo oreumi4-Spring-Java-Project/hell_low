@@ -1,5 +1,6 @@
 package com.est.helllow.domain;
 
+import com.est.helllow.config.BaseTimeEntity;
 import com.est.helllow.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "LIKE_POST") // MYSQL 에서 LIKE가 예약어
 @EntityListeners(AuditingEntityListener.class)
-public class LikePost {
+public class LikePost extends BaseTimeEntity {
     @Id
     private String likeId;
 
@@ -27,13 +28,6 @@ public class LikePost {
     @JoinColumn(name = "POST_ID",nullable = false)
     private Post post;
 
-    @CreatedDate
-    @Column(name = "LIKE_CREATED",updatable = false)
-    private LocalDateTime likeCreated;
-
-    @LastModifiedDate // 필요는 없지만 나중에 공통화 작업 고려
-    @Column(name = "LIKE_MODIFIED")
-    private LocalDateTime likeModified;
 
     public LikePost(User user, Post post) {
         this.user = user;

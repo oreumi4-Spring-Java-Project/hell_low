@@ -26,7 +26,7 @@ public class UserDTO {
 
     public static UserDTO toDTO(User user) {
         return UserDTO.builder()
-                .userCreated(user.getUserCreated())
+                .userCreated(user.getCreatedAt())
                 .userId(user.getUserId())
 //                .userPw(user.getUserPw())
                 .userEmail(user.getUserEmail())
