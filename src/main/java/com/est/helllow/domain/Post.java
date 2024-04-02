@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -41,9 +43,11 @@ public class Post {
     @Column(name = "POST_CONTENT", nullable = false)
     private String postContent;
 
+    @ColumnDefault("0") //디폴트 값 0으로 지정 가능
     @Column(name = "LIKE_COUNTS")
     private Integer likeCounts;
 
+    @ColumnDefault("0")
     @Column(name = "VIEW_COUNTS")
     private Integer viewCounts;
 
@@ -84,7 +88,15 @@ public class Post {
         this.postContent = content;
     }
 
-    //디폴트값 설정
+    public int incLikeCount(){
+        return ++likeCounts;
+    }
+
+    public int decLikeCount(){
+        return --likeCounts;
+    }
+
+//    디폴트값 설정
     @PrePersist
     public void prePersist() {
         this.likeCounts = this.likeCounts == null ? 0 : this.likeCounts;
