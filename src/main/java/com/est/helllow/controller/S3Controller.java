@@ -38,23 +38,23 @@ public class S3Controller {
 //
 //        return "Upload successful!";
 //    }
-
-    @PostMapping("/posts/imgupload")
-    public String addPostImg(@RequestPart("file") MultipartFile file,
-                                           @RequestPart("title") String title,
-                                           @RequestPart("content") String content,
-                                            @RequestPart("category") String category) throws IOException {
-        String bucketName = "hell-low";
-        String key = file.getOriginalFilename();
-        InputStream inputStream = file.getInputStream();
-        ObjectMetadata metadata = new ObjectMetadata();
-
-        s3Service.uploadFile(bucketName, key, inputStream, metadata);
-
-        String preSignedUrl = s3Service.imageUrl(bucketName,key);
-
-        postService.savePostWithImageUrlAndContent(title,content,category,preSignedUrl);
-
-        return "Upload Successful!";
-    }
+//
+//    @PostMapping("/posts/imgupload")
+//    public String addPostImg(@RequestPart("file") MultipartFile file,
+//                                           @RequestPart("title") String title,
+//                                           @RequestPart("content") String content,
+//                                            @RequestPart("category") String category) throws IOException {
+//        String bucketName = "hell-low";
+//        String key = file.getOriginalFilename();
+//        InputStream inputStream = file.getInputStream();
+//        ObjectMetadata metadata = new ObjectMetadata();
+//
+//        s3Service.uploadFile(bucketName, key, inputStream, metadata);
+//
+//        String preSignedUrl = s3Service.imageUrl(bucketName,key);
+//
+//        postService.savePostWithImageUrlAndContent(title,content,category,preSignedUrl);
+//
+//        return "Upload Successful!";
+//    }
 }

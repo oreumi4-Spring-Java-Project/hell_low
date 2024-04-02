@@ -25,4 +25,14 @@ public class PostRequestDto {
                 .content(postContent)
                 .build();
     }
+
+
+    public Post toEntity(String imgURL){
+        return Post.builder()
+                .category(category)
+                .title(postTitle)
+                .content(postContent)
+                .file(imgURL)
+                .build();
+    }
 }

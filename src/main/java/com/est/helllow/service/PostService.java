@@ -43,6 +43,10 @@ public class PostService {
         return postRepository.save(request.toEntity());
     }
 
+    public Post savePost(PostRequestDto request, String imgUrl){
+        return postRepository.save(request.toEntity(imgUrl));
+    }
+
     public void savePostWithImageUrlAndContent(String title, String content, String category,String imageUrl) {
         Post post = new Post();
         post.setPostTitle(title);
