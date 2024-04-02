@@ -31,13 +31,13 @@ public class MyInfoService {
         return myReplyCount;
     }
 
-    public UserDTO updateUser(UserDTO userDTO) {
-        User user = userRepository.findById(userDTO.getUserId()).get();
-        if(userDTO.getUserName() != null)
-            user.setUserName(userDTO.getUserName());
-        if(userDTO.getUserPw() != null)
-            user.setUserPw(userDTO.getUserPw());
-        user = userRepository.save(user);
-        return UserDTO.toDTO(user);
-    }
+//    public UserDTO updateUser(UserDTO userDTO) {
+//        User user = userRepository.findById(userDTO.getUserId()).get();
+//        if(userDTO.getUserName() != null)
+//            user.setUserName(userDTO.getUserName());
+//        if(userDTO.getUserPw() != null)
+//            user.setUserPw(userDTO.getUserPw());
+//        user = userRepository.save(user);
+//        return UserDTO.toDTO(user);
+//    }
 }

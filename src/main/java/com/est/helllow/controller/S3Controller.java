@@ -22,22 +22,22 @@ public class S3Controller {
     @Autowired
     private PostService postService;
 
-    @PostMapping("/upload")
-    public String uploadImage(@ModelAttribute PostRequestDto postRequestDto) throws IOException {
-        String bucketName = "hell-low";
-        String key = postRequestDto.getImageFile().getOriginalFilename();
-        // You can handle the file content in postRequestDto.getImageFile().getInputStream() if needed
-        MultipartFile imageFile = postRequestDto.getImageFile();
-        s3Service.uploadFile(bucketName, key, imageFile.getInputStream(), null);
-
-        // Get the URL of the uploaded image from S3
-        URL preSignedUrl = s3Service.generatePresignedUrl(bucketName, key);
-        System.out.println(preSignedUrl.toString());
-        // Save the post entity with the title, content, and image URL
-        postService.savePostWithImageUrlAndContent(postRequestDto.getPostTitle(), postRequestDto.getPostContent(), "notice", preSignedUrl.toString());
-
-        return "Upload successful!";
-    }
+//    @PostMapping("/upload")
+//    public String uploadImage(@ModelAttribute PostRequestDto postRequestDto) throws IOException {
+//        String bucketName = "hell-low";
+//        String key = postRequestDto.getImageFile().getOriginalFilename();
+//        // You can handle the file content in postRequestDto.getImageFile().getInputStream() if needed
+//        MultipartFile imageFile = postRequestDto.getImageFile();
+//        s3Service.uploadFile(bucketName, key, imageFile.getInputStream(), null);
+//
+//        // Get the URL of the uploaded image from S3
+//        URL preSignedUrl = s3Service.generatePresignedUrl(bucketName, key);
+//        System.out.println(preSignedUrl.toString());
+//        // Save the post entity with the title, content, and image URL
+//        postService.savePostWithImageUrlAndContent(postRequestDto.getPostTitle(), postRequestDto.getPostContent(), "notice", preSignedUrl.toString());
+//
+//        return "Upload successful!";
+//    }
 
     @PostMapping("/posts/imgupload")
     public String addPostImg(@RequestPart("file") MultipartFile file,
