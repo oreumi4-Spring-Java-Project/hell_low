@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class PostRequestDto {
     private String category;
     private String postTitle;
     private String postContent;
 
-    public PostRequestDto(String title, String content){
+    public PostRequestDto(String category, String title, String content){
+        this.category = category;
         this.postTitle = title;
         this.postContent = content;
     }

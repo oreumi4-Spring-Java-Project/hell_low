@@ -20,6 +20,16 @@ public class PostService {
         return postRepository.save(request.toEntity());
     }
 
+    public void savePostWithImageUrlAndContent(String title, String content, String category,String imageUrl) {
+        Post post = new Post();
+        post.setPostTitle(title);
+        post.setPostContent(content);
+        post.setCategory(category);
+        post.setPostFile(imageUrl);
+
+        postRepository.save(post);
+    }
+
     public List<Post> findAll(){
         return postRepository.findAll();
     }

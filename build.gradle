@@ -8,7 +8,7 @@ group = 'com.est'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    sourceCompatibility = '21'
+    sourceCompatibility = '17'
 }
 
 configurations {
@@ -32,6 +32,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     //implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation 'com.github.f4b6a3:uuid-creator:5.3.2'
+
+    //S3
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.116' // Or the latest version
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
     compileOnly 'org.projectlombok:lombok'
 
