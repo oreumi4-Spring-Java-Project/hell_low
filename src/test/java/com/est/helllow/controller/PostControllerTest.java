@@ -40,21 +40,21 @@ class PostControllerTest {
     private PostRepository postRepository;
 
     @BeforeEach
-    public void mockMvcSetUp(){
+    public void mockMvcSetUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         postRepository.deleteAll();
     }
 
     @DisplayName("Post 글 추가 성공")
     @Test
-    public void addPost() throws Exception{
+    public void addPost() throws Exception {
         //given
         String url = "/api/post";
 
         String category = "category";
         String title = "title";
         String content = "contents";
-        PostRequestDto request = new PostRequestDto(category,title, content);
+        PostRequestDto request = new PostRequestDto(category, title, content);
 
         String requestBody = objectMapper.writeValueAsString(request);
 
@@ -102,8 +102,9 @@ class PostControllerTest {
         String category = "notice";
         String title = "title1";
         String content = "content1";
+        String file = "file";
 
-        Post post = postRepository.save(new Post(category,title, content));
+        Post post = postRepository.save(new Post(category, title, content, file));
         Long savedId = post.getPostId();
 
         // when
