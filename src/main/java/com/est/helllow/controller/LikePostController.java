@@ -1,5 +1,7 @@
 package com.est.helllow.controller;
 
+import com.est.helllow.exception.BaseException;
+import com.est.helllow.exception.BaseResponse;
 import com.est.helllow.service.LikePostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +27,14 @@ public class LikePostController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Integer> likePost(@PathVariable(name = "postId") String postId,
+    public BaseResponse likePost(@PathVariable(name = "postId") String postId,
                                              @PathVariable(name = "userId") Long userId) {
-        int likePostCount = likePostService.likePost(postId, userId);
-        return ResponseEntity.ok().body(likePostCount);
+        try {
+            int likePostCount = likePostService.likePost(postId, userId);
+            return new BaseResponse<>(likePostCount);
+        }catch (BaseException exception){
+            return new BaseResponse(exception.getExceptionCode());
+        }
     }
 
     /**
@@ -39,11 +45,14 @@ public class LikePostController {
      * @param userId
      * @return
      */
-
     @DeleteMapping
-    public ResponseEntity<Integer> unLikePost(@PathVariable(name = "postId") String postId,
-                                               @PathVariable(name = "userId") Long userId){
-        int likePostCount = likePostService.unLikePost(postId, userId);
-        return ResponseEntity.ok().body(likePostCount);
+    public BaseResponse unLikePost(@PathVariable(name = "postId") String postId,
+                                   @PathVariable(name = "userId") Long userId){
+        try {
+            int likePostCount = likePostService.unLikePost(postId, userId);
+            return new BaseResponse(likePostCount);
+        }catch (BaseException exception){
+            return new BaseResponse(exception.getExceptionCode());
+        }
     }
 }
