@@ -25,7 +25,9 @@ public class PostService {
     }
 
     public PostRes getPost(String postId){
-        Post findPost = postRepository.findById(postId).orElseThrow(null);
+        Post findPost = postRepository.findById(postId).orElseThrow(RuntimeException::new);
+        findPost.setViewCounts(findPost.getViewCounts() + 1); // count + 1
+        postRepository.save(findPost); // save
         PostResponseDto responsePost = findPost.toResponse();
 
         List<ReplyResponseDto> replies = replyRepository.findByPost_PostId(postId).stream()
