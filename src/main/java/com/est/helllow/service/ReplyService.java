@@ -9,9 +9,12 @@ import com.est.helllow.domain.dto.PostRes;
 import com.est.helllow.domain.dto.PostResponseDto;
 import com.est.helllow.domain.dto.ReplyRequestDto;
 import com.est.helllow.domain.dto.ReplyResponseDto;
+import com.est.helllow.exception.BaseException;
+import com.est.helllow.exception.BaseExceptionCode;
 import com.est.helllow.repository.PostRepository;
 import com.est.helllow.repository.ReplyRepository;
 import com.est.helllow.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,17 +47,17 @@ public class ReplyService {
 //    }
 
     @Transactional
-    public Reply replySave(String postId,Long userId,ReplyRequestDto replyRequestDto){
-    Post post = postRepository.findById(postId).orElseThrow(null); //todo -> 예외처리 예정 (컨트롤러쪽으로 예외전파??)
-    User user = userRepository.findById(userId).orElseThrow(null);//todo -> 예외처리 예정
+    public Reply replySave(String postId,Long userId,ReplyRequestDto replyRequestDto) throws BaseException {
+        Post post = postRepository.findById(postId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_POST));
+        User user = userRepository.findById(userId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_INVALID_USER));
     Reply reply = replyRequestDto.toEntity(post,user);
 
         return replyRepository.save(reply);
     }
 
     @Transactional
-    public String deleteComment(String commentId,Long userId) {
-        Reply findReply = replyRepository.findById(commentId).orElseThrow(null);//todo -> 예외처리 예정
+    public String deleteComment(String commentId,Long userId) throws BaseException {
+        Reply findReply = replyRepository.findById(commentId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_REPLY));
 
         // 예외처리 예정 부분
         // 해당 댓글 작성자 여부 판단
@@ -65,10 +68,11 @@ public class ReplyService {
     }
 
     @Transactional
-    public Reply updateReply(String postId,String commentId,Long userId,ReplyRequestDto replyRequestDto){
-        Post post = postRepository.findById(postId).orElseThrow(null);//todo -> 예외처리 예정
-        User user = userRepository.findById(userId).orElseThrow(null);//todo -> 예외처리 예정
-        Reply reply = replyRepository.findById(commentId).orElseThrow(null);//todo -> 예외처리 예정
+    public Reply updateReply(String postId,String commentId,Long userId,ReplyRequestDto replyRequestDto) throws BaseException {
+        Post post = postRepository.findById(postId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_POST));
+        User user = userRepository.findById(userId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_INVALID_USER));
+        Reply reply = replyRepository.findById(commentId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_REPLY));
+
         validateReply(userId, reply);
 
 
@@ -82,17 +86,14 @@ public class ReplyService {
 
     // 댓글 작성 or 수정 시
     // 댓글 작성자 판단 및 댓글 존재 여부 판단
-    private static void validateReply(Long userId, Reply findReply) {
+    private static void validateReply(Long userId, Reply findReply) throws BaseException {
         if(!findReply.getUser().equals(userId)){
-            log.error("예외 발생");
+            throw new BaseException(BaseExceptionCode.NOT_INVALID_USER);
         }
 
         // 댓글 존재 여부
         if(findReply.getComId()==null){
-            log.error("예외 발생");
+            throw new BaseException(BaseExceptionCode.NOT_EXIST_REPLY);
         }
     }
-
-
-
 }
