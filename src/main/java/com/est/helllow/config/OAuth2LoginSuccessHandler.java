@@ -1,6 +1,7 @@
 package com.est.helllow.config;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -21,13 +22,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-
 @Component
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
-
-	// @Value("${frontend.url}")
-	// private String frontendUrl;
 
 	private final UserInterfaceService userService;
 
@@ -35,49 +32,46 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 		Authentication authentication) throws ServletException, IOException {
 
-		// OAuth2AccessToken
-
 		OAuth2AuthenticationToken oAuth2AuthenticationToken = (OAuth2AuthenticationToken) authentication;
-		System.out.println("token :" + oAuth2AuthenticationToken);
 
-		if("google".equals(oAuth2AuthenticationToken.getAuthorizedClientRegistrationId())){
-			DefaultOAuth2User principal = (DefaultOAuth2User) authentication.getPrincipal(); //Principal 에는 UserDetails 와 OAuth2User 타입만 저장
-
+		if ("kakao".equals(oAuth2AuthenticationToken.getAuthorizedClientRegistrationId())) {
+			DefaultOAuth2User principal = (DefaultOAuth2User) authentication.getPrincipal();
 			Map<String, Object> attributes = principal.getAttributes();
+			Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+			Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
 
-			String email = attributes.getOrDefault("email", "").toString();
-			String name = attributes.getOrDefault("name", "").toString();
-			String picture = attributes.getOrDefault("picture", "").toString();
+			String email = (String) kakaoAccount.get("email");
+			String name = (String) profile.get("nickname");
+			String picture = (String) profile.get("thumbnail_image_url");
 
-			System.out.println("email :" + email);
-			System.out.println("name :"  + name);
-			System.out.println("picture :"  + picture);
-
-			userService.findByuserEmail(email)
-				.ifPresentOrElse(user -> {
-					DefaultOAuth2User newUser = new DefaultOAuth2User(List.of(new SimpleGrantedAuthority(user.getRole().name())),
-						attributes, "name");
-					Authentication securityAuth = new OAuth2AuthenticationToken(newUser, List.of(new SimpleGrantedAuthority(user.getRole().name())),
-						oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
-					SecurityContextHolder.getContext().setAuthentication(securityAuth);
-				}, () -> {
-					User userEntity = new User();
-					userEntity.setRole(UserRole.ROLE_USER);
-					userEntity.setUserEmail(email);
-					userEntity.setUserName(name);
-					userEntity.setSource(RegistrationSource.KaKao);
-					userService.save(userEntity);
-					DefaultOAuth2User newUser = new DefaultOAuth2User(List.of(new SimpleGrantedAuthority(userEntity.getRole().name())),
-						attributes, "name");
-					Authentication securityAuth = new OAuth2AuthenticationToken(newUser, List.of(new SimpleGrantedAuthority(userEntity.getRole().name())),
-						oAuth2AuthenticationToken.getAuthorizedClientRegistrationId());
-					SecurityContextHolder.getContext().setAuthentication(securityAuth);
-				});
-
-			//OAuth2LoginAuthenticationProvider 내부에서는 인가 코드를 전달 받아, Access Token 을 요청
+			userService.findByUserEmail(email)
+				.ifPresentOrElse(user -> registerUser(user, name, picture),
+					() -> registerNewUser(email, name, picture));
 		}
 		this.setAlwaysUseDefaultTargetUrl(true);
 		this.setDefaultTargetUrl("/index.html");
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
+
+	private void registerUser(User user, String name, String picture) {
+	}
+
+	private void registerNewUser(String email, String name, String picture) {
+		User newUser = new User();
+		newUser.setUserName(name);
+		newUser.setUserEmail(email);
+		newUser.setUserImg(picture);
+		newUser.setUserGrade("3대 100");
+		newUser.setRole(UserRole.ROLE_USER);
+		newUser.setSource(RegistrationSource.KaKao);
+
+		userService.save(newUser);
+
+		DefaultOAuth2User oauthUser = new DefaultOAuth2User(
+			Collections.singleton(new SimpleGrantedAuthority(newUser.getRole().name())),
+			Collections.singletonMap("nickname", name), "nickname");
+		Authentication newAuth = new OAuth2AuthenticationToken(oauthUser, oauthUser.getAuthorities(), "kakao");
+		SecurityContextHolder.getContext().setAuthentication(newAuth);
+	}
+
 }

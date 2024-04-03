@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserInterfaceService {
 
 	private final UserRepository userRepository;
 	@Override
-	public Optional<User> findByuserEmail(String userEmail) {
+	public Optional<User> findByUserEmail(String userEmail) {
 		return userRepository.findByuserEmail(userEmail);
 	}
 
