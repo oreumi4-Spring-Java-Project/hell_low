@@ -3,6 +3,8 @@ package com.est.helllow.service;
 import com.est.helllow.domain.Post;
 import com.est.helllow.domain.Reply;
 import com.est.helllow.domain.dto.*;
+import com.est.helllow.exception.BaseException;
+import com.est.helllow.exception.BaseExceptionCode;
 import com.est.helllow.repository.PostRepository;
 import com.est.helllow.repository.ReplyRepository;
 import jakarta.transaction.Transactional;
@@ -53,9 +55,9 @@ public class PostService {
     }
 
     @Transactional
-    public Post update(String id, PostRequestDto request){
+    public Post update(String id, PostRequestDto request) throws BaseException {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found" + id + "post"));
+                .orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
         post.update(request.getPostTitle(), request.getPostContent());
         return post;
     }
