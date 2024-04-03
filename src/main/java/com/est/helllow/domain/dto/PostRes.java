@@ -13,6 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostRes {
-    private Post post;
-    private List<Reply> replies;
+    private PostResponseDto post;
+    private List<ReplyResponseDto> replies;
 }

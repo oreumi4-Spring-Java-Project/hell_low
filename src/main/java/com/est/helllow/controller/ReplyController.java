@@ -35,18 +35,13 @@ public class ReplyController {
 //        return ResponseEntity.ok(post);
 //    }
 
-    @GetMapping("api/post/{postId}")
-    public ResponseEntity<PostRes> getPost(@PathVariable(name = "postId")Long postId){
-        PostRes postRes = replyService.getPost(postId);
-        return ResponseEntity.status(HttpStatus.OK).body(postRes);
-    }
-
-    @GetMapping("{postId}/comments")
-    @ResponseBody
-    public ResponseEntity<List<Reply>> getRepliesByPostId(@PathVariable(name = "postId")Long postId){
-        List<Reply> replies = replyService.getRepliesByPostId(postId);
-        return ResponseEntity.ok(replies);
-    }
+//
+//    @GetMapping("{postId}/comments")
+//    @ResponseBody
+//    public ResponseEntity<List<Reply>> getRepliesByPostId(@PathVariable(name = "postId")Long postId){
+//        List<Reply> replies = replyService.getRepliesByPostId(postId);
+//        return ResponseEntity.ok(replies);
+//    }
 
 
     /**
@@ -60,7 +55,7 @@ public class ReplyController {
 
     @PostMapping("{postId}/{userId}/comments")
     @ResponseBody
-    public ResponseEntity<ReplyResponseDto> replySave(@PathVariable(name = "postId") Long postId,
+    public ResponseEntity<ReplyResponseDto> replySave(@PathVariable(name = "postId") String postId,
                                                       @PathVariable(name = "userId")Long userId,
                                                       @RequestBody ReplyRequestDto replyRequestDto){
         Reply reply = replyService.replySave(postId,userId,replyRequestDto);
@@ -78,7 +73,7 @@ public class ReplyController {
     @DeleteMapping("{postId}/{userId}/comments/{commentId}")
     @ResponseBody
     public ResponseEntity<Void> deleteReply(@PathVariable(name = "userId")Long userId,
-                                            @PathVariable(name = "commentId")Long commentId){
+                                            @PathVariable(name = "commentId")String commentId){
         replyService.deleteComment(commentId,userId);
         return ResponseEntity.ok().build();
     }
@@ -92,9 +87,9 @@ public class ReplyController {
      * @throws
      */
     @PutMapping("{postId}/{userId}/comments/{commentId}")
-    public ResponseEntity<ReplyResponseDto> updateReply(@PathVariable(name = "postId")Long postId,
+    public ResponseEntity<ReplyResponseDto> updateReply(@PathVariable(name = "postId")String postId,
                                                         @PathVariable(name = "userId")Long userId,
-                                                        @PathVariable(name = "commentId")Long commentId,
+                                                        @PathVariable(name = "commentId")String commentId,
                                                         @RequestBody ReplyRequestDto replyRequestDto){
         Reply reply = replyService.updateReply(postId,commentId, userId, replyRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(reply.toResponse());

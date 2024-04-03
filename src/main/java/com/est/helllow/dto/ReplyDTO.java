@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class ReplyDTO {
-    private Long comId;
+    private String comId;
     private Post post;
     private User user;
     private String content;
@@ -25,8 +25,8 @@ public class ReplyDTO {
                 .post(reply.getPost())
                 .user(reply.getUser())
                 .content(reply.getContent())
-                .comCreated(reply.getComCreated())
-                .comModified(reply.getComModified())
+                .comCreated(reply.getCreatedAt())
+                .comModified(reply.getModifiedAt())
                 .build();
 
     }

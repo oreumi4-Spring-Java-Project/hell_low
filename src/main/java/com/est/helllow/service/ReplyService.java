@@ -6,7 +6,9 @@ import com.est.helllow.domain.Reply;
 import com.est.helllow.domain.User;
 //import com.est.helllow.domain.dto.PostRes;
 import com.est.helllow.domain.dto.PostRes;
+import com.est.helllow.domain.dto.PostResponseDto;
 import com.est.helllow.domain.dto.ReplyRequestDto;
+import com.est.helllow.domain.dto.ReplyResponseDto;
 import com.est.helllow.repository.PostRepository;
 import com.est.helllow.repository.ReplyRepository;
 import com.est.helllow.repository.UserRepository;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -35,18 +38,13 @@ public class ReplyService {
 //
 //    }
 //
-    public PostRes getPost(Long postId){
-        Post findPost = postRepository.findById(postId).orElseThrow(null);
-        List<Reply> replies = getRepliesByPostId(postId);
-        return new PostRes(findPost,replies);
-    }
-
-    public List<Reply> getRepliesByPostId(Long postId){
-        return replyRepository.findByPost_PostId(postId);
-    }
+//
+//    public List<Reply> getRepliesByPostId(Long postId){
+//        return replyRepository.findByPost_PostId(postId);
+//    }
 
     @Transactional
-    public Reply replySave(Long postId,Long userId,ReplyRequestDto replyRequestDto){
+    public Reply replySave(String postId,Long userId,ReplyRequestDto replyRequestDto){
     Post post = postRepository.findById(postId).orElseThrow(null); //todo -> 예외처리 예정 (컨트롤러쪽으로 예외전파??)
     User user = userRepository.findById(userId).orElseThrow(null);//todo -> 예외처리 예정
     Reply reply = replyRequestDto.toEntity(post,user);
@@ -55,7 +53,7 @@ public class ReplyService {
     }
 
     @Transactional
-    public Long deleteComment(Long commentId,Long userId) {
+    public String deleteComment(String commentId,Long userId) {
         Reply findReply = replyRepository.findById(commentId).orElseThrow(null);//todo -> 예외처리 예정
 
         // 예외처리 예정 부분
@@ -67,7 +65,7 @@ public class ReplyService {
     }
 
     @Transactional
-    public Reply updateReply(Long postId,Long commentId,Long userId,ReplyRequestDto replyRequestDto){
+    public Reply updateReply(String postId,String commentId,Long userId,ReplyRequestDto replyRequestDto){
         Post post = postRepository.findById(postId).orElseThrow(null);//todo -> 예외처리 예정
         User user = userRepository.findById(userId).orElseThrow(null);//todo -> 예외처리 예정
         Reply reply = replyRepository.findById(commentId).orElseThrow(null);//todo -> 예외처리 예정

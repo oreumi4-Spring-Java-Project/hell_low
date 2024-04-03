@@ -26,14 +26,14 @@ public class UserDTO {
 
     public static UserDTO toDTO(User user) {
         return UserDTO.builder()
-                .userCreated(user.getUserCreated())
+                .userCreated(user.getCreatedAt())
                 .userId(user.getUserId())
-                .userPw(user.getUserPw())
+//                .userPw(user.getUserPw())
                 .userEmail(user.getUserEmail())
                 .userGrade(user.getUserGrade())
                 .userImg(user.getUserImg())
                 .userName(user.getUserName())
-                .userSnsId(user.getUserSnsId())
+//                .userSnsId(user.getUserSnsId())
                 .build();
     }
 }

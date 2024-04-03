@@ -1,19 +1,20 @@
 package com.est.helllow.domain;
 
+import com.est.helllow.config.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
 @Entity
-// @Getter
+@Getter
+@Setter
 @Data
 @Table(name = "users")
-public class User {
+public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="USER_ID", updatable = false)
@@ -39,7 +40,4 @@ public class User {
     @Enumerated(EnumType.STRING)
     private RegistrationSource source;
 
-    @CreatedDate
-    @Column(name = "USER_CREATED")
-    private LocalDateTime userCreated;
 }
