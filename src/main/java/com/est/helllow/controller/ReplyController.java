@@ -6,6 +6,7 @@ import com.est.helllow.domain.Reply;
 import com.est.helllow.domain.dto.PostRes;
 import com.est.helllow.domain.dto.ReplyRequestDto;
 import com.est.helllow.domain.dto.ReplyResponseDto;
+import com.est.helllow.dto.ReplyDTO;
 import com.est.helllow.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -93,6 +94,34 @@ public class ReplyController {
                                                         @RequestBody ReplyRequestDto replyRequestDto){
         Reply reply = replyService.updateReply(postId,commentId, userId, replyRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(reply.toResponse());
+    }
+
+
+    //KMG
+    /**
+     * @author kmg
+     * user가 작성한 reply 개수를 반환하는 API
+     *
+     * @param id
+     * @return  Long
+     */
+    @GetMapping("api.hell-low.com/comment-management/users/{id}/count")
+    public ResponseEntity<Long> myReplyCount(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(replyService.getReplyCountByUserId(id));
+    }
+
+    /**
+     * @author kmg
+     * user가 작성한 reply의 정보를 반환하는 API
+     *
+     * @param id
+     * @return  List<Reply>
+     */
+    @GetMapping("api.hell-low.com/comment-management/users/{id}")
+    public ResponseEntity<List<Reply>> getMyReply(@RequestParam Long id){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(replyService.getMyReplys(id));
     }
 
 }

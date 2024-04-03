@@ -1,17 +1,40 @@
 package com.est.helllow.controller;
 
-import com.est.helllow.domain.User;
-import com.est.helllow.repository.UserRepository;
+import com.est.helllow.dto.UserDTO;
+import com.est.helllow.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public void UserSave(@RequestBody User user){
-        userRepository.save(user);
+    /**
+     * @author kmg
+     * user 정보를 반환하는 API
+     *
+     * @param id
+     * @return  UserDTO
+     */
+    @GetMapping("api.hell-low.com/user-management/users/{id}")
+    public UserDTO myinfo(@PathVariable Long id) {
+        try {
+            return userService.myinfo(id);
+        } catch (Exception e) {
+            return null;
+        }
     }
+
+//    @PutMapping("myinfo/{userId}")
+//    public ResponseDTO updateMyInfo(@PathVariable Long userId, @RequestBody UserDTO userDTO) {
+//        userDTO.setUserId(userId);
+//        UserDTO userDTO1 = myInfoService.updateUser(userDTO);
+//        if(userDTO1 != null)
+//            return new ResponseDTO("success", "update ok");
+//        else
+//            return new ResponseDTO("fail", "update fail");
+//    }
 }

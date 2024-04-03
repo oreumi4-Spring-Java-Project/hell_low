@@ -6,6 +6,7 @@ import com.est.helllow.domain.dto.PostRes;
 import com.est.helllow.domain.dto.PostResponseDto;
 
 import com.est.helllow.domain.dto.PostSearchCondition;
+import com.est.helllow.dto.PostDTO;
 import com.est.helllow.service.PostService;
 import com.est.helllow.service.S3Service;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class PostController {
@@ -34,7 +37,7 @@ public class PostController {
      * @return PostResponseDto : 등록한 post
      * @Exception IoException
      */
-    @PostMapping("api/posts")
+    @PostMapping("api.hell-low.com/post-management/users/{id}/posts")
     public ResponseEntity<PostResponseDto> addPost(@RequestPart(value = "postRequest") PostRequestDto request,
                                                       @RequestPart(value = "img", required = false) MultipartFile file){
         try{
@@ -53,7 +56,7 @@ public class PostController {
      *
      * @return List<PostResponseDto> : 등록된 모든 post
      */
-    @GetMapping("api/posts")
+    @GetMapping("api.hell-low.com/post-management/posts")
     public ResponseEntity<List<PostResponseDto>> findAllPosts() {
         List<PostResponseDto> postList = postService.findAll()
                 .stream().map(PostResponseDto::new)
@@ -68,9 +71,9 @@ public class PostController {
 //     *
 //     * @return PostResponseDto : 특정 postId의 post
 //     */
-//    @GetMapping("api/posts/{postId}")
-//    public ResponseEntity<PostResponseDto> findOnePost(@PathVariable String postId){
-//        PostResponseDto post = postService.findById(postId).toResponse();
+//    @GetMapping("api.hell-low.com/post-management/posts/{id}")
+//    public ResponseEntity<PostResponseDto> findOnePost(@PathVariable String id){
+//        PostResponseDto post = postService.findById(id).toResponse();
 //        return ResponseEntity.status(HttpStatus.OK)
 //                .body(post);
 //    }
@@ -79,12 +82,12 @@ public class PostController {
      * @author cjw
      * 게시물을 삭제하는 API
      *
-     * @param postId
+     * @param id
      * @return void
      */
-    @DeleteMapping("/api/posts/{postId}")
-    public ResponseEntity<Void> deletePost(@PathVariable String postId){
-        postService.delete(postId);
+    @DeleteMapping("api.hell-low.com/post-management/posts/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable String id){
+        postService.delete(id);
 
         return ResponseEntity.ok().build();
     }
@@ -93,12 +96,12 @@ public class PostController {
      * @author cjw
      * 게시물을 수정하는 API
      *
-     * @param postId
+     * @param id
      * @return Post : 수정한 post
      */
-    @PutMapping("/api/posts/{postId}")
-    public ResponseEntity<Post> updatePost(@PathVariable String postId, @RequestBody PostRequestDto request){
-        Post updatedPost = postService.update(postId, request);
+    @PutMapping("api.hell-low.com/post-management/posts/{id}")
+    public ResponseEntity<Post> updatePost(@PathVariable String id, @RequestBody PostRequestDto request){
+        Post updatedPost = postService.update(id, request);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(updatedPost);
     }
@@ -108,12 +111,12 @@ public class PostController {
      * @author lsh
      * 게시물에 해당하는 댓글 리스트 조회 API
      *
-     * @param postId
+     * @param id
      * @return postRes : 검색한 post
      */
-    @GetMapping("api/posts/{postId}")
-    public ResponseEntity<PostRes> getPost(@PathVariable(name = "postId")String postId){
-        PostRes postRes = postService.getPost(postId);
+    @GetMapping("api.hell-low.com/post-management/posts/{id}")
+    public ResponseEntity<PostRes> getPost(@PathVariable(name = "postId")String id){
+        PostRes postRes = postService.getPost(id);
         return ResponseEntity.status(HttpStatus.OK).body(postRes);
     }
 
@@ -124,12 +127,39 @@ public class PostController {
      *
      * @return List<Post> : 검색한 post
      */
-    @GetMapping("api/posts/search")
+    @GetMapping("api.hell-low.com/post-management/posts-search")
     public ResponseEntity<List<Post>> searchPost(@RequestBody PostSearchCondition postSearchCondition) {
         List<Post> posts = postService.searchPost(postSearchCondition);
         return ResponseEntity.status(HttpStatus.OK).body(posts);
     }
 
     //KMG
+    /**
+     * @author kmg
+     * user가 작성한 post 개수를 반환하는 API
+     *
+     * @param id
+     * @return  Long
+     */
+    //분할 필요
+    @GetMapping("api.hell-low.com/post-management/users/{id}/count")
+    public ResponseEntity<Long> myPostCount(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(postService.getPostCountByUserId(id));
+    }
+
+    /**
+     * @author kmg
+     * userId가 일치하는 모든 게시물을 탐색하는 API
+     *
+     * @param id
+     * @return List<Post> : 검색한 post
+     */
+    @GetMapping("api.hell-low.com/post-management/users/{id}")
+    public List<Post> getMyPosts(@RequestParam Long id) {
+        return postService.getMyPosts(id);
+    }
+
+
 
 }
