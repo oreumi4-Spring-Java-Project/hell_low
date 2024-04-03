@@ -11,6 +11,6 @@ public class PostSearchCondition {
 
     @Builder
     public PostSearchCondition(String searchText) {//String title, String writer, String category
-        this.searchText=searchText;
+        this.searchText = searchText;
     }
 }

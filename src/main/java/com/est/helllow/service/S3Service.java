@@ -26,7 +26,7 @@ public class S3Service {
 
     public String uploadImg(MultipartFile file) throws IOException {
         //파일이 없을 경우
-        if(file==null){
+        if (file == null) {
             return null;
         }
         //파일이름이 같을경우 오류 발생 가능 -> 예외 처리 필요
@@ -39,7 +39,7 @@ public class S3Service {
 
         amazonS3.putObject(request);
 
-        return amazonS3.getUrl(bucketName,key).toString();
+        return amazonS3.getUrl(bucketName, key).toString();
     }
 
 }

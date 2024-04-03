@@ -1,15 +1,10 @@
 package com.est.helllow.service;
 
-
 import com.est.helllow.domain.Post;
 import com.est.helllow.domain.Reply;
 import com.est.helllow.domain.User;
 //import com.est.helllow.domain.dto.PostRes;
-import com.est.helllow.domain.dto.PostRes;
-import com.est.helllow.domain.dto.PostResponseDto;
 import com.est.helllow.domain.dto.ReplyRequestDto;
-import com.est.helllow.domain.dto.ReplyResponseDto;
-import com.est.helllow.dto.ReplyDTO;
 import com.est.helllow.repository.PostRepository;
 import com.est.helllow.repository.ReplyRepository;
 import com.est.helllow.repository.UserRepository;
@@ -20,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 @Service
 @RequiredArgsConstructor

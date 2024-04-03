@@ -5,8 +5,6 @@ import com.est.helllow.domain.Reply;
 import com.est.helllow.domain.User;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +13,7 @@ public class ReplyRequestDto {
     private String comId;
     private String content;
 
-        public Reply toEntity(Post post,User user){
+    public Reply toEntity(Post post, User user) {
         return Reply.builder()
                 .content(content)
                 .user(user)

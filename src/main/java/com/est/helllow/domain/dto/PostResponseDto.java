@@ -1,10 +1,7 @@
 package com.est.helllow.domain.dto;
 
 import com.est.helllow.domain.Post;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -22,8 +19,7 @@ public class PostResponseDto {
     private LocalDateTime postCreated;
     private LocalDateTime postModified;
 
-
-    public PostResponseDto(Post post){
+    public PostResponseDto(Post post) {
         this.category = post.getCategory();
         this.postTitle = post.getPostTitle();
         this.postContent = post.getPostContent();

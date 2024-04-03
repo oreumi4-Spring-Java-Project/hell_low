@@ -13,11 +13,10 @@ public class UserController {
     private final UserService userService;
 
     /**
+     * @param id
+     * @return UserDTO
      * @author kmg
      * user 정보를 반환하는 API
-     *
-     * @param id
-     * @return  UserDTO
      */
     @GetMapping("api.hell-low.com/user-management/users/{id}")
     public UserDTO myinfo(@PathVariable Long id) {

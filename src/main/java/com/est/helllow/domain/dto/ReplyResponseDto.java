@@ -5,8 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.xml.stream.events.Comment;
 import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 public class ReplyResponseDto {
@@ -16,6 +16,14 @@ public class ReplyResponseDto {
     private String postId;
     private LocalDateTime comCreated;
     private LocalDateTime comModified;
+
+    public ReplyResponseDto(Reply reply) {
+        this.comId = reply.getComId();
+        this.content = reply.getContent();
+        this.comCreated = reply.getCreatedAt();
+        this.comModified = reply.getModifiedAt();
+    }
+
     @Builder
     public ReplyResponseDto(String comId,
                             String content,
@@ -28,6 +36,6 @@ public class ReplyResponseDto {
         this.nickname = nickname;
         this.postId = postId;
         this.comCreated = comCreated;
-        this.comModified= comModified;
+        this.comModified = comModified;
     }
 }

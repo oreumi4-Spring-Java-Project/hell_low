@@ -20,13 +20,14 @@ public class LikePostController {
      * 게시물 좋아요 API
      * userId 로그인 기눙 구현 시 구조 수정 예정
      * ResDto 어떻게 할지 논의
+     *
      * @param postId
      * @param userId
      * @return
      */
     @PostMapping
     public ResponseEntity<Integer> likePost(@PathVariable(name = "postId") String postId,
-                                             @PathVariable(name = "userId") Long userId) {
+                                            @PathVariable(name = "userId") Long userId) {
         int likePostCount = likePostService.likePost(postId, userId);
         return ResponseEntity.ok().body(likePostCount);
     }
@@ -42,7 +43,7 @@ public class LikePostController {
 
     @DeleteMapping
     public ResponseEntity<Integer> unLikePost(@PathVariable(name = "postId") String postId,
-                                               @PathVariable(name = "userId") Long userId){
+                                              @PathVariable(name = "userId") Long userId) {
         int likePostCount = likePostService.unLikePost(postId, userId);
         return ResponseEntity.ok().body(likePostCount);
     }

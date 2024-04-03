@@ -5,11 +5,8 @@ import com.est.helllow.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
@@ -21,11 +18,11 @@ public class LikePost extends BaseTimeEntity {
     private String likeId;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID",nullable = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "POST_ID",nullable = false)
+    @JoinColumn(name = "POST_ID", nullable = false)
     private Post post;
 
 
@@ -35,7 +32,7 @@ public class LikePost extends BaseTimeEntity {
     }
 
     @PrePersist
-    public void prePersist(){
-        this.likeId= IdGenerator.generateLikePostId(this.post.getCategory());
+    public void prePersist() {
+        this.likeId = IdGenerator.generateLikePostId(this.post.getCategory());
     }
 }

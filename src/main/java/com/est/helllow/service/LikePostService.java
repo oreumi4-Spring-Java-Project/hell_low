@@ -25,35 +25,35 @@ public class LikePostService {
         Post findPost = postRepository.findById(postId).orElseThrow(null);// todo-> 예외처리 예정
 
         // 게시물 존재 여부 체크
-        if(findPost.getPostId()==null){
+        if (findPost.getPostId() == null) {
             log.error("해당 게시물 없음");// todo-> 예외처리 예정
         }
 
         LikePost existLikePost = likePostRepository.findLikePostByPost_PostIdAndUser_UserId(postId, userId);
 
-        if(existLikePost !=null){
+        if (existLikePost != null) {
             log.error("이미 존재하는 게시물 좋아요 있음");// todo-> 예외처리 예정
         }
 
-        LikePost likePost = new LikePost(findUser,findPost);
+        LikePost likePost = new LikePost(findUser, findPost);
         likePostRepository.save(likePost);
         return findPost.incLikeCount();
     }
 
     @Transactional
-    public int unLikePost(String postId,Long userId){
+    public int unLikePost(String postId, Long userId) {
         User findUser = userRepository.findById(userId).orElseThrow(null);// todo-> 예외처리 예정
         Post findPost = postRepository.findById(postId).orElseThrow(null);// todo-> 예외처리 예정
 
         // 게시물 존재 여부 체크
-        if(findPost.getPostId()==null){
+        if (findPost.getPostId() == null) {
             log.error("해당 게시물 없음");// todo-> 예외처리 예정 / try catch 로?
         }
 
         LikePost existLikePost = likePostRepository.findLikePostByPost_PostIdAndUser_UserId(postId, userId);
 
 
-        if(existLikePost ==null){
+        if (existLikePost == null) {
             log.error("존재하는 게시물 좋아요가 없음");// todo-> 예외처리 예정
         }
 

@@ -1,14 +1,8 @@
 package com.est.helllow.dto;
 
-import com.est.helllow.domain.Post;
 import com.est.helllow.domain.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 

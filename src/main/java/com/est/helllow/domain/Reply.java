@@ -5,11 +5,7 @@ import com.est.helllow.domain.dto.ReplyResponseDto;
 import com.est.helllow.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Table(name = "COMMENT")
 @Getter
@@ -29,15 +25,15 @@ public class Reply extends BaseTimeEntity {
     @JoinColumn(name = "POST_ID", nullable = false)
     private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY,targetEntity = User.class) // 사용자와 댓글은 다대일 관계
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class) // 사용자와 댓글은 다대일 관계
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    @Column(name = "COM_CONTENT",nullable = false,length = 500)
+    @Column(name = "COM_CONTENT", nullable = false, length = 500)
     private String content;
 
 
-    public ReplyResponseDto toResponse(){
+    public ReplyResponseDto toResponse() {
         return new ReplyResponseDto().builder()
                 .postId(post.getPostId())
                 .nickname(user.getUserName())
@@ -47,13 +43,14 @@ public class Reply extends BaseTimeEntity {
                 .comId(comId)
                 .build();
     }
-    public void updateReply(String content){
-        this.content=content;
+
+    public void updateReply(String content) {
+        this.content = content;
     }
 
     @PrePersist
     public void prePersist() {
-        this.comId= IdGenerator.generateCommentId(this.post.getCategory());
+        this.comId = IdGenerator.generateCommentId(this.post.getCategory());
     }
 
 }

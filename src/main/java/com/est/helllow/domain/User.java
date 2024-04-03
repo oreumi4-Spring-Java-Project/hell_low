@@ -5,9 +5,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -17,7 +14,7 @@ import java.time.LocalDateTime;
 public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="USER_ID", updatable = false)
+    @Column(name = "USER_ID", updatable = false)
     private Long userId;
 
     @Column(name = "USER_NAME", nullable = false)

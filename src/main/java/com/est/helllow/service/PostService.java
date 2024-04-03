@@ -3,7 +3,6 @@ package com.est.helllow.service;
 import com.est.helllow.domain.Post;
 import com.est.helllow.domain.Reply;
 import com.est.helllow.domain.dto.*;
-import com.est.helllow.dto.PostDTO;
 import com.est.helllow.repository.PostRepository;
 import com.est.helllow.repository.ReplyRepository;
 import jakarta.transaction.Transactional;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

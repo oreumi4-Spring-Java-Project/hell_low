@@ -17,7 +17,7 @@ public class PostRepositoryImpl implements PostCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     public PostRepositoryImpl(EntityManager em) {
-        this.queryFactory =new JPAQueryFactory(em);
+        this.queryFactory = new JPAQueryFactory(em);
     }
 
     @Override
@@ -33,23 +33,24 @@ public class PostRepositoryImpl implements PostCustomRepository {
 
 
     //조건 1 게시물 제목이 포함된 입력
-    private BooleanExpression titleLike(String title){
+    private BooleanExpression titleLike(String title) {
         // 입력받은 title에 공백 제거 후 비교
-        if(StringUtils.hasText(title)){
+        if (StringUtils.hasText(title)) {
             String titleWithoutSpaces = title.replace(" ", "");
             return Expressions.stringTemplate("function('replace',{0},{1},{2})", post.postTitle, " ", "").contains(titleWithoutSpaces);
-        }else {
+        } else {
             return null;
         }
     }
+
     // 조건 2  게시물 카테고리명(전체) 포합된 입력
-    private BooleanExpression categoryEq(String category){
-        return StringUtils.hasText(category) ?post.category.eq(category) : null;
+    private BooleanExpression categoryEq(String category) {
+        return StringUtils.hasText(category) ? post.category.eq(category) : null;
     }
 
     //조건 3 게시물 작성자 이름(전체) 포함된 입력
-    private BooleanExpression writerEq(String writer){
-        return StringUtils.hasText(writer) ?post.user.userName.eq(writer) : null;
+    private BooleanExpression writerEq(String writer) {
+        return StringUtils.hasText(writer) ? post.user.userName.eq(writer) : null;
     }
 
 }
