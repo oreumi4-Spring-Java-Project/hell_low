@@ -2,6 +2,8 @@ package com.est.helllow.service;
 
 import com.est.helllow.domain.User;
 import com.est.helllow.dto.UserDTO;
+import com.est.helllow.exception.BaseException;
+import com.est.helllow.exception.BaseExceptionCode;
 import com.est.helllow.repository.PostRepository;
 import com.est.helllow.repository.ReplyRepository;
 import com.est.helllow.repository.UserRepository;
@@ -17,8 +19,8 @@ public class MyInfoService {
     @Autowired
     ReplyRepository replyRepository;
 
-    public UserDTO myinfo(String userId) throws Exception {
-        User user = userRepository.findById(userId).orElseThrow(() -> new Exception("not found"));
+    public UserDTO myinfo(String userId) throws BaseException {
+        User user = userRepository.findById(userId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_INVALID_USER));
         return UserDTO.toDTO(user);
     }
 

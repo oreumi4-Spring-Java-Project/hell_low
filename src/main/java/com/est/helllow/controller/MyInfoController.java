@@ -2,6 +2,8 @@ package com.est.helllow.controller;
 
 import com.est.helllow.dto.ResponseDTO;
 import com.est.helllow.dto.UserDTO;
+import com.est.helllow.exception.BaseException;
+import com.est.helllow.exception.BaseResponse;
 import com.est.helllow.service.MyInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,22 +17,23 @@ public class MyInfoController {
     MyInfoService myInfoService;
 
     @GetMapping("/myinfo/{userId}")
-    public UserDTO myinfo(@PathVariable String userId) {
+    public BaseResponse myinfo(@PathVariable String userId) {
         try {
-            return myInfoService.myinfo(userId);
-        } catch (Exception e) {
-            return null;
+            UserDTO myinfo = myInfoService.myinfo(userId);
+            return new BaseResponse<>(myinfo);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getExceptionCode());
         }
     }
 
     @GetMapping("/mypostcount/{userId}")
-    public Map<String, Long> mypostcount(@PathVariable String userId) {
+    public BaseResponse mypostcount(@PathVariable String userId) {
         Map<String, Long> map = new HashMap<>();
         Long postCount = myInfoService.getPostCountByUserId(userId);
         Long replyCount = myInfoService.getReplyCountByUserId(userId);
         map.put("postCount", postCount);
         map.put("replyCount", replyCount);
-        return map;
+        return new BaseResponse(map);
     }
 
 //    @PutMapping("myinfo/{userId}")
