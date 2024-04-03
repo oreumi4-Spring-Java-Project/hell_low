@@ -41,6 +41,6 @@ out/
 application.yml
 application.properties
 application-*.yml
-
+application-private.properties
 
 .env
