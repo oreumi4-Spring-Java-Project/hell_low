@@ -7,6 +7,8 @@ import com.est.helllow.domain.dto.PostRes;
 import com.est.helllow.domain.dto.PostResponseDto;
 
 import com.est.helllow.domain.dto.PostSearchCondition;
+import com.est.helllow.exception.BaseException;
+import com.est.helllow.exception.BaseResponse;
 import com.est.helllow.service.PostService;
 import com.est.helllow.service.S3Service;
 import org.springframework.http.HttpStatus;
@@ -82,7 +84,6 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(posts);
     }
 
-
     @DeleteMapping("/api/posts/{postId}")
     public ResponseEntity<Void> deletePost(@PathVariable String postId){
         postService.delete(postId);
@@ -91,10 +92,14 @@ public class PostController {
     }
 
     @PutMapping("/api/posts/{postId}")
-    public ResponseEntity<Post> updatePost(@PathVariable String postId, @RequestBody PostRequestDto request){
-        Post updatedPost = postService.update(postId, request);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(updatedPost);
+    public BaseResponse updatePost(@PathVariable String postId, @RequestBody PostRequestDto request){
+        try{
+            Post updatedPost = postService.update(postId, request);
+            PostResponseDto response = updatedPost.toResponse();
+            return new BaseResponse<>(response);
+        }catch (BaseException exception){
+            return new BaseResponse(exception);
+        }
     }
 
 }
