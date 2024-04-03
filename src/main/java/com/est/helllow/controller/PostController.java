@@ -8,6 +8,7 @@ import com.est.helllow.domain.dto.PostResponseDto;
 
 import com.est.helllow.domain.dto.PostSearchCondition;
 import com.est.helllow.exception.BaseException;
+import com.est.helllow.exception.BaseExceptionCode;
 import com.est.helllow.exception.BaseResponse;
 import com.est.helllow.service.PostService;
 import com.est.helllow.service.S3Service;
@@ -30,26 +31,30 @@ public class PostController {
         this.s3Service = s3Service;
     }
 
+    /**
+     * 게시물 이미지 업로드 api
+     */
     @PostMapping("api/posts")
-    public ResponseEntity<PostResponseDto> addPost(@RequestPart(value = "postRequest") PostRequestDto request,
-                                                      @RequestPart(value = "img", required = false) MultipartFile file){
+    public BaseResponse addPost(@RequestPart(value = "postRequest") PostRequestDto request,
+                                                      @RequestPart(value = "img", required = false) MultipartFile file) {
         try{
             String imgUrl = s3Service.uploadImg(file);
             Post newPost = postService.savePost(request,imgUrl);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(newPost.toResponse());
-        } catch(IOException e){
-            return null;
+            return new BaseResponse<>(newPost);
+        } catch(IOException exception){
+            return new BaseResponse(BaseExceptionCode.NOT_EXIST_IMG);
         }
     }
 
+    /**
+     * 상세 게시물 페이지 조회 API
+     */
     @GetMapping("api/posts")
-    public ResponseEntity<List<PostResponseDto>> findAllPosts() {
+    public BaseResponse findAllPosts() {
         List<PostResponseDto> postList = postService.findAll()
                 .stream().map(PostResponseDto::new)
                 .toList();
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(postList);
+        return new BaseResponse(postList);
     }
 
 //    @GetMapping("api/posts/{postId}")
@@ -67,9 +72,13 @@ public class PostController {
      * @throws
      */
     @GetMapping("api/posts/{postId}")
-    public ResponseEntity<PostRes> getPost(@PathVariable(name = "postId")String postId){
-        PostRes postRes = postService.getPost(postId);
-        return ResponseEntity.status(HttpStatus.OK).body(postRes);
+    public BaseResponse getPost(@PathVariable(name = "postId")String postId){
+        try{
+            PostRes postRes = postService.getPost(postId);
+            return new BaseResponse<>(postRes);
+        }catch (BaseException exception){
+            return new BaseResponse<>(exception.getExceptionCode());
+        }
     }
 
     /**
@@ -79,18 +88,34 @@ public class PostController {
      * @return
      */
     @GetMapping("api/posts/search")
-    public ResponseEntity<List<Post>> searchPost(@RequestBody PostSearchCondition postSearchCondition) {
+    public BaseResponse searchPost(@RequestBody PostSearchCondition postSearchCondition) {
         List<Post> posts = postService.searchPost(postSearchCondition);
-        return ResponseEntity.status(HttpStatus.OK).body(posts);
+        return new BaseResponse<>(posts);
     }
 
+    /**
+     * 게시물에 삭제 API
+     * @param postId
+     * @return
+     * @throws
+     */
     @DeleteMapping("/api/posts/{postId}")
-    public ResponseEntity<Void> deletePost(@PathVariable String postId){
-        postService.delete(postId);
-
-        return ResponseEntity.ok().build();
+    public BaseResponse deletePost(@PathVariable String postId){
+        try {
+            postService.delete(postId);
+            return new BaseResponse<>(postId+ "번 게시물이 삭제되었습니다");
+        }catch (BaseException exception){
+            return new BaseResponse<>(exception.getExceptionCode());
+        }
     }
 
+    /**
+     * 게시물 수정 API
+     *
+     * @param postId
+     * @return
+     * @throws
+     */
     @PutMapping("/api/posts/{postId}")
     public BaseResponse updatePost(@PathVariable String postId, @RequestBody PostRequestDto request){
         try{
@@ -98,8 +123,7 @@ public class PostController {
             PostResponseDto response = updatedPost.toResponse();
             return new BaseResponse<>(response);
         }catch (BaseException exception){
-            return new BaseResponse(exception);
+            return new BaseResponse<>(exception.getExceptionCode());
         }
     }
-
 }

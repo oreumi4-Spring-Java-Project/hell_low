@@ -22,6 +22,7 @@ public enum BaseExceptionCode {
 
     //[POST]
     NOT_EXIST_POST(HttpStatus.NOT_FOUND.value(), "존재하지 않는 게시물입니다"),
+    NOT_EXIST_IMG(HttpStatus.BAD_REQUEST.value(), "존재하지 않는 이미지입니다"),
     //[REPLY]
     NOT_EXIST_REPLY(HttpStatus.NOT_FOUND.value(), "존재하지 않는 댓글입니다."),
     //[LIKE]
