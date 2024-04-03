@@ -28,7 +28,7 @@ public class LikePostController {
      */
     @PostMapping
     public BaseResponse likePost(@PathVariable(name = "postId") String postId,
-                                             @PathVariable(name = "userId") Long userId) {
+                                             @PathVariable(name = "userId") String userId) {
         try {
             int likePostCount = likePostService.likePost(postId, userId);
             return new BaseResponse<>(likePostCount);
@@ -47,7 +47,7 @@ public class LikePostController {
      */
     @DeleteMapping
     public BaseResponse unLikePost(@PathVariable(name = "postId") String postId,
-                                   @PathVariable(name = "userId") Long userId){
+                                   @PathVariable(name = "userId") String userId){
         try {
             int likePostCount = likePostService.unLikePost(postId, userId);
             return new BaseResponse(likePostCount);

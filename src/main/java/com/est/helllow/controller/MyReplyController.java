@@ -16,7 +16,7 @@ public class MyReplyController {
 
     @GetMapping("/myreplys")
     public List<ReplyDTO> getMyReplys(@RequestParam String userId) {
-        return myreplyService.getMyReplys(Long.parseLong(userId));
+        return myreplyService.getMyReplys(userId);
     }
 
 }

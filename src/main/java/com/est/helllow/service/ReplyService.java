@@ -47,7 +47,7 @@ public class ReplyService {
 //    }
 
     @Transactional
-    public Reply replySave(String postId,Long userId,ReplyRequestDto replyRequestDto) throws BaseException {
+    public Reply replySave(String postId,String userId,ReplyRequestDto replyRequestDto) throws BaseException {
         Post post = postRepository.findById(postId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_POST));
         User user = userRepository.findById(userId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_INVALID_USER));
     Reply reply = replyRequestDto.toEntity(post,user);
@@ -56,7 +56,7 @@ public class ReplyService {
     }
 
     @Transactional
-    public String deleteComment(String commentId,Long userId) throws BaseException {
+    public String deleteComment(String commentId,String userId) throws BaseException {
         Reply findReply = replyRepository.findById(commentId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_REPLY));
 
         // 예외처리 예정 부분
@@ -68,7 +68,7 @@ public class ReplyService {
     }
 
     @Transactional
-    public Reply updateReply(String postId,String commentId,Long userId,ReplyRequestDto replyRequestDto) throws BaseException {
+    public Reply updateReply(String postId,String commentId,String userId,ReplyRequestDto replyRequestDto) throws BaseException {
         Post post = postRepository.findById(postId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_POST));
         User user = userRepository.findById(userId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_INVALID_USER));
         Reply reply = replyRepository.findById(commentId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_REPLY));
@@ -86,7 +86,7 @@ public class ReplyService {
 
     // 댓글 작성 or 수정 시
     // 댓글 작성자 판단 및 댓글 존재 여부 판단
-    private static void validateReply(Long userId, Reply findReply) throws BaseException {
+    private static void validateReply(String userId, Reply findReply) throws BaseException {
         if(!findReply.getUser().equals(userId)){
             throw new BaseException(BaseExceptionCode.NOT_INVALID_USER);
         }

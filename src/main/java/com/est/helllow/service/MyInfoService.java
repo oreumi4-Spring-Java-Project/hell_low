@@ -17,16 +17,16 @@ public class MyInfoService {
     @Autowired
     ReplyRepository replyRepository;
 
-    public UserDTO myinfo(Long userId) throws Exception {
+    public UserDTO myinfo(String userId) throws Exception {
         User user = userRepository.findById(userId).orElseThrow(() -> new Exception("not found"));
         return UserDTO.toDTO(user);
     }
 
-    public Long getPostCountByUserId(Long userId) {
+    public Long getPostCountByUserId(String userId) {
         Long postCount = postRepository.countAllByUser_userId(userId);
         return postCount;
     }
-    public Long getReplyCountByUserId(Long userId) {
+    public Long getReplyCountByUserId(String userId) {
         Long myReplyCount = replyRepository.countAllByUser_userId(userId);
         return myReplyCount;
     }

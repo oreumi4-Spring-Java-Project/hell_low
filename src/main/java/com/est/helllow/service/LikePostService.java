@@ -22,7 +22,7 @@ public class LikePostService {
     private final LikePostRepository likePostRepository;
 
     @Transactional
-    public int likePost(String postId, Long userId) throws BaseException {
+    public int likePost(String postId, String userId) throws BaseException {
         User findUser = userRepository.findById(userId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_INVALID_USER));
         Post findPost = postRepository.findById(postId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_POST));
 
@@ -43,7 +43,7 @@ public class LikePostService {
     }
 
     @Transactional
-    public int unLikePost(String postId,Long userId) throws BaseException {
+    public int unLikePost(String postId,String userId) throws BaseException {
         User findUser = userRepository.findById(userId).orElseThrow(null);// todo-> 예외처리 예정
         Post findPost = postRepository.findById(postId).orElseThrow(null);// todo-> 예외처리 예정
 

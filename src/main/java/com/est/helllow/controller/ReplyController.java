@@ -57,7 +57,7 @@ public class ReplyController {
     @PostMapping("{postId}/{userId}/comments")
     @ResponseBody
     public BaseResponse replySave(@PathVariable(name = "postId") String postId,
-                                                      @PathVariable(name = "userId")Long userId,
+                                                      @PathVariable(name = "userId")String userId,
                                                       @RequestBody ReplyRequestDto replyRequestDto){
         try {
             Reply reply = replyService.replySave(postId,userId,replyRequestDto);
@@ -77,7 +77,7 @@ public class ReplyController {
      */
     @DeleteMapping("{postId}/{userId}/comments/{commentId}")
     @ResponseBody
-    public BaseResponse deleteReply(@PathVariable(name = "userId")Long userId,
+    public BaseResponse deleteReply(@PathVariable(name = "userId")String userId,
                                             @PathVariable(name = "commentId")String commentId){
         try{
             String deletedComment = replyService.deleteComment(commentId, userId);
@@ -97,7 +97,7 @@ public class ReplyController {
      */
     @PutMapping("{postId}/{userId}/comments/{commentId}")
     public BaseResponse updateReply(@PathVariable(name = "postId")String postId,
-                                                        @PathVariable(name = "userId")Long userId,
+                                                        @PathVariable(name = "userId")String userId,
                                                         @PathVariable(name = "commentId")String commentId,
                                                         @RequestBody ReplyRequestDto replyRequestDto){
         try {

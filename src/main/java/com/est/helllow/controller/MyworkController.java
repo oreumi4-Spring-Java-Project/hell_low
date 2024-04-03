@@ -17,6 +17,6 @@ public class MyworkController {
 
     @GetMapping("/myposts")
     public List<PostDTO> getMyPosts(@RequestParam String userId) {
-        return myworkService.getMyPosts(Long.parseLong(userId));
+        return myworkService.getMyPosts(userId);
     }
 }

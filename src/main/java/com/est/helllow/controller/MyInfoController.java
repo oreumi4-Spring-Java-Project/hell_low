@@ -15,7 +15,7 @@ public class MyInfoController {
     MyInfoService myInfoService;
 
     @GetMapping("/myinfo/{userId}")
-    public UserDTO myinfo(@PathVariable Long userId) {
+    public UserDTO myinfo(@PathVariable String userId) {
         try {
             return myInfoService.myinfo(userId);
         } catch (Exception e) {
@@ -24,7 +24,7 @@ public class MyInfoController {
     }
 
     @GetMapping("/mypostcount/{userId}")
-    public Map<String, Long> mypostcount(@PathVariable Long userId) {
+    public Map<String, Long> mypostcount(@PathVariable String userId) {
         Map<String, Long> map = new HashMap<>();
         Long postCount = myInfoService.getPostCountByUserId(userId);
         Long replyCount = myInfoService.getReplyCountByUserId(userId);

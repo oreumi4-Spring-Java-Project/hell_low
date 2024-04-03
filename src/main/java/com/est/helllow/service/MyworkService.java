@@ -14,7 +14,7 @@ public class MyworkService {
     @Autowired
     PostRepository postRepository;
 
-    public List<PostDTO> getMyPosts (Long userId) {
+    public List<PostDTO> getMyPosts (String userId) {
         List<Post> postList = postRepository.findByUser_userId(userId);
         List<PostDTO> postDTOList = postList.stream().map((post) -> PostDTO.toDTO(post)).collect(Collectors.toList());
         return postDTOList;

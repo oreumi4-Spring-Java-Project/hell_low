@@ -1,6 +1,7 @@
 package com.est.helllow.domain;
 
 import com.est.helllow.config.BaseTimeEntity;
+import com.est.helllow.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -16,9 +17,8 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 public class User extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="USER_ID", updatable = false)
-    private Long userId;
+    private String userId;
 
     @Column(name = "USER_NAME", nullable = false)
     private String userName;
@@ -39,5 +39,10 @@ public class User extends BaseTimeEntity {
     @Column(name = "SOURCE")
     @Enumerated(EnumType.STRING)
     private RegistrationSource source;
+
+    @PrePersist
+    public void prePersist(){
+        this.userId= IdGenerator.generateUserId();
+    }
 
 }

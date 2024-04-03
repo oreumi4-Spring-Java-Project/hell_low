@@ -3,6 +3,11 @@ package com.est.helllow.utils;
 import java.util.UUID;
 
 public class IdGenerator {
+
+    public static String generateUserId(){
+        return "user_"+UUID.randomUUID().toString();
+    }
+
     public static String generatePostId(String category) {
         return "post_"+category+"_"+ UUID.randomUUID().toString();
     }
