@@ -16,6 +16,14 @@ public class ReplyResponseDto {
     private String postId;
     private LocalDateTime comCreated;
     private LocalDateTime comModified;
+
+    public ReplyResponseDto(Reply reply) {
+        this.comId = reply.getComId();
+        this.content = reply.getContent();
+        this.comCreated = reply.getCreatedAt();
+        this.comModified = reply.getModifiedAt();
+    }
+
     @Builder
     public ReplyResponseDto(String comId,
                             String content,

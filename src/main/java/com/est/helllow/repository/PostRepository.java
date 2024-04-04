@@ -8,8 +8,6 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, String>,PostCustomRepository{
-    List<Post> findByUser_userId(String userId);
-
+    List<Post> findAllByUser_UserId(String userId);
     Long countAllByUser_userId(String userId);
-
 }

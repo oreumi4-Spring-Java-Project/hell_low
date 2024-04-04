@@ -6,9 +6,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -17,7 +14,7 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 public class User extends BaseTimeEntity {
     @Id
-    @Column(name="USER_ID", updatable = false)
+    @Column(name = "USER_ID", updatable = false)
     private String userId;
 
     @Column(name = "USER_NAME", nullable = false)
@@ -41,8 +38,8 @@ public class User extends BaseTimeEntity {
     private RegistrationSource source;
 
     @PrePersist
-    public void prePersist(){
-        this.userId= IdGenerator.generateUserId();
+    public void prePersist() {
+        this.userId = IdGenerator.generateUserId();
     }
 
 }

@@ -1,6 +1,5 @@
 package com.est.helllow.controller;
 
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.est.helllow.domain.Post;
 import com.est.helllow.domain.dto.PostRequestDto;
 import com.est.helllow.domain.dto.PostRes;
@@ -12,13 +11,10 @@ import com.est.helllow.exception.BaseExceptionCode;
 import com.est.helllow.exception.BaseResponse;
 import com.est.helllow.service.PostService;
 import com.est.helllow.service.S3Service;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -66,46 +62,9 @@ public class PostController {
         return new BaseResponse(postList);
     }
 
-//    @GetMapping("api/posts/{postId}")
-//    public ResponseEntity<PostResponseDto> findOnePost(@PathVariable Long postId){
-//        PostResponseDto post = postService.findById(postId).toResponse();
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .body(post);
-//    }
-
-    /**
-     * 게시물에 해당하는 댓글 리스트 조회 API
-     *
-     * @param postId
-     * @return
-     * @throws
-     */
-    @GetMapping("api.hell-low.com/post-management/posts/{id}")
-    public BaseResponse getPost(@PathVariable(name = "id") String postId) {
-        try {
-            PostRes postRes = postService.getPost(postId);
-            return new BaseResponse<>(postRes);
-        } catch (BaseException exception) {
-            return new BaseResponse<>(exception.getExceptionCode());
-        }
-    }
-
-    /**
-     * 게시물 검색 기능 API
-     * 테스트 위한 구조 , 이후 변경 예정
-     *
-     * @return
-     */
-    @GetMapping("api.hell-low.com/post-management/posts-search")
-    public BaseResponse searchPost(@RequestBody PostSearchCondition postSearchCondition) {
-        List<Post> posts = postService.searchPost(postSearchCondition);
-        return new BaseResponse<>(posts);
-    }
-
     /**
      * postId가 일치하는 게시물을 삭제하는 API
      *
-     * @param postId
      * @return void
      * @author cjw
      */
@@ -122,12 +81,11 @@ public class PostController {
     /**
      * 게시물을 수정하는 API
      *
-     * @param postId
      * @return Post : 수정한 post
      * @author cjw
      */
     @PutMapping("api.hell-low.com/post-management/posts/{id}")
-    public BaseResponse updatePost(@PathVariable String postId, @RequestBody PostRequestDto request) {
+    public BaseResponse updatePost(@PathVariable(name = "id") String postId, @RequestBody PostRequestDto request) {
         try {
             Post updatedPost = postService.update(postId, request);
             PostResponseDto response = updatedPost.toResponse();
@@ -151,6 +109,81 @@ public class PostController {
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getExceptionCode());
         }
+    }
+
+//    /**
+//     * @author cjw
+//     * 특정 게시물을 반환하는 API
+//     *
+//     * @return PostResponseDto : 특정 postId의 post
+//     */
+//    @GetMapping("api.hell-low.com/post-management/posts/{id}")
+//    public ResponseEntity<PostResponseDto> findOnePost(@PathVariable String id){
+//        PostResponseDto post = postService.findById(id).toResponse();
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(post);
+//    }
+
+    //LSH
+
+    /**
+     * 게시물에 해당하는 댓글 리스트 조회 API
+     *
+     * @param postId
+     * @return postRes : 검색한 post
+     * @author lsh
+     */
+    @GetMapping("api.hell-low.com/post-management/posts/{id}")
+    public BaseResponse getPost(@PathVariable(name = "id") String postId) {
+        try {
+            PostRes postRes = postService.getPost(postId);
+            return new BaseResponse<>(postRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getExceptionCode());
+        }
+    }
+
+    /**
+     * 게시물 검색 기능 API
+     *
+     * @return List<Post> : 검색한 post
+     * @author lsh
+     * 테스트 위한 구조 , 이후 변경 예정
+     */
+    @GetMapping("api.hell-low.com/post-management/posts-search")
+    public BaseResponse searchPost(@RequestBody PostSearchCondition postSearchCondition) {
+        List<Post> posts = postService.searchPost(postSearchCondition);
+        return new BaseResponse<>(posts);
+    }
+
+    //KMG
+
+    /**
+     * user가 작성한 post 개수를 반환하는 API
+     *
+     * @param userId
+     * @return Long
+     * @author kmg
+     */
+    @GetMapping("api.hell-low.com/post-management/users/{id}/count")
+    public BaseResponse mypostcount(@PathVariable(name = "id") String userId) {
+        Long postCount = postService.getPostCountByUserId(userId);
+        return new BaseResponse(postCount);
+    }
+
+    /**
+     * userId가 일치하는 모든 게시물을 탐색하는 API
+     *
+     * @param userId
+     * @return List<Post> : 검색한 post
+     * @author kmg
+     */
+    @GetMapping("api.hell-low.com/post-management/users/{id}")
+    public BaseResponse getMyPosts(@PathVariable(name = "id") String userId) {
+        List<PostResponseDto> postList = postService.getMyPosts(userId)
+                .stream().map(PostResponseDto::new)
+                .toList();
+        return new BaseResponse<>(postList);
     }
 
 }

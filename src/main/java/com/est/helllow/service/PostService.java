@@ -24,13 +24,14 @@ public class PostService {
     private final UserRepository userRepository;
 
 
-    // 게시물 검색
-    public List<Post> searchPost(PostSearchCondition postSearchCondition){
+    // 게시물 검색 - CJW
+    public List<Post> searchPost(PostSearchCondition postSearchCondition) {
         return postRepository.search(postSearchCondition);
     }
 
+    //PostRes 형태로 모든 게시물 탐색 - CJW
     public PostRes getPost(String postId) throws BaseException {
-        Post findPost = postRepository.findById(postId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_POST));
+        Post findPost = postRepository.findById(postId).orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
         findPost.setViewCounts(findPost.getViewCounts() + 1); // count + 1
         postRepository.save(findPost); // save
         PostResponseDto responsePost = findPost.toResponse();
@@ -38,32 +39,36 @@ public class PostService {
         List<ReplyResponseDto> replies = replyRepository.findByPost_PostId(postId).stream()
                 .map(Reply::toResponse)
                 .toList();
-        return new PostRes(responsePost,replies);
+        return new PostRes(responsePost, replies);
     }
 
-    //게시물 저장
-    public Post savePost(String userId, PostRequestDto request, String imgUrl) throws BaseException{
-        User user = userRepository.findById(userId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_INVALID_USER));
+    //게시물 저장 - CJW
+    public Post savePost(String userId, PostRequestDto request, String imgUrl) throws BaseException {
+        User user = userRepository.findById(userId).orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_INVALID_USER));
         return postRepository.save(request.toEntity(user, imgUrl));
     }
 
-    public List<Post> findAll(){
+    //모든 게시물 탐색 - CJW
+    public List<Post> findAll() {
         return postRepository.findAll();
     }
 
+    //특정 postId의 게시물 탐색 - CJW
     public Post findById(String id) throws BaseException {
         return postRepository.findById(id)
-                .orElseThrow(()-> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
+                .orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
     }
 
+    //게시물 삭제 - CJW
     public void delete(String id) throws BaseException {
         // 게시물 존재 여부 체크
-        postRepository.findById(id).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_POST));
+        postRepository.findById(id).orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
         // 게시물 작성자 여부(이후 로그인 로직 반영 시 추가)
 
         postRepository.deleteById(id);
     }
 
+    //게시물 수정 - CJW
     @Transactional
     public Post update(String id, PostRequestDto request) throws BaseException {
         Post post = postRepository.findById(id)
@@ -72,8 +77,20 @@ public class PostService {
         return post;
     }
 
+    //게시물 개수 - CJW
     public Long getPostCount() throws BaseException {
         Long postCount = postRepository.count();
         return postCount;
+    }
+
+    //user가 작성한 post 개수 - KMG
+    public Long getPostCountByUserId(String userId) {
+        Long postCount = postRepository.countAllByUser_userId(userId);
+        return postCount;
+    }
+
+    //user가 작성한 post 정보 - KMG
+    public List<Post> getMyPosts(String userId) {
+        return postRepository.findAllByUser_UserId(userId);
     }
 }
