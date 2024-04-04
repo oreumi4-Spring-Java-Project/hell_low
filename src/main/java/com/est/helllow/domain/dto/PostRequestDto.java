@@ -1,6 +1,7 @@
 package com.est.helllow.domain.dto;
 
 import com.est.helllow.domain.Post;
+import com.est.helllow.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,12 +27,13 @@ public class PostRequestDto {
                 .build();
     }
 
-    public Post toEntity(String imgURL){
+    public Post toEntity(User user, String imgURL){
         return Post.builder()
                 .category(category)
                 .title(postTitle)
                 .content(postContent)
                 .file(imgURL)
+                .user(user)
                 .build();
     }
 }
