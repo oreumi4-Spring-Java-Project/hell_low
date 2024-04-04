@@ -2,11 +2,13 @@ package com.est.helllow.service;
 
 import com.est.helllow.domain.Post;
 import com.est.helllow.domain.Reply;
+import com.est.helllow.domain.User;
 import com.est.helllow.domain.dto.*;
 import com.est.helllow.exception.BaseException;
 import com.est.helllow.exception.BaseExceptionCode;
 import com.est.helllow.repository.PostRepository;
 import com.est.helllow.repository.ReplyRepository;
+import com.est.helllow.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final ReplyRepository replyRepository;
+    private final UserRepository userRepository;
 
 
     // 게시물 검색
@@ -39,8 +42,9 @@ public class PostService {
     }
 
     //게시물 저장
-    public Post savePost(PostRequestDto request, String imgUrl){
-        return postRepository.save(request.toEntity(imgUrl));
+    public Post savePost(String userId, PostRequestDto request, String imgUrl) throws BaseException{
+        User user = userRepository.findById(userId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_INVALID_USER));
+        return postRepository.save(request.toEntity(user, imgUrl));
     }
 
     public List<Post> findAll(){
@@ -66,5 +70,10 @@ public class PostService {
                 .orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
         post.update(request.getPostTitle(), request.getPostContent());
         return post;
+    }
+
+    public Long getPostCount() throws BaseException {
+        Long postCount = postRepository.count();
+        return postCount;
     }
 }

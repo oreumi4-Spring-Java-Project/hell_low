@@ -32,24 +32,33 @@ public class PostController {
     }
 
     /**
-     * 게시물 이미지 업로드 api
+     * 게시물을 등록하는 API
+     *
+     * @return PostResponseDto : 등록한 post
+     * @author cjw
      */
-    @PostMapping("api/posts")
-    public BaseResponse addPost(@RequestPart(value = "postRequest") PostRequestDto request,
-                                                      @RequestPart(value = "img", required = false) MultipartFile file) {
-        try{
+    @PostMapping("api.hell-low.com/post-management/users/{id}")
+    public BaseResponse addPost(@PathVariable(name = "id") String userId,
+                                @RequestPart(value = "postRequest") PostRequestDto request,
+                                @RequestPart(value = "img", required = false) MultipartFile file) {
+        try {
             String imgUrl = s3Service.uploadImg(file);
-            Post newPost = postService.savePost(request,imgUrl);
+            Post newPost = postService.savePost(userId, request, imgUrl);
             return new BaseResponse<>(newPost);
-        } catch(IOException exception){
+        } catch (IOException exception) {
             return new BaseResponse(BaseExceptionCode.NOT_EXIST_IMG);
+        } catch (BaseException exception) {
+            return new BaseResponse(exception.getExceptionCode());
         }
     }
 
     /**
-     * 상세 게시물 페이지 조회 API
+     * 전체 게시물을 반환하는 API
+     *
+     * @return List<PostResponseDto> : 등록된 모든 post
+     * @author cjw
      */
-    @GetMapping("api/posts")
+    @GetMapping("api.hell-low.com/post-management/posts")
     public BaseResponse findAllPosts() {
         List<PostResponseDto> postList = postService.findAll()
                 .stream().map(PostResponseDto::new)
@@ -71,12 +80,12 @@ public class PostController {
      * @return
      * @throws
      */
-    @GetMapping("api/posts/{postId}")
-    public BaseResponse getPost(@PathVariable(name = "postId")String postId){
-        try{
+    @GetMapping("api.hell-low.com/post-management/posts/{id}")
+    public BaseResponse getPost(@PathVariable(name = "id") String postId) {
+        try {
             PostRes postRes = postService.getPost(postId);
             return new BaseResponse<>(postRes);
-        }catch (BaseException exception){
+        } catch (BaseException exception) {
             return new BaseResponse<>(exception.getExceptionCode());
         }
     }
@@ -87,43 +96,61 @@ public class PostController {
      *
      * @return
      */
-    @GetMapping("api/posts/search")
+    @GetMapping("api.hell-low.com/post-management/posts-search")
     public BaseResponse searchPost(@RequestBody PostSearchCondition postSearchCondition) {
         List<Post> posts = postService.searchPost(postSearchCondition);
         return new BaseResponse<>(posts);
     }
 
     /**
-     * 게시물에 삭제 API
+     * postId가 일치하는 게시물을 삭제하는 API
+     *
      * @param postId
-     * @return
-     * @throws
+     * @return void
+     * @author cjw
      */
-    @DeleteMapping("/api/posts/{postId}")
-    public BaseResponse deletePost(@PathVariable String postId){
+    @DeleteMapping("api.hell-low.com/post-management/posts/{id}")
+    public BaseResponse deletePost(@PathVariable(name = "id") String postId) {
         try {
             postService.delete(postId);
-            return new BaseResponse<>(postId+ "번 게시물이 삭제되었습니다");
-        }catch (BaseException exception){
+            return new BaseResponse<>(postId + "번 게시물이 삭제되었습니다");
+        } catch (BaseException exception) {
             return new BaseResponse<>(exception.getExceptionCode());
         }
     }
 
     /**
-     * 게시물 수정 API
+     * 게시물을 수정하는 API
      *
      * @param postId
-     * @return
-     * @throws
+     * @return Post : 수정한 post
+     * @author cjw
      */
-    @PutMapping("/api/posts/{postId}")
-    public BaseResponse updatePost(@PathVariable String postId, @RequestBody PostRequestDto request){
-        try{
+    @PutMapping("api.hell-low.com/post-management/posts/{id}")
+    public BaseResponse updatePost(@PathVariable String postId, @RequestBody PostRequestDto request) {
+        try {
             Post updatedPost = postService.update(postId, request);
             PostResponseDto response = updatedPost.toResponse();
             return new BaseResponse<>(response);
-        }catch (BaseException exception){
+        } catch (BaseException exception) {
             return new BaseResponse<>(exception.getExceptionCode());
         }
     }
+
+    /**
+     * 게시물개수를 반환하는 API
+     *
+     * @return Long
+     * @author cjw
+     */
+    @GetMapping("api.hell-low.com/post-management/count")
+    public BaseResponse countPosts() {
+        try {
+            Long postCount = postService.getPostCount();
+            return new BaseResponse<>(postCount);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getExceptionCode());
+        }
+    }
+
 }
