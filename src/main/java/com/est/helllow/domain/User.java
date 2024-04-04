@@ -1,6 +1,7 @@
 package com.est.helllow.domain;
 
 import com.est.helllow.config.BaseTimeEntity;
+import com.est.helllow.domain.enum_class.UserRole;
 import com.est.helllow.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Data;

@@ -2,7 +2,6 @@ package com.est.helllow.config;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.Authentication;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.est.helllow.domain.RegistrationSource;
 import com.est.helllow.domain.User;
-import com.est.helllow.domain.UserRole;
+import com.est.helllow.domain.enum_class.UserRole;
 import com.est.helllow.service.UserInterfaceService;
 
 import jakarta.servlet.ServletException;
