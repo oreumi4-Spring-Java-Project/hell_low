@@ -52,7 +52,7 @@ public class PostController {
     /**
      * 상세 게시물 페이지 조회 API
      */
-    @GetMapping("api/posts")
+    @GetMapping("api.hell-low.com/post-management/posts")
     public BaseResponse findAllPosts() {
         List<PostResponseDto> postList = postService.findAll()
                 .stream().map(PostResponseDto::new)
@@ -74,8 +74,8 @@ public class PostController {
      * @return
      * @throws
      */
-    @GetMapping("api/posts/{postId}")
-    public BaseResponse getPost(@PathVariable(name = "postId") String postId) {
+    @GetMapping("api.hell-low.com/post-management/posts/{id}")
+    public BaseResponse getPost(@PathVariable(name = "id") String postId) {
         try {
             PostRes postRes = postService.getPost(postId);
             return new BaseResponse<>(postRes);
@@ -90,7 +90,7 @@ public class PostController {
      *
      * @return
      */
-    @GetMapping("api/posts/search")
+    @GetMapping("api.hell-low.com/post-management/posts-search")
     public BaseResponse searchPost(@RequestBody PostSearchCondition postSearchCondition) {
         List<Post> posts = postService.searchPost(postSearchCondition);
         return new BaseResponse<>(posts);
@@ -103,8 +103,8 @@ public class PostController {
      * @return
      * @throws
      */
-    @DeleteMapping("/api/posts/{postId}")
-    public BaseResponse deletePost(@PathVariable String postId) {
+    @DeleteMapping("api.hell-low.com/post-management/posts/{id}")
+    public BaseResponse deletePost(@PathVariable(name = "id") String postId) {
         try {
             postService.delete(postId);
             return new BaseResponse<>(postId + "번 게시물이 삭제되었습니다");
@@ -120,7 +120,7 @@ public class PostController {
      * @return
      * @throws
      */
-    @PutMapping("/api/posts/{postId}")
+    @PutMapping("api.hell-low.com/post-management/posts/{id}")
     public BaseResponse updatePost(@PathVariable String postId, @RequestBody PostRequestDto request) {
         try {
             Post updatedPost = postService.update(postId, request);
