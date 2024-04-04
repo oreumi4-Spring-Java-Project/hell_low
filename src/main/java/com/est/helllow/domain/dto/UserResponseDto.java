@@ -1,20 +1,14 @@
-package com.est.helllow.dto;
+package com.est.helllow.domain.dto;
 
-import com.est.helllow.domain.Post;
 import com.est.helllow.domain.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class UserDTO {
+public class UserResponseDto {
     private String userId;
     private String userEmail;
     private String userPw;
@@ -24,8 +18,8 @@ public class UserDTO {
     private String userImg;
     private LocalDateTime userCreated;
 
-    public static UserDTO toDTO(User user) {
-        return UserDTO.builder()
+    public static UserResponseDto toDTO(User user) {
+        return UserResponseDto.builder()
                 .userCreated(user.getCreatedAt())
                 .userId(user.getUserId())
 //                .userPw(user.getUserPw())

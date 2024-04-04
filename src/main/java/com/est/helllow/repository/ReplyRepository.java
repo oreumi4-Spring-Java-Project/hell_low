@@ -10,8 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ReplyRepository extends JpaRepository<Reply, String> {
-      List<Reply> findByUser_userId(String userId);
+      List<Reply> findAllByUser_UserId(String userId);
       List<Reply> findByPost_PostId(String postId);
-
       Long countAllByUser_userId(String userId);
 }

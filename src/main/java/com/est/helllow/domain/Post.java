@@ -8,13 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -45,7 +40,7 @@ public class Post extends BaseTimeEntity {
 
     @Column(name = "POST_TITLE", nullable = false)
     private String postTitle;
-  
+
     @Column(name = "POST_CONTENT", nullable = false)
     private String postContent;
 
@@ -71,16 +66,16 @@ public class Post extends BaseTimeEntity {
                 .build();
     }
 
-    public void update(String title, String content){
+    public void update(String title, String content) {
         this.postTitle = title;
         this.postContent = content;
     }
 
-    public int incLikeCount(){
+    public int incLikeCount() {
         return ++likeCounts;
     }
 
-    public int decLikeCount(){
+    public int decLikeCount() {
         return --likeCounts;
     }
 

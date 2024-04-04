@@ -1,25 +1,20 @@
 package com.est.helllow.controller;
 
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.est.helllow.domain.Post;
 import com.est.helllow.domain.dto.PostRequestDto;
 import com.est.helllow.domain.dto.PostRes;
 import com.est.helllow.domain.dto.PostResponseDto;
 
 import com.est.helllow.domain.dto.PostSearchCondition;
-import com.est.helllow.dto.PostDTO;
 import com.est.helllow.exception.BaseException;
 import com.est.helllow.exception.BaseExceptionCode;
 import com.est.helllow.exception.BaseResponse;
 import com.est.helllow.service.PostService;
 import com.est.helllow.service.S3Service;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -99,6 +94,7 @@ public class PostController {
             return new BaseResponse<>(exception.getExceptionCode());
         }
     }
+
     /**
      * 게시물개수를 반환하는 API
      *
@@ -129,13 +125,13 @@ public class PostController {
 //    }
 
     //LSH
+
     /**
      * 게시물에 해당하는 댓글 리스트 조회 API
      *
      * @param postId
      * @return postRes : 검색한 post
      * @author lsh
-
      */
     @GetMapping("api.hell-low.com/post-management/posts/{id}")
     public BaseResponse getPost(@PathVariable(name = "id") String postId) {
@@ -163,6 +159,19 @@ public class PostController {
     //KMG
 
     /**
+     * user가 작성한 post 개수를 반환하는 API
+     *
+     * @param userId
+     * @return Long
+     * @author kmg
+     */
+    @GetMapping("api.hell-low.com/post-management/users/{id}/count")
+    public BaseResponse mypostcount(@PathVariable(name = "id") String userId) {
+        Long postCount = postService.getPostCountByUserId(userId);
+        return new BaseResponse(postCount);
+    }
+
+    /**
      * userId가 일치하는 모든 게시물을 탐색하는 API
      *
      * @param userId
@@ -171,8 +180,10 @@ public class PostController {
      */
     @GetMapping("api.hell-low.com/post-management/users/{id}")
     public BaseResponse getMyPosts(@PathVariable(name = "id") String userId) {
-        List<PostDTO> myPosts = postService.getMyPosts(userId);
-        return new BaseResponse<>(myPosts);
+        List<PostResponseDto> postList = postService.getMyPosts(userId)
+                .stream().map(PostResponseDto::new)
+                .toList();
+        return new BaseResponse<>(postList);
     }
 
 }

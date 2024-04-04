@@ -4,7 +4,6 @@ import com.est.helllow.domain.Post;
 import com.est.helllow.domain.Reply;
 import com.est.helllow.domain.User;
 import com.est.helllow.domain.dto.*;
-import com.est.helllow.dto.PostDTO;
 import com.est.helllow.exception.BaseException;
 import com.est.helllow.exception.BaseExceptionCode;
 import com.est.helllow.repository.PostRepository;
@@ -15,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,13 +25,13 @@ public class PostService {
 
 
     // 게시물 검색 - CJW
-    public List<Post> searchPost(PostSearchCondition postSearchCondition){
+    public List<Post> searchPost(PostSearchCondition postSearchCondition) {
         return postRepository.search(postSearchCondition);
     }
 
     //PostRes 형태로 모든 게시물 탐색 - CJW
     public PostRes getPost(String postId) throws BaseException {
-        Post findPost = postRepository.findById(postId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_POST));
+        Post findPost = postRepository.findById(postId).orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
         findPost.setViewCounts(findPost.getViewCounts() + 1); // count + 1
         postRepository.save(findPost); // save
         PostResponseDto responsePost = findPost.toResponse();
@@ -41,30 +39,30 @@ public class PostService {
         List<ReplyResponseDto> replies = replyRepository.findByPost_PostId(postId).stream()
                 .map(Reply::toResponse)
                 .toList();
-        return new PostRes(responsePost,replies);
+        return new PostRes(responsePost, replies);
     }
 
     //게시물 저장 - CJW
-    public Post savePost(String userId, PostRequestDto request, String imgUrl) throws BaseException{
-        User user = userRepository.findById(userId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_INVALID_USER));
+    public Post savePost(String userId, PostRequestDto request, String imgUrl) throws BaseException {
+        User user = userRepository.findById(userId).orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_INVALID_USER));
         return postRepository.save(request.toEntity(user, imgUrl));
     }
 
     //모든 게시물 탐색 - CJW
-    public List<Post> findAll(){
+    public List<Post> findAll() {
         return postRepository.findAll();
     }
 
     //특정 postId의 게시물 탐색 - CJW
     public Post findById(String id) throws BaseException {
         return postRepository.findById(id)
-                .orElseThrow(()-> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
+                .orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
     }
 
     //게시물 삭제 - CJW
     public void delete(String id) throws BaseException {
         // 게시물 존재 여부 체크
-        postRepository.findById(id).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_POST));
+        postRepository.findById(id).orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
         // 게시물 작성자 여부(이후 로그인 로직 반영 시 추가)
 
         postRepository.deleteById(id);
@@ -85,10 +83,14 @@ public class PostService {
         return postCount;
     }
 
+    //user가 작성한 post 개수 - KMG
+    public Long getPostCountByUserId(String userId) {
+        Long postCount = postRepository.countAllByUser_userId(userId);
+        return postCount;
+    }
+
     //user가 작성한 post 정보 - KMG
-    public List<PostDTO> getMyPosts (String userId) {
-        List<Post> postList = postRepository.findByUser_userId(userId);
-        List<PostDTO> postDTOList = postList.stream().map((post) -> PostDTO.toDTO(post)).collect(Collectors.toList());
-        return postDTOList;
+    public List<Post> getMyPosts(String userId) {
+        return postRepository.findAllByUser_UserId(userId);
     }
 }
