@@ -26,8 +26,8 @@ public class PostService {
         return postRepository.search(postSearchCondition);
     }
 
-    public PostRes getPost(String postId){
-        Post findPost = postRepository.findById(postId).orElseThrow(RuntimeException::new);
+    public PostRes getPost(String postId) throws BaseException {
+        Post findPost = postRepository.findById(postId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_POST));
         findPost.setViewCounts(findPost.getViewCounts() + 1); // count + 1
         postRepository.save(findPost); // save
         PostResponseDto responsePost = findPost.toResponse();
@@ -47,12 +47,16 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public Post findById(String id){
+    public Post findById(String id) throws BaseException {
         return postRepository.findById(id)
-                .orElseThrow(()-> new IllegalArgumentException("not found" + id + "post"));
+                .orElseThrow(()-> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
     }
 
-    public void delete(String id){
+    public void delete(String id) throws BaseException {
+        // 게시물 존재 여부 체크
+        postRepository.findById(id).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_POST));
+        // 게시물 작성자 여부(이후 로그인 로직 반영 시 추가)
+
         postRepository.deleteById(id);
     }
 

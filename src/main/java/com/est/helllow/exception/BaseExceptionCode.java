@@ -19,9 +19,10 @@ public enum BaseExceptionCode {
     //[LOGIN]
 
     //[USER]
-
+    NOT_INVALID_USER(HttpStatus.UNAUTHORIZED.value(), "유효하지 않은 유저 정보입니다"),
     //[POST]
     NOT_EXIST_POST(HttpStatus.NOT_FOUND.value(), "존재하지 않는 게시물입니다"),
+    NOT_EXIST_IMG(HttpStatus.BAD_REQUEST.value(), "존재하지 않는 이미지입니다"),
     //[REPLY]
     NOT_EXIST_REPLY(HttpStatus.NOT_FOUND.value(), "존재하지 않는 댓글입니다."),
     //[LIKE]

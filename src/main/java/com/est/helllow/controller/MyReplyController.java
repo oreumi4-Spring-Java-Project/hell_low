@@ -1,6 +1,7 @@
 package com.est.helllow.controller;
 
 import com.est.helllow.dto.ReplyDTO;
+import com.est.helllow.exception.BaseResponse;
 import com.est.helllow.service.MyreplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +16,9 @@ public class MyReplyController {
     MyreplyService myreplyService;
 
     @GetMapping("/myreplys")
-    public List<ReplyDTO> getMyReplys(@RequestParam String userId) {
-        return myreplyService.getMyReplys(Long.parseLong(userId));
+    public BaseResponse getMyReplys(@RequestParam String userId) {
+        List<ReplyDTO> myReplys = myreplyService.getMyReplys(userId);
+        return new BaseResponse<>(myReplys);
     }
 
 }

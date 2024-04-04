@@ -6,6 +6,8 @@ import com.est.helllow.domain.Reply;
 import com.est.helllow.domain.dto.PostRes;
 import com.est.helllow.domain.dto.ReplyRequestDto;
 import com.est.helllow.domain.dto.ReplyResponseDto;
+import com.est.helllow.exception.BaseException;
+import com.est.helllow.exception.BaseResponse;
 import com.est.helllow.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -52,15 +54,18 @@ public class ReplyController {
      * @return
      * @throws
      */
-
     @PostMapping("{postId}/{userId}/comments")
     @ResponseBody
-    public ResponseEntity<ReplyResponseDto> replySave(@PathVariable(name = "postId") String postId,
-                                                      @PathVariable(name = "userId")Long userId,
+    public BaseResponse replySave(@PathVariable(name = "postId") String postId,
+                                                      @PathVariable(name = "userId")String userId,
                                                       @RequestBody ReplyRequestDto replyRequestDto){
-        Reply reply = replyService.replySave(postId,userId,replyRequestDto);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(reply.toResponse());
+        try {
+            Reply reply = replyService.replySave(postId,userId,replyRequestDto);
+            ReplyResponseDto response = reply.toResponse();
+            return new BaseResponse<>(response);
+        }catch (BaseException exception){
+            return new BaseResponse(exception.getExceptionCode());
+        }
     }
 
     /**
@@ -72,10 +77,14 @@ public class ReplyController {
      */
     @DeleteMapping("{postId}/{userId}/comments/{commentId}")
     @ResponseBody
-    public ResponseEntity<Void> deleteReply(@PathVariable(name = "userId")Long userId,
+    public BaseResponse deleteReply(@PathVariable(name = "userId")String userId,
                                             @PathVariable(name = "commentId")String commentId){
-        replyService.deleteComment(commentId,userId);
-        return ResponseEntity.ok().build();
+        try{
+            String deletedComment = replyService.deleteComment(commentId, userId);
+            return new BaseResponse<>(deletedComment+" 댓글이 삭제 되었습니다.");
+        }catch (BaseException exception){
+            return new BaseResponse<>(exception.getExceptionCode());
+        }
     }
 
     /**
@@ -87,12 +96,17 @@ public class ReplyController {
      * @throws
      */
     @PutMapping("{postId}/{userId}/comments/{commentId}")
-    public ResponseEntity<ReplyResponseDto> updateReply(@PathVariable(name = "postId")String postId,
-                                                        @PathVariable(name = "userId")Long userId,
+    public BaseResponse updateReply(@PathVariable(name = "postId")String postId,
+                                                        @PathVariable(name = "userId")String userId,
                                                         @PathVariable(name = "commentId")String commentId,
                                                         @RequestBody ReplyRequestDto replyRequestDto){
-        Reply reply = replyService.updateReply(postId,commentId, userId, replyRequestDto);
-        return ResponseEntity.status(HttpStatus.OK).body(reply.toResponse());
+        try {
+            Reply reply = replyService.updateReply(postId,commentId, userId, replyRequestDto);
+            ReplyResponseDto response = reply.toResponse();
+            return new BaseResponse<>(response);
+        }catch (BaseException exception){
+            return new BaseResponse<>(exception.getExceptionCode());
+        }
     }
 
 }

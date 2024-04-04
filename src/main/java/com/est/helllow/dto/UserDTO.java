@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 public class UserDTO {
-    private Long userId;
+    private String userId;
     private String userEmail;
     private String userPw;
     private String userSnsId;

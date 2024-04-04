@@ -1,6 +1,7 @@
 package com.est.helllow.exception;
 
 import com.est.helllow.exception.BaseExceptionCode;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,7 +9,9 @@ import static com.est.helllow.exception.BaseExceptionCode.SUCCESS;
 
 @Getter
 @AllArgsConstructor
+@JsonPropertyOrder({"code","message","result"}) // 직렬화 시 json 속성 순서 지정
 public class BaseResponse<T> {
+
     private final int code;
     private final String message;
     private T result;

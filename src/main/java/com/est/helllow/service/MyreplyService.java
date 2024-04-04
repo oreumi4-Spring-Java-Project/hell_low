@@ -14,7 +14,7 @@ public class MyreplyService {
     @Autowired
     ReplyRepository replyRepository;
 
-    public List<ReplyDTO> getMyReplys (Long userId) {
+    public List<ReplyDTO> getMyReplys (String userId) {
         List<Reply> replyList = replyRepository.findByUser_userId(userId);
         List<ReplyDTO> replyDTOList = replyList.stream().map((reply) -> ReplyDTO.toDTO(reply)).collect(Collectors.toList());
         return replyDTOList;
