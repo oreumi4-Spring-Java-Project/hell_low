@@ -36,13 +36,23 @@ public class MyInfoController {
         return new BaseResponse(map);
     }
 
-//    @PutMapping("myinfo/{userId}")
-//    public ResponseDTO updateMyInfo(@PathVariable Long userId, @RequestBody UserDTO userDTO) {
-//        userDTO.setUserId(userId);
-//        UserDTO userDTO1 = myInfoService.updateUser(userDTO);
-//        if(userDTO1 != null)
-//            return new ResponseDTO("success", "update ok");
-//        else
-//            return new ResponseDTO("fail", "update fail");
-//    }
+    @PutMapping("myinfo/{userId}")
+    public ResponseDTO updateMyInfo(@PathVariable String userId, @RequestBody UserDTO userDTO) {
+        userDTO.setUserId(userId);
+        UserDTO userDTO1 = myInfoService.updateUser(userDTO);
+        if(userDTO1 != null)
+            return new ResponseDTO("success", "update ok");
+        else
+            return new ResponseDTO("fail", "update fail");
+    }
+
+    @DeleteMapping("myinfo/{userId}")
+    public ResponseDTO deleteMyInfo(@PathVariable String userId) {
+        boolean result = myInfoService.deleteUser(userId);
+        if(result) {
+            return new ResponseDTO("success", "delete ok");
+        } else {
+            return new ResponseDTO("fail", "delete fail");
+        }
+    }
 }

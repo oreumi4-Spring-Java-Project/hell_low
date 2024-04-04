@@ -10,6 +10,8 @@ import com.est.helllow.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class MyInfoService {
     @Autowired
@@ -33,13 +35,28 @@ public class MyInfoService {
         return myReplyCount;
     }
 
-//    public UserDTO updateUser(UserDTO userDTO) {
-//        User user = userRepository.findById(userDTO.getUserId()).get();
-//        if(userDTO.getUserName() != null)
-//            user.setUserName(userDTO.getUserName());
-//        if(userDTO.getUserPw() != null)
-//            user.setUserPw(userDTO.getUserPw());
-//        user = userRepository.save(user);
-//        return UserDTO.toDTO(user);
-//    }
+
+    //작성자 - 김민규, 유저 정보 수정 코드
+    public UserDTO updateUser(UserDTO userDTO) {
+        User user = userRepository.findById(userDTO.getUserId()).orElse(null);
+        if (user != null) {
+            if(userDTO.getUserName() != null) {
+                user.setUserName(userDTO.getUserName());
+            }
+            user = userRepository.save(user);
+            return UserDTO.toDTO(user);
+        }
+        return null;
+    }
+
+    //작성자 - 김민규, 유저 정보 삭제 코드
+    public boolean deleteUser(String userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isPresent()) {
+            userRepository.delete(user.get());
+            return true;
+        } else {
+            return false; // 사용자를 찾을 수 없는 경우, false 반환
+        }
+    }
 }
