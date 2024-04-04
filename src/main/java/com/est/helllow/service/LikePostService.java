@@ -44,8 +44,7 @@ public class LikePostService {
 
     @Transactional
     public int unLikePost(String postId,String userId) throws BaseException {
-        User findUser = userRepository.findById(userId).orElseThrow(null);// todo-> 예외처리 예정
-        Post findPost = postRepository.findById(postId).orElseThrow(null);// todo-> 예외처리 예정
+        Post findPost = postRepository.findById(postId).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_EXIST_POST));
 
         // 게시물 존재 여부 체크
         if(findPost.getPostId()==null){

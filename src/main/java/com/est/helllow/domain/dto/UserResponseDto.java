@@ -1,6 +1,7 @@
 package com.est.helllow.domain.dto;
 
 import com.est.helllow.domain.User;
+import com.est.helllow.domain.enum_class.UserGrade;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,7 +15,7 @@ public class UserResponseDto {
     private String userPw;
     private String userSnsId;
     private String userName;
-    private String userGrade;
+    private UserGrade userGrade;
     private String userImg;
     private LocalDateTime userCreated;
 

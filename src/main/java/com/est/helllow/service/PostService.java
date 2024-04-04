@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,8 +26,11 @@ public class PostService {
 
 
     // 게시물 검색 - CJW
-    public List<Post> searchPost(PostSearchCondition postSearchCondition) {
-        return postRepository.search(postSearchCondition);
+    public List<PostResponseDto> searchPost(PostSearchCondition postSearchCondition) {
+        return postRepository.search(postSearchCondition)
+                .stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     //PostRes 형태로 모든 게시물 탐색 - CJW

@@ -79,10 +79,9 @@ public class ReplyService {
     }
 
 
-    // 댓글 작성 or 수정 시
     // 댓글 작성자 판단 및 댓글 존재 여부 판단
     private static void validateReply(String userId, Reply findReply) throws BaseException {
-        if (!findReply.getUser().equals(userId)) {
+        if (!findReply.getUser().getUserId().equals(userId)) {
             throw new BaseException(BaseExceptionCode.NOT_INVALID_USER);
         }
 

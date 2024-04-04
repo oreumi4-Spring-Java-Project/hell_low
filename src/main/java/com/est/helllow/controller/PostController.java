@@ -151,8 +151,8 @@ public class PostController {
      * 테스트 위한 구조 , 이후 변경 예정
      */
     @GetMapping("api.hell-low.com/post-management/posts-search")
-    public BaseResponse searchPost(@RequestBody PostSearchCondition postSearchCondition) {
-        List<Post> posts = postService.searchPost(postSearchCondition);
+    public BaseResponse searchPost(@RequestParam(value = "searchText") PostSearchCondition postSearchCondition) {
+        List<PostResponseDto> posts = postService.searchPost(postSearchCondition);
         return new BaseResponse<>(posts);
     }
 
