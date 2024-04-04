@@ -23,15 +23,18 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class Post extends BaseTimeEntity {
 
+    @Builder
+    public Post(String category, String title, String content, String file, User user) {
+        this.category = category;
+        this.postTitle = title;
+        this.postContent = content;
+        this.postFile = file;
+        this.user = user;
+    }
+
     @Id
     @Column(name = "POST_ID", updatable = false)
     private String postId;
-  
-//    @Id
-//    @GeneratedValue(generator = "uuid2")
-//    @GenericGenerator(name="uuid2", strategy = "uuid2")
-//    @Column(name = "post_id", columnDefinition = "BINARY(16)", nullable = false)
-//    private UUID post_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
@@ -54,15 +57,6 @@ public class Post extends BaseTimeEntity {
 
     @Column(name = "POST_FILE")
     private String postFile;
-
-    
-    @Builder
-    public Post(String category, String title, String content, String file) {
-        this.category = category;
-        this.postTitle = title;
-        this.postContent = content;
-        this.postFile = file;
-    }
 
     public PostResponseDto toResponse() {
         return PostResponseDto.builder()
@@ -90,14 +84,12 @@ public class Post extends BaseTimeEntity {
         return --likeCounts;
     }
 
-
+    //Default Setting
     @PrePersist
     public void prePersist() {
         this.postId = IdGenerator.generatePostId(this.category);
-        //    디폴트값 설정
         this.likeCounts = this.likeCounts == null ? 0 : this.likeCounts;
         this.viewCounts = this.viewCounts == null ? 0 : this.viewCounts;
-        //this.postFile = this.postFile == null ? "logo.png" : this.postFile;
     }
 
 }

@@ -34,15 +34,18 @@ public class PostController {
     /**
      * 게시물 이미지 업로드 api
      */
-    @PostMapping("api/posts")
-    public BaseResponse addPost(@RequestPart(value = "postRequest") PostRequestDto request,
-                                                      @RequestPart(value = "img", required = false) MultipartFile file) {
-        try{
+    @PostMapping("api.hell-low.com/post-management/users/{id}")
+    public BaseResponse addPost(@PathVariable(name = "id") String userId,
+                                @RequestPart(value = "postRequest") PostRequestDto request,
+                                @RequestPart(value = "img", required = false) MultipartFile file) {
+        try {
             String imgUrl = s3Service.uploadImg(file);
-            Post newPost = postService.savePost(request,imgUrl);
+            Post newPost = postService.savePost(userId, request, imgUrl);
             return new BaseResponse<>(newPost);
-        } catch(IOException exception){
+        } catch (IOException exception) {
             return new BaseResponse(BaseExceptionCode.NOT_EXIST_IMG);
+        } catch (BaseException exception) {
+            return new BaseResponse(exception.getExceptionCode());
         }
     }
 
@@ -72,11 +75,11 @@ public class PostController {
      * @throws
      */
     @GetMapping("api/posts/{postId}")
-    public BaseResponse getPost(@PathVariable(name = "postId")String postId){
-        try{
+    public BaseResponse getPost(@PathVariable(name = "postId") String postId) {
+        try {
             PostRes postRes = postService.getPost(postId);
             return new BaseResponse<>(postRes);
-        }catch (BaseException exception){
+        } catch (BaseException exception) {
             return new BaseResponse<>(exception.getExceptionCode());
         }
     }
@@ -95,16 +98,17 @@ public class PostController {
 
     /**
      * 게시물에 삭제 API
+     *
      * @param postId
      * @return
      * @throws
      */
     @DeleteMapping("/api/posts/{postId}")
-    public BaseResponse deletePost(@PathVariable String postId){
+    public BaseResponse deletePost(@PathVariable String postId) {
         try {
             postService.delete(postId);
-            return new BaseResponse<>(postId+ "번 게시물이 삭제되었습니다");
-        }catch (BaseException exception){
+            return new BaseResponse<>(postId + "번 게시물이 삭제되었습니다");
+        } catch (BaseException exception) {
             return new BaseResponse<>(exception.getExceptionCode());
         }
     }
@@ -117,12 +121,12 @@ public class PostController {
      * @throws
      */
     @PutMapping("/api/posts/{postId}")
-    public BaseResponse updatePost(@PathVariable String postId, @RequestBody PostRequestDto request){
-        try{
+    public BaseResponse updatePost(@PathVariable String postId, @RequestBody PostRequestDto request) {
+        try {
             Post updatedPost = postService.update(postId, request);
             PostResponseDto response = updatedPost.toResponse();
             return new BaseResponse<>(response);
-        }catch (BaseException exception){
+        } catch (BaseException exception) {
             return new BaseResponse<>(exception.getExceptionCode());
         }
     }
