@@ -71,4 +71,9 @@ public class PostService {
         post.update(request.getPostTitle(), request.getPostContent());
         return post;
     }
+
+    public Long getPostCount() throws BaseException {
+        Long postCount = postRepository.count();
+        return postCount;
+    }
 }

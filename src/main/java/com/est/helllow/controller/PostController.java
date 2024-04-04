@@ -32,7 +32,10 @@ public class PostController {
     }
 
     /**
-     * 게시물 이미지 업로드 api
+     * 게시물을 등록하는 API
+     *
+     * @return PostResponseDto : 등록한 post
+     * @author cjw
      */
     @PostMapping("api.hell-low.com/post-management/users/{id}")
     public BaseResponse addPost(@PathVariable(name = "id") String userId,
@@ -50,7 +53,10 @@ public class PostController {
     }
 
     /**
-     * 상세 게시물 페이지 조회 API
+     * 전체 게시물을 반환하는 API
+     *
+     * @return List<PostResponseDto> : 등록된 모든 post
+     * @author cjw
      */
     @GetMapping("api.hell-low.com/post-management/posts")
     public BaseResponse findAllPosts() {
@@ -97,11 +103,11 @@ public class PostController {
     }
 
     /**
-     * 게시물에 삭제 API
+     * postId가 일치하는 게시물을 삭제하는 API
      *
      * @param postId
-     * @return
-     * @throws
+     * @return void
+     * @author cjw
      */
     @DeleteMapping("api.hell-low.com/post-management/posts/{id}")
     public BaseResponse deletePost(@PathVariable(name = "id") String postId) {
@@ -114,11 +120,11 @@ public class PostController {
     }
 
     /**
-     * 게시물 수정 API
+     * 게시물을 수정하는 API
      *
      * @param postId
-     * @return
-     * @throws
+     * @return Post : 수정한 post
+     * @author cjw
      */
     @PutMapping("api.hell-low.com/post-management/posts/{id}")
     public BaseResponse updatePost(@PathVariable String postId, @RequestBody PostRequestDto request) {
@@ -130,4 +136,21 @@ public class PostController {
             return new BaseResponse<>(exception.getExceptionCode());
         }
     }
+
+    /**
+     * 게시물개수를 반환하는 API
+     *
+     * @return Long
+     * @author cjw
+     */
+    @GetMapping("api.hell-low.com/post-management/count")
+    public BaseResponse countPosts() {
+        try {
+            Long postCount = postService.getPostCount();
+            return new BaseResponse<>(postCount);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getExceptionCode());
+        }
+    }
+
 }
