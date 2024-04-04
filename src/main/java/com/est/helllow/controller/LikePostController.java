@@ -6,14 +6,11 @@ import com.est.helllow.service.LikePostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("api/post/{postId}/like/{userId}")
+@RequestMapping("api.hell-low.com/like-management/{postId}/likes/{userId}")
 public class LikePostController {
 
     private final LikePostService likePostService;
@@ -27,13 +24,14 @@ public class LikePostController {
      * @return
      */
     @PostMapping
+    @ResponseBody
     public BaseResponse likePost(@PathVariable(name = "postId") String postId,
                                              @PathVariable(name = "userId") String userId) {
         try {
             int likePostCount = likePostService.likePost(postId, userId);
             return new BaseResponse<>(likePostCount);
         }catch (BaseException exception){
-            return new BaseResponse(exception.getExceptionCode());
+            return new BaseResponse<>(exception.getExceptionCode());
         }
     }
 
@@ -46,13 +44,14 @@ public class LikePostController {
      * @return
      */
     @DeleteMapping
+    @ResponseBody
     public BaseResponse unLikePost(@PathVariable(name = "postId") String postId,
                                    @PathVariable(name = "userId") String userId){
         try {
             int likePostCount = likePostService.unLikePost(postId, userId);
-            return new BaseResponse(likePostCount);
+            return new BaseResponse<>(likePostCount);
         }catch (BaseException exception){
-            return new BaseResponse(exception.getExceptionCode());
+            return new BaseResponse<>(exception.getExceptionCode());
         }
     }
 }
