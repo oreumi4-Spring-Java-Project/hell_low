@@ -108,7 +108,7 @@ class PostControllerTest {
         String content = "content1";
         String file = "file";
 
-        Post post = postRepository.save(new Post(category, title, content));
+        Post post = postRepository.save(new Post(category, title, content, file));
         String savedId = post.getPostId();
 
         // when
