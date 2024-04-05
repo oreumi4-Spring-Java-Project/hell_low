@@ -1,6 +1,7 @@
 package com.est.helllow.controller;
 
 import com.est.helllow.domain.Post;
+import com.est.helllow.domain.User;
 import com.est.helllow.domain.dto.PostRequestDto;
 import com.est.helllow.repository.PostRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,7 +50,7 @@ class PostControllerTest {
     @Test
     public void addPost() throws Exception {
         //given
-        String url = "/api/posts";
+        String url = "api.hell-low.com/post-management/users/user_test";
 
         String category = "category";
         String title = "title";
@@ -102,17 +103,21 @@ class PostControllerTest {
     @Test
     public void testDeleteArticle() throws Exception {
         // given
-        final String url = "/api/posts/{id}";
+        //final String url = "api.hell-low.com/post-management/posts/{id}";
         String category = "notice";
         String title = "title1";
         String content = "content1";
-        String file = "file";
+        PostRequestDto request = new PostRequestDto(category, title, content);
 
-        Post post = postRepository.save(new Post(category, title, content, file));
+        User user_test = new User();
+
+        Post post = postRepository.save(request.toEntity(user_test, null));
         String savedId = post.getPostId();
 
+        String deleteUrl = "api.hell-low.com/post-management/posts/" + savedId;
+
         // when
-        mockMvc.perform(delete(url, savedId)).andExpect(status().isOk());
+        mockMvc.perform(delete(deleteUrl, savedId)).andExpect(status().isOk());
 
         // then
         List<Post> afterDeleteList = postRepository.findAll();
