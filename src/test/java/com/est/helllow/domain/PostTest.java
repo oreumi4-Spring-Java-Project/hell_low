@@ -1,5 +1,6 @@
 package com.est.helllow.domain;
 
+import com.est.helllow.domain.dto.PostRequestDto;
 import com.est.helllow.domain.dto.PostResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -56,16 +57,16 @@ class PostTest {
         assertEquals(modifiedAt, postResponseDto.getPostModified());
     }
 
-//    @Test
-//    public void testUpdate() {
-//        //given -> 위 setup 메서드
-//
-//        //when
-//        post.update("제목변경", "내용변경");
-//
-//        //then
-//        assertEquals("제목변경", post.getPostTitle());
-//        assertEquals("내용변경", post.getPostContent());
-//    }
+    @Test
+    public void testUpdate() {
+        //given -> 위 setup 메서드
+
+        //when
+        post.update(new PostRequestDto("메뉴","제목변경","내용변경"), "이미지변경");
+
+        //then
+        assertEquals("제목변경", post.getPostTitle());
+        assertEquals("내용변경", post.getPostContent());
+    }
 
 }
