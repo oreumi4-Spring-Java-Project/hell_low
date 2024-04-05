@@ -27,6 +27,8 @@ public class PostController {
         this.s3Service = s3Service;
     }
 
+    //CJW
+
     /**
      * 게시물을 등록하는 API
      *
@@ -46,20 +48,6 @@ public class PostController {
         } catch (BaseException exception) {
             return new BaseResponse(exception.getExceptionCode());
         }
-    }
-
-    /**
-     * 전체 게시물을 반환하는 API
-     *
-     * @return List<PostResponseDto> : 등록된 모든 post
-     * @author cjw
-     */
-    @GetMapping("api.hell-low.com/post-management/posts")
-    public BaseResponse findAllPosts() {
-        List<PostResponseDto> postList = postService.findAll()
-                .stream().map(PostResponseDto::new)
-                .toList();
-        return new BaseResponse(postList);
     }
 
     /**
@@ -113,6 +101,20 @@ public class PostController {
     }
 
     /**
+     * 전체 게시물을 반환하는 API
+     *
+     * @return List<PostResponseDto> : 등록된 모든 post
+     * @author cjw
+     */
+    @GetMapping("api.hell-low.com/post-management/posts")
+    public BaseResponse findAllPosts() {
+        List<PostResponseDto> postList = postService.findAll()
+                .stream().map(PostResponseDto::new)
+                .toList();
+        return new BaseResponse(postList);
+    }
+
+    /**
      * 게시물개수를 반환하는 API
      *
      * @return Long
@@ -127,19 +129,6 @@ public class PostController {
             return new BaseResponse<>(exception.getExceptionCode());
         }
     }
-
-//    /**
-//     * @author cjw
-//     * 특정 게시물정보만 반환하는 API
-//     *
-//     * @return PostResponseDto : 특정 postId의 post
-//     */
-//    @GetMapping("api.hell-low.com/post-management/posts/{id}")
-//    public ResponseEntity<PostResponseDto> findOnePost(@PathVariable String id){
-//        PostResponseDto post = postService.findById(id).toResponse();
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .body(post);
-//    }
 
     //LSH
 
