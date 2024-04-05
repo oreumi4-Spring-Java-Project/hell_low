@@ -1,125 +1,104 @@
-/*package com.est.helllow.controller;
+package com.est.helllow.controller;
 
 import com.est.helllow.domain.Post;
-import com.est.helllow.domain.User;
 import com.est.helllow.domain.dto.PostRequestDto;
-import com.est.helllow.repository.PostRepository;
+import com.est.helllow.service.PostService;
+import com.est.helllow.service.S3Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.multipart.MultipartFile;
+import java.nio.charset.StandardCharsets;
 
-import java.util.List;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.ArgumentMatchers.*;
 
 @SpringBootTest
-@AutoConfigureMockMvc
-class PostControllerTest {
+@AutoConfigureMockMvc(addFilters = false)
+class PostControllerIntegrationTest {
+
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    @Autowired
-    private PostRepository postRepository;
+    @MockBean
+    private PostService postService;
+    @MockBean
+    private S3Service s3Service;
 
     @BeforeEach
-    public void mockMvcSetUp() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        postRepository.deleteAll();
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
     }
 
-    @DisplayName("Post 글 추가 성공")
     @Test
-    public void addPost() throws Exception {
-        //given
-        String url = "api.hell-low.com/post-management/users/user_test";
-
-        String category = "category";
-        String title = "title";
-        String content = "contents";
-        PostRequestDto request = new PostRequestDto(category, title, content);
-
-        String requestBody = objectMapper.writeValueAsString(request);
-
-        //when
-        ResultActions result = mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestBody));
-
-        //then
-        result.andExpect(status().isCreated());
-        List<Post> postList = postRepository.findAll();
-        for (Post post : postList) {
-            System.out.println(post.getPostId());
-        }
-
-        assertThat(postList.size()).isEqualTo(1);
-        assertThat(postList.get(0).getPostTitle()).isEqualTo(title);
-        assertThat(postList.get(0).getPostContent()).isEqualTo(content);
-
-    }
-
-    @DisplayName("Post 글 전체 조회 성공")
-    @Test
-    public void testFindAll() throws Exception {
+    void addPostSuccess() throws Exception {
         // given
-        final String url = "/api/posts";
-        final String category = "testCategory";
-        final String title = "testTitle";
-        final String content = "testContent";
-        Post post = postRepository.save(new Post(category, title, content));
+        String userId = "유저아이디1";
+        PostRequestDto requestDto = new PostRequestDto("카테고리1", "제목1", "내용1");
+        String requestDtoJson = asJsonString(requestDto);
 
-        // when
-        ResultActions result = mockMvc.perform(get(url));
+        MockMultipartFile postRequestPart =
+                new MockMultipartFile("postRequest", "", "application/json", requestDtoJson.getBytes(StandardCharsets.UTF_8));
+        MockMultipartFile filePart =
+                new MockMultipartFile("img", "filename.txt", "text/plain", "내용1".getBytes());
 
-        // then : 정상적으로 요청이 되었는지 검증
-        result.andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].category")).value(post.getCategory())
-                .andExpect(jsonPath("$[0].post_title").value(post.getPostTitle()))
-                .andExpect(jsonPath("$[0].content").value(post.getPostContent()));
+        Post post = new Post();
+        when(s3Service.uploadImg(any(MultipartFile.class))).thenReturn("image-url");
+        when(postService.savePost(anyString(), any(PostRequestDto.class), anyString())).thenReturn(post);
 
-
+        // when & then
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/api.hell-low.com/post-management/{userId}", userId)
+                        .file(postRequestPart)
+                        .file(filePart)
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isOk());
     }
-  
-  //    @DisplayName("Post 글 삭제 성공")
-//    @Test
-//    public void testDeleteArticle() throws Exception {
-//        // given
-//        final String url = "/api/posts/{id}";
-//        String category = "notice";
-//        String title = "title1";
-//        String content = "content1";
-//        String file = "file";
-//
-//        Post post = postRepository.save(new Post(category, title, content, file));
-//        String savedId = post.getPostId();
-//
-//        // when
-//        mockMvc.perform(delete(url, savedId)).andExpect(status().isOk());
-//
-//        // then
-//        List<Post> afterDeleteList = postRepository.findAll();
-//        //isEmpty() 오류
-//        //assertThat(afterDeleteList).isEmpty();
-//    }
+
+    @Test
+    void updatePostSuccess() throws Exception {
+        // given
+        String userId = "유저아이디1";
+        String postId = "포스트ID1";
+        PostRequestDto requestDto = new PostRequestDto("카테고리1", "제목1", "내용1");
+        String requestDtoJson = asJsonString(requestDto);
+
+        MockMultipartFile postRequestPart =
+                new MockMultipartFile("postRequest", "", "application/json", requestDtoJson.getBytes(StandardCharsets.UTF_8));
+        MockMultipartFile filePart =
+                new MockMultipartFile("img", "filename.txt", "text/plain", "이미지 내용".getBytes());
+
+        // Mock 서비스 동작 지정
+        when(postService.findById(anyString())).thenReturn(new Post());
+        when(postService.update(anyString(), any(PostRequestDto.class), anyString(), anyString())).thenReturn(new Post());
+        when(s3Service.uploadImg(any(MultipartFile.class))).thenReturn("image-url");
+        when(s3Service.updateImg(any(MultipartFile.class), anyString())).thenReturn("updated-image-url");
+
+        // when & then
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/api.hell-low.com/post-management/{userId}/{postId}", userId, postId)
+                        .file(postRequestPart)
+                        .file(filePart)
+                        .with(request -> { request.setMethod("PUT"); return request; })
+                        .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isOk());
+    }
 
 
-}*/
+    //객체 -> json문자열 변환 메서드
+    private String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
