@@ -29,7 +29,14 @@ public class S3Service {
         if(file==null){
             return null;
         }
-        //파일이름이 같을경우 오류 발생 가능 -> 예외 처리 필요
+        String key = file.getOriginalFilename();
+
+        amazonS3.putObject(makeRequest(file));
+
+        return amazonS3.getUrl(bucketName, key).toString();
+    }
+
+    private PutObjectRequest makeRequest(MultipartFile file) throws IOException {
         String key = file.getOriginalFilename();
         InputStream inputStream = file.getInputStream();
         ObjectMetadata metadata = new ObjectMetadata();
@@ -37,14 +44,33 @@ public class S3Service {
         PutObjectRequest request = new PutObjectRequest(bucketName, key, inputStream, metadata)
                 .withCannedAcl(CannedAccessControlList.PublicRead);
 
-        amazonS3.putObject(request);
-
-        return amazonS3.getUrl(bucketName,key).toString();
+        return request;
     }
 
     public void deleteImg(String imgUrl){
         String key = getImgName(imgUrl);
         amazonS3.deleteObject(bucketName,key);
+    }
+
+    public String updateImg(MultipartFile newFile, String imgUrl) throws IOException {
+        String originKey = getImgName(imgUrl);
+
+        //사진만 삭제
+        if (newFile == null) {
+            amazonS3.deleteObject(bucketName, originKey);
+            return null;
+        }
+
+        String newKey = newFile.getOriginalFilename();
+
+        //사진 변경시
+        if (newKey != originKey) {
+            amazonS3.deleteObject(bucketName, originKey);
+            amazonS3.putObject(makeRequest(newFile));
+            return amazonS3.getUrl(bucketName, newKey).toString();
+        }
+        //사진 변경 안할 시
+        return imgUrl;
     }
 
     private String getImgName(String imgUrl){

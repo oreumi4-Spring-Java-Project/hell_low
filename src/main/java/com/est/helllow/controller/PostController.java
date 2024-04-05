@@ -92,9 +92,19 @@ public class PostController {
     @PutMapping("api.hell-low.com/post-management/{userId}/{postId}")
     public BaseResponse updatePost(@PathVariable(name = "userId") String userId,
                                    @PathVariable(name = "postId") String postId,
-                                   @RequestBody PostRequestDto request) {
+                                   @RequestPart(value = "postRequest") PostRequestDto request,
+                                   @RequestPart(value = "img", required = false) MultipartFile file) throws IOException{
         try {
-            Post updatedPost = postService.update(postId, request);
+            PostResponseDto post = postService.findById(postId).toResponse();
+            String imgUrl = null;
+
+            if (post.getPostFile() == null) { //원래 post에 이미지가 없었을 경우
+                imgUrl = s3Service.uploadImg(file);
+            } else { //이미지가 원래 있었을 경우
+                imgUrl = s3Service.updateImg(file, post.getPostFile());
+            }
+
+            Post updatedPost = postService.update(postId, request, imgUrl);
             PostResponseDto response = updatedPost.toResponse();
             return new BaseResponse<>(response);
         } catch (BaseException exception) {
