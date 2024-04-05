@@ -117,4 +117,9 @@ public class PostService {
     public List<Post> getMyPosts(String userId) {
         return postRepository.findAllByUser_UserId(userId);
     }
+
+    //user가 작성한 post 삭제
+    public void deletePostByUserId(String userId){
+        postRepository.deleteByUser_userId(userId);
+    }
 }

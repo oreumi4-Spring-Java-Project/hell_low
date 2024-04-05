@@ -26,6 +26,11 @@ public class LikePostService {
         likePostRepository.deleteByPost_PostId(postId);
     }
 
+    @Transactional
+    public void deleteLikeByUserId(String userId){
+        likePostRepository.deleteByUser_UserId(userId);
+    }
+
 
     @Transactional
     public int likePost(String postId, String userId) throws BaseException {
