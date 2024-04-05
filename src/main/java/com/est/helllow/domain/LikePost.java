@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class LikePost extends BaseTimeEntity {
     @Id
+    @Column(name = "LIKE_ID", updatable = false)
     private String likeId;
 
     @ManyToOne

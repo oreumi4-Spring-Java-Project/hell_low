@@ -29,20 +29,20 @@ public class Post extends BaseTimeEntity {
     }
 
     @Id
-    @Column(name = "POST_ID", updatable = false)
+    @Column(name = "POST_ID", updatable = false,length = 100)
     private String postId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @Column(name = "CATEGORY", nullable = false)
+    @Column(name = "CATEGORY", nullable = false,length = 20)
     private String category;
 
-    @Column(name = "POST_TITLE", nullable = false)
+    @Column(name = "POST_TITLE", nullable = false,length = 50)
     private String postTitle;
 
-    @Column(name = "POST_CONTENT", nullable = false)
+    @Column(name = "POST_CONTENT", nullable = false,length = 3000)
     private String postContent;
 
     @Column(name = "LIKE_COUNTS")
@@ -53,6 +53,8 @@ public class Post extends BaseTimeEntity {
 
     @Column(name = "POST_FILE")
     private String postFile;
+
+
 
     public PostResponseDto toResponse() {
         return PostResponseDto.builder()

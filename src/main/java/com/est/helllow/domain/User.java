@@ -18,13 +18,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class User extends BaseTimeEntity {
     @Id
-    @Column(name="USER_ID", updatable = false)
+    @Column(name="USER_ID", updatable = false,length = 100)
     private String userId;
 
-    @Column(name = "USER_NAME", nullable = false)
+    @Column(name = "USER_NAME", nullable = false,length = 50)
     private String userName;
 
-    @Column(name = "USER_EMAIL", nullable = false)
+    @Column(name = "USER_EMAIL", nullable = false,length = 50)
     private String userEmail;
 
     @Column(name = "USER_GRADE", nullable = false)
