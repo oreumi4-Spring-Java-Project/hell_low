@@ -74,10 +74,10 @@ public class PostService {
 
     //게시물 수정 - CJW
     @Transactional
-    public Post update(String id, PostRequestDto request) throws BaseException {
+    public Post update(String id, PostRequestDto request, String imgUrl) throws BaseException {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
-        post.update(request.getPostTitle(), request.getPostContent());
+        post.update(request, imgUrl);
         return post;
     }
 

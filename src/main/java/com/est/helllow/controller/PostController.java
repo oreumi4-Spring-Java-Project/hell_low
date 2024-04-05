@@ -33,8 +33,8 @@ public class PostController {
      * @return PostResponseDto : 등록한 post
      * @author cjw
      */
-    @PostMapping("api.hell-low.com/post-management/users/{id}")
-    public BaseResponse addPost(@PathVariable(name = "id") String userId,
+    @PostMapping("api.hell-low.com/post-management/{userId}")
+    public BaseResponse addPost(@PathVariable(name = "userId") String userId,
                                 @RequestPart(value = "postRequest") PostRequestDto request,
                                 @RequestPart(value = "img", required = false) MultipartFile file) {
         try {
@@ -68,9 +68,14 @@ public class PostController {
      * @return void
      * @author cjw
      */
-    @DeleteMapping("api.hell-low.com/post-management/posts/{id}")
-    public BaseResponse deletePost(@PathVariable(name = "id") String postId) {
+    @DeleteMapping("api.hell-low.com/post-management/{userId}/{postId}")
+    public BaseResponse deletePost(@PathVariable(name = "userId") String userId,
+                                   @PathVariable(name = "postId") String postId) {
         try {
+            PostResponseDto post = postService.findById(postId).toResponse();
+            if(post.getPostFile() != null){
+                s3Service.deleteImg(post.getPostFile());
+            }
             postService.delete(postId);
             return new BaseResponse<>(postId + "번 게시물이 삭제되었습니다");
         } catch (BaseException exception) {
@@ -84,10 +89,22 @@ public class PostController {
      * @return Post : 수정한 post
      * @author cjw
      */
-    @PutMapping("api.hell-low.com/post-management/posts/{id}")
-    public BaseResponse updatePost(@PathVariable(name = "id") String postId, @RequestBody PostRequestDto request) {
+    @PutMapping("api.hell-low.com/post-management/{userId}/{postId}")
+    public BaseResponse updatePost(@PathVariable(name = "userId") String userId,
+                                   @PathVariable(name = "postId") String postId,
+                                   @RequestPart(value = "postRequest") PostRequestDto request,
+                                   @RequestPart(value = "img", required = false) MultipartFile file) throws IOException{
         try {
-            Post updatedPost = postService.update(postId, request);
+            PostResponseDto post = postService.findById(postId).toResponse();
+            String imgUrl = null;
+
+            if (post.getPostFile() == null) { //원래 post에 이미지가 없었을 경우
+                imgUrl = s3Service.uploadImg(file);
+            } else { //이미지가 원래 있었을 경우
+                imgUrl = s3Service.updateImg(file, post.getPostFile());
+            }
+
+            Post updatedPost = postService.update(postId, request, imgUrl);
             PostResponseDto response = updatedPost.toResponse();
             return new BaseResponse<>(response);
         } catch (BaseException exception) {
@@ -113,7 +130,7 @@ public class PostController {
 
 //    /**
 //     * @author cjw
-//     * 특정 게시물을 반환하는 API
+//     * 특정 게시물정보만 반환하는 API
 //     *
 //     * @return PostResponseDto : 특정 postId의 post
 //     */

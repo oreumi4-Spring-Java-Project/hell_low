@@ -1,6 +1,7 @@
 package com.est.helllow.controller;
 
 import com.est.helllow.domain.Post;
+import com.est.helllow.domain.User;
 import com.est.helllow.domain.dto.PostRequestDto;
 import com.est.helllow.repository.PostRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,7 +50,7 @@ class PostControllerTest {
     @Test
     public void addPost() throws Exception {
         //given
-        String url = "/api/posts";
+        String url = "api.hell-low.com/post-management/users/user_test";
 
         String category = "category";
         String title = "title";
@@ -97,8 +98,8 @@ class PostControllerTest {
                 .andExpect(jsonPath("$[0].content").value(post.getPostContent()));
          */
     }
-
-//    @DisplayName("Post 글 삭제 성공")
+  
+  //    @DisplayName("Post 글 삭제 성공")
 //    @Test
 //    public void testDeleteArticle() throws Exception {
 //        // given
@@ -119,5 +120,6 @@ class PostControllerTest {
 //        //isEmpty() 오류
 //        //assertThat(afterDeleteList).isEmpty();
 //    }
+
 
 }
