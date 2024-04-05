@@ -7,6 +7,7 @@ import com.est.helllow.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
@@ -14,6 +15,7 @@ import lombok.Setter;
 @Setter
 @Data
 @Table(name = "users")
+@NoArgsConstructor
 public class User extends BaseTimeEntity {
     @Id
     @Column(name="USER_ID", updatable = false)

@@ -33,8 +33,8 @@ public class PostController {
      * @return PostResponseDto : 등록한 post
      * @author cjw
      */
-    @PostMapping("api.hell-low.com/post-management/users/{id}")
-    public BaseResponse addPost(@PathVariable(name = "id") String userId,
+    @PostMapping("api.hell-low.com/post-management/{userId}")
+    public BaseResponse addPost(@PathVariable(name = "userId") String userId,
                                 @RequestPart(value = "postRequest") PostRequestDto request,
                                 @RequestPart(value = "img", required = false) MultipartFile file) {
         try {
@@ -68,8 +68,9 @@ public class PostController {
      * @return void
      * @author cjw
      */
-    @DeleteMapping("api.hell-low.com/post-management/posts/{id}")
-    public BaseResponse deletePost(@PathVariable(name = "id") String postId) {
+    @DeleteMapping("api.hell-low.com/post-management/{userId}/{postId}")
+    public BaseResponse deletePost(@PathVariable(name = "userId") String userId,
+                                   @PathVariable(name = "postId") String postId) {
         try {
             PostResponseDto post = postService.findById(postId).toResponse();
             if(post.getPostFile() != null){
@@ -88,8 +89,10 @@ public class PostController {
      * @return Post : 수정한 post
      * @author cjw
      */
-    @PutMapping("api.hell-low.com/post-management/posts/{id}")
-    public BaseResponse updatePost(@PathVariable(name = "id") String postId, @RequestBody PostRequestDto request) {
+    @PutMapping("api.hell-low.com/post-management/{userId}/{postId}")
+    public BaseResponse updatePost(@PathVariable(name = "userId") String userId,
+                                   @PathVariable(name = "postId") String postId,
+                                   @RequestBody PostRequestDto request) {
         try {
             Post updatedPost = postService.update(postId, request);
             PostResponseDto response = updatedPost.toResponse();
