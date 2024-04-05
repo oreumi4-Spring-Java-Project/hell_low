@@ -9,12 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/myinfo/{userId}")
+    @GetMapping("api.hell-low.com/user-management/users/{userId}")
     public BaseResponse myinfo(@PathVariable String userId) {
         try {
             UserResponseDto myinfo = userService.myinfo(userId);
@@ -24,7 +24,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("myinfo/{userId}")
+    @PutMapping("api.hell-low.com/user-management/users/{userId}")
     public ResponseDTO updateMyInfo(@PathVariable String userId, @RequestBody UserResponseDto userResponseDto) {
         userResponseDto.setUserId(userId);
         UserResponseDto userResponseDto1 = userService.updateUser(userResponseDto);
@@ -34,7 +34,7 @@ public class UserController {
             return new ResponseDTO("fail", "update fail");
     }
 
-    @DeleteMapping("myinfo/{userId}")
+    @DeleteMapping("api.hell-low.com/user-management/users/{userId}")
     public ResponseDTO deleteMyInfo(@PathVariable String userId) {
         boolean result = userService.deleteUser(userId);
         if (result) {

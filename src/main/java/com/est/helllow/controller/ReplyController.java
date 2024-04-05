@@ -17,6 +17,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+
 public class ReplyController {
 
     private final ReplyService replyService;
@@ -122,6 +123,7 @@ public class ReplyController {
      * @author kmg
      */
     @GetMapping("api.hell-low.com/comment-management/users/{id}/count")
+    @ResponseBody
     public BaseResponse mypostcount(@PathVariable(name = "id") String userId) {
         Long postCount = replyService.getReplyCountByUserId(userId);
         return new BaseResponse(postCount);
@@ -135,6 +137,7 @@ public class ReplyController {
      * @author kmg
      */
     @GetMapping("api.hell-low.com/comment-management/users/{id}")
+    @ResponseBody
     public BaseResponse getMyReplys(@PathVariable(name = "id") String userId) {
         List<ReplyResponseDto> replyList = replyService.getMyReplys(userId)
                 .stream().map(ReplyResponseDto::new)

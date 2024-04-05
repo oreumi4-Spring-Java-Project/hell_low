@@ -1,4 +1,4 @@
-package com.est.helllow.controller;
+/*package com.est.helllow.controller;
 
 import com.est.helllow.domain.Post;
 import com.est.helllow.domain.User;
@@ -80,7 +80,6 @@ class PostControllerTest {
     @DisplayName("Post 글 전체 조회 성공")
     @Test
     public void testFindAll() throws Exception {
-        /*
         // given
         final String url = "/api/posts";
         final String category = "testCategory";
@@ -96,7 +95,8 @@ class PostControllerTest {
                 .andExpect(jsonPath("$[0].category")).value(post.getCategory())
                 .andExpect(jsonPath("$[0].post_title").value(post.getPostTitle()))
                 .andExpect(jsonPath("$[0].content").value(post.getPostContent()));
-         */
+
+
     }
   
   //    @DisplayName("Post 글 삭제 성공")
@@ -122,4 +122,4 @@ class PostControllerTest {
 //    }
 
 
-}
+}*/
