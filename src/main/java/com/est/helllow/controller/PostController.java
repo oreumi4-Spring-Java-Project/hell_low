@@ -6,6 +6,7 @@ import com.est.helllow.domain.dto.PostRes;
 import com.est.helllow.domain.dto.PostResponseDto;
 
 import com.est.helllow.domain.dto.PostSearchCondition;
+import com.est.helllow.dto.ResponseDTO;
 import com.est.helllow.exception.BaseException;
 import com.est.helllow.exception.BaseExceptionCode;
 import com.est.helllow.exception.BaseResponse;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class PostController {
@@ -178,6 +180,7 @@ public class PostController {
      * @return List<Post> : 검색한 post
      * @author kmg
      */
+
     @GetMapping("api.hell-low.com/post-management/users/{id}")
     public BaseResponse getMyPosts(@PathVariable(name = "id") String userId) {
         List<PostResponseDto> postList = postService.getMyPosts(userId)
