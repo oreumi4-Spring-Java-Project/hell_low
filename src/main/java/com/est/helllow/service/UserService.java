@@ -52,15 +52,12 @@ public class UserService {
         return emptyNames.toArray(result);
     }
 
-    //작성자 - 김민규, 유저 정보 삭제 코드
-    public boolean deleteUser(String userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            userRepository.delete(user.get());
-            return true;
-        } else {
-            return false; // 사용자를 찾을 수 없는 경우, false 반환
+    public void deleteUser(String userId) throws BaseException{
+        if(!userRepository.existsById(userId)){
+            throw new BaseException(BaseExceptionCode.NOT_INVALID_USER);
         }
+
+        userRepository.deleteById(userId);
     }
 
 

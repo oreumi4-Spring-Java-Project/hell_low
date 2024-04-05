@@ -9,4 +9,5 @@ public interface LikePostRepository extends JpaRepository<LikePost, String> {
     LikePost findLikePostByPost_PostIdAndUser_UserId(String postId, String userId);
 
     void deleteByPost_PostId(String postId);
+    void deleteByUser_UserId(String userId);
 }

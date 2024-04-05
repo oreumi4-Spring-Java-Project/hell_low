@@ -45,6 +45,10 @@ public class ReplyService {
     public void deleteCommentByPostId(String postId){
         replyRepository.deleteByPost_PostId(postId);
     }
+    @Transactional
+    public void deleteCommentsByUserId(String userId) {
+        replyRepository.deleteByUser_UserId(userId);
+    }
 
     @Transactional
     public Reply replySave(String postId, String userId, ReplyRequestDto replyRequestDto) throws BaseException {
