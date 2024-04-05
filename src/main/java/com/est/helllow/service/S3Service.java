@@ -1,10 +1,12 @@
 package com.est.helllow.service;
 
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -40,6 +42,16 @@ public class S3Service {
         amazonS3.putObject(request);
 
         return amazonS3.getUrl(bucketName, key).toString();
+    }
+
+    //이미지 삭제
+    public void deleteImg(String imgUrl){
+        String key = getImgName(imgUrl);
+        amazonS3.deleteObject(bucketName, key);
+    }
+
+    private String getImgName(String imgUrl) {
+        return imgUrl.split("/")[3];
     }
 
 }

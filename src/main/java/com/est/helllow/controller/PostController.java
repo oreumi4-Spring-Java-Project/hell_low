@@ -82,6 +82,10 @@ public class PostController {
      */
     @DeleteMapping("api.hell-low.com/post-management/posts/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable String id) {
+        PostResponseDto post = postService.findById(id).toResponse();
+        if(post.getPostFile()!=null){
+            s3Service.deleteImg(post.getPostFile());
+        }
         postService.delete(id);
 
         return ResponseEntity.ok().build();
