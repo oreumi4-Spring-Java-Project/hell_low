@@ -36,10 +36,10 @@ public class Post extends BaseTimeEntity {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @Column(name = "CATEGORY", nullable = false)
+    @Column(name = "CATEGORY", nullable = false,length = 20)
     private String category;
 
-    @Column(name = "POST_TITLE", nullable = false)
+    @Column(name = "POST_TITLE", nullable = false,length = 50)
     private String postTitle;
 
     @Column(name = "POST_CONTENT", nullable = false,length = 3000)
