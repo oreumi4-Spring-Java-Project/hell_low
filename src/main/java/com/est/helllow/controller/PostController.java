@@ -71,6 +71,10 @@ public class PostController {
     @DeleteMapping("api.hell-low.com/post-management/posts/{id}")
     public BaseResponse deletePost(@PathVariable(name = "id") String postId) {
         try {
+            PostResponseDto post = postService.findById(postId).toResponse();
+            if(post.getPostFile() != null){
+                s3Service.deleteImg(post.getPostFile());
+            }
             postService.delete(postId);
             return new BaseResponse<>(postId + "번 게시물이 삭제되었습니다");
         } catch (BaseException exception) {
@@ -113,7 +117,7 @@ public class PostController {
 
 //    /**
 //     * @author cjw
-//     * 특정 게시물을 반환하는 API
+//     * 특정 게시물정보만 반환하는 API
 //     *
 //     * @return PostResponseDto : 특정 postId의 post
 //     */

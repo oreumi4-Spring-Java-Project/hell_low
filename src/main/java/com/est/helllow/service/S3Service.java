@@ -42,4 +42,13 @@ public class S3Service {
         return amazonS3.getUrl(bucketName,key).toString();
     }
 
+    public void deleteImg(String imgUrl){
+        String key = getImgName(imgUrl);
+        amazonS3.deleteObject(bucketName,key);
+    }
+
+    private String getImgName(String imgUrl){
+        return imgUrl.split("/")[3];
+    }
+
 }
