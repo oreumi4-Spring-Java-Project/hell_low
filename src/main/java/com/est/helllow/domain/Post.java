@@ -54,6 +54,8 @@ public class Post extends BaseTimeEntity {
     @Column(name = "POST_FILE")
     private String postFile;
 
+
+
     public PostResponseDto toResponse() {
         return PostResponseDto.builder()
                 .category(category)

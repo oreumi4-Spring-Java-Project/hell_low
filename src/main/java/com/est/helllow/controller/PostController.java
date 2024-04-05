@@ -9,7 +9,9 @@ import com.est.helllow.domain.dto.PostSearchCondition;
 import com.est.helllow.exception.BaseException;
 import com.est.helllow.exception.BaseExceptionCode;
 import com.est.helllow.exception.BaseResponse;
+import com.est.helllow.service.LikePostService;
 import com.est.helllow.service.PostService;
+import com.est.helllow.service.ReplyService;
 import com.est.helllow.service.S3Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,10 +23,15 @@ import java.util.List;
 public class PostController {
     PostService postService;
     S3Service s3Service;
+    ReplyService replyService;
 
-    public PostController(PostService postService, S3Service s3Service) {
+    LikePostService likePostService;
+
+    public PostController(PostService postService, S3Service s3Service, ReplyService replyService, LikePostService likePostService) {
+        this.likePostService=likePostService;
         this.postService = postService;
         this.s3Service = s3Service;
+        this.replyService = replyService;
     }
 
     /**
@@ -59,7 +66,7 @@ public class PostController {
         List<PostResponseDto> postList = postService.findAll()
                 .stream().map(PostResponseDto::new)
                 .toList();
-        return new BaseResponse(postList);
+        return new BaseResponse<>(postList);
     }
 
     /**
@@ -72,11 +79,16 @@ public class PostController {
     public BaseResponse deletePost(@PathVariable(name = "userId") String userId,
                                    @PathVariable(name = "postId") String postId) {
         try {
+            //댓글리스트 삭제
+            replyService.deleteCommentByPostId(postId);
+            //좋아요 삭제
+            likePostService.deleteLikeByPostId(postId);
+
             PostResponseDto post = postService.findById(postId).toResponse();
             if(post.getPostFile() != null){
                 s3Service.deleteImg(post.getPostFile());
             }
-            postService.delete(postId);
+            postService.delete(postId,userId);
             return new BaseResponse<>(postId + "번 게시물이 삭제되었습니다");
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getExceptionCode());
@@ -104,7 +116,7 @@ public class PostController {
                 imgUrl = s3Service.updateImg(file, post.getPostFile());
             }
 
-            Post updatedPost = postService.update(postId, request, imgUrl);
+            Post updatedPost = postService.update(postId, request, imgUrl, userId);
             PostResponseDto response = updatedPost.toResponse();
             return new BaseResponse<>(response);
         } catch (BaseException exception) {
@@ -163,7 +175,7 @@ public class PostController {
     /**
      * 게시물 검색 기능 API
      *
-     * @return List<Post> : 검색한 post
+     * @return List<PostResponseDto> : 검색한 post
      * @author lsh
      * 테스트 위한 구조 , 이후 변경 예정
      */
@@ -185,14 +197,14 @@ public class PostController {
     @GetMapping("api.hell-low.com/post-management/users/{id}/count")
     public BaseResponse mypostcount(@PathVariable(name = "id") String userId) {
         Long postCount = postService.getPostCountByUserId(userId);
-        return new BaseResponse(postCount);
+        return new BaseResponse<>(postCount);
     }
 
     /**
      * userId가 일치하는 모든 게시물을 탐색하는 API
      *
      * @param userId
-     * @return List<Post> : 검색한 post
+     * @return List<PostResponseDto> : 검색한 post
      * @author kmg
      */
     @GetMapping("api.hell-low.com/post-management/users/{id}")
