@@ -66,6 +66,10 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     //testImplementation 'org.springframework.security:spring-security-test'
 
+    // 테스트를 위한 mockito-core 추가 (lsh)
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '5.10.0'
+
+
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
