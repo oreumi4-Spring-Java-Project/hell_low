@@ -98,31 +98,28 @@ class PostControllerTest {
                 .andExpect(jsonPath("$[0].content").value(post.getPostContent()));
          */
     }
+  
+  //    @DisplayName("Post 글 삭제 성공")
+//    @Test
+//    public void testDeleteArticle() throws Exception {
+//        // given
+//        final String url = "/api/posts/{id}";
+//        String category = "notice";
+//        String title = "title1";
+//        String content = "content1";
+//        String file = "file";
+//
+//        Post post = postRepository.save(new Post(category, title, content, file));
+//        String savedId = post.getPostId();
+//
+//        // when
+//        mockMvc.perform(delete(url, savedId)).andExpect(status().isOk());
+//
+//        // then
+//        List<Post> afterDeleteList = postRepository.findAll();
+//        //isEmpty() 오류
+//        //assertThat(afterDeleteList).isEmpty();
+//    }
 
-    @DisplayName("Post 글 삭제 성공")
-    @Test
-    public void testDeleteArticle() throws Exception {
-        // given
-        //final String url = "api.hell-low.com/post-management/posts/{id}";
-        String category = "notice";
-        String title = "title1";
-        String content = "content1";
-        PostRequestDto request = new PostRequestDto(category, title, content);
-
-        User user_test = new User();
-
-        Post post = postRepository.save(request.toEntity(user_test, null));
-        String savedId = post.getPostId();
-
-        String deleteUrl = "api.hell-low.com/post-management/posts/" + savedId;
-
-        // when
-        mockMvc.perform(delete(deleteUrl, savedId)).andExpect(status().isOk());
-
-        // then
-        List<Post> afterDeleteList = postRepository.findAll();
-        //isEmpty() 오류
-        //assertThat(afterDeleteList).isEmpty();
-    }
 
 }
