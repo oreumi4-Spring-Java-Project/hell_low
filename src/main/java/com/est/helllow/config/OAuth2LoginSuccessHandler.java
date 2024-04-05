@@ -2,9 +2,9 @@ package com.est.helllow.config;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
+import com.est.helllow.domain.enum_class.UserGrade;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.est.helllow.domain.RegistrationSource;
 import com.est.helllow.domain.User;
-import com.est.helllow.domain.UserRole;
+import com.est.helllow.domain.enum_class.UserRole;
 import com.est.helllow.service.UserInterfaceService;
 
 import jakarta.servlet.ServletException;
@@ -61,7 +61,7 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 		newUser.setUserName(name);
 		newUser.setUserEmail(email);
 		newUser.setUserImg(picture);
-		newUser.setUserGrade("3대 100");
+		newUser.setUserGrade(UserGrade.SBD_300);
 		newUser.setRole(UserRole.ROLE_USER);
 		newUser.setSource(RegistrationSource.KaKao);
 

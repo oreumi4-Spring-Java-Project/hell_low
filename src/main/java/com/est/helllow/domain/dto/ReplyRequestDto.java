@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class ReplyRequestDto {
-    private String comId;
+
     private String content;
 
         public Reply toEntity(Post post,User user){

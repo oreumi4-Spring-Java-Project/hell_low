@@ -1,10 +1,13 @@
 package com.est.helllow.domain;
 
 import com.est.helllow.config.BaseTimeEntity;
+import com.est.helllow.domain.enum_class.UserGrade;
+import com.est.helllow.domain.enum_class.UserRole;
 import com.est.helllow.utils.IdGenerator;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
@@ -12,9 +15,10 @@ import lombok.Setter;
 @Setter
 @Data
 @Table(name = "users")
+@NoArgsConstructor
 public class User extends BaseTimeEntity {
     @Id
-    @Column(name = "USER_ID", updatable = false)
+    @Column(name="USER_ID", updatable = false)
     private String userId;
 
     @Column(name = "USER_NAME", nullable = false)
@@ -24,7 +28,8 @@ public class User extends BaseTimeEntity {
     private String userEmail;
 
     @Column(name = "USER_GRADE", nullable = false)
-    private String userGrade;
+    @Enumerated(EnumType.STRING)
+    private UserGrade userGrade; // UserGrade 로 등급 관리
 
     @Column(name = "USER_IMG", nullable = false)
     private String userImg;
@@ -38,8 +43,8 @@ public class User extends BaseTimeEntity {
     private RegistrationSource source;
 
     @PrePersist
-    public void prePersist() {
-        this.userId = IdGenerator.generateUserId();
+    public void prePersist(){
+        this.userId= IdGenerator.generateUserId();
     }
 
 }

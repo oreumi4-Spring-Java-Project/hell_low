@@ -55,17 +55,17 @@ public class ReplyController {
      * @return
      * @throws
      */
-    @PostMapping("{postId}/{userId}/comments")
+    @PostMapping("api.hell-low.com/comment-management/{postId}/comments/{userId}")
     @ResponseBody
     public BaseResponse replySave(@PathVariable(name = "postId") String postId,
-                                  @PathVariable(name = "userId") String userId,
-                                  @RequestBody ReplyRequestDto replyRequestDto) {
+                                  @PathVariable(name = "userId")String userId,
+                                  @RequestParam(value = "content") ReplyRequestDto replyRequestDto){
         try {
-            Reply reply = replyService.replySave(postId, userId, replyRequestDto);
+            Reply reply = replyService.replySave(postId,userId,replyRequestDto);
             ReplyResponseDto response = reply.toResponse();
             return new BaseResponse<>(response);
-        } catch (BaseException exception) {
-            return new BaseResponse(exception.getExceptionCode());
+        }catch (BaseException exception){
+            return new BaseResponse<>(exception.getExceptionCode());
         }
     }
 
@@ -77,14 +77,14 @@ public class ReplyController {
      * @return
      * @throws
      */
-    @DeleteMapping("{postId}/{userId}/comments/{commentId}")
+    @DeleteMapping("api.hell-low.com/comment-management/{postId}/comments/{userId}/{commentId}")
     @ResponseBody
-    public BaseResponse deleteReply(@PathVariable(name = "userId") String userId,
-                                    @PathVariable(name = "commentId") String commentId) {
-        try {
+    public BaseResponse deleteReply(@PathVariable(name = "userId")String userId,
+                                    @PathVariable(name = "commentId")String commentId){
+        try{
             String deletedComment = replyService.deleteComment(commentId, userId);
-            return new BaseResponse<>(deletedComment + " 댓글이 삭제 되었습니다.");
-        } catch (BaseException exception) {
+            return new BaseResponse<>(deletedComment+" 댓글이 삭제 되었습니다.");
+        }catch (BaseException exception){
             return new BaseResponse<>(exception.getExceptionCode());
         }
     }
@@ -98,16 +98,17 @@ public class ReplyController {
      * @return
      * @throws
      */
-    @PutMapping("{postId}/{userId}/comments/{commentId}")
-    public BaseResponse updateReply(@PathVariable(name = "postId") String postId,
-                                    @PathVariable(name = "userId") String userId,
-                                    @PathVariable(name = "commentId") String commentId,
-                                    @RequestBody ReplyRequestDto replyRequestDto) {
+    @PutMapping("api.hell-low.com/comment-management/{postId}/comments/{userId}/{commentId}")
+    @ResponseBody
+    public BaseResponse updateReply(@PathVariable(name = "postId")String postId,
+                                    @PathVariable(name = "userId")String userId,
+                                    @PathVariable(name = "commentId")String commentId,
+                                    @RequestParam(value = "content") ReplyRequestDto replyRequestDto){
         try {
-            Reply reply = replyService.updateReply(postId, commentId, userId, replyRequestDto);
+            Reply reply = replyService.updateReply(postId,commentId, userId, replyRequestDto);
             ReplyResponseDto response = reply.toResponse();
             return new BaseResponse<>(response);
-        } catch (BaseException exception) {
+        }catch (BaseException exception){
             return new BaseResponse<>(exception.getExceptionCode());
         }
     }
