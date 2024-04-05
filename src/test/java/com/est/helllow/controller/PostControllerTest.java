@@ -25,7 +25,7 @@ import static org.mockito.ArgumentMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
-class PostControllerIntegrationTest {
+class PostControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
