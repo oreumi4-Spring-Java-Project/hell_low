@@ -29,7 +29,7 @@ public class Post extends BaseTimeEntity {
     }
 
     @Id
-    @Column(name = "POST_ID", updatable = false)
+    @Column(name = "POST_ID", updatable = false,length = 100)
     private String postId;
 
     @ManyToOne(fetch = FetchType.LAZY)

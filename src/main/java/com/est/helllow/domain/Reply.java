@@ -18,7 +18,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Reply extends BaseTimeEntity {
 
     @Id
-    @Column(name = "COM_ID", updatable = false)
+    @Column(name = "COM_ID", updatable = false,length = 100)
     private String comId;
 
     @ManyToOne(fetch = FetchType.LAZY) // 지연 로딩 (엔티티 사용 전까지 연관 엔티티 로딩 x)
