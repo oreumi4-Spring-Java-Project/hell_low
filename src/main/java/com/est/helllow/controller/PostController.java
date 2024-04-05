@@ -83,7 +83,7 @@ public class PostController {
     @DeleteMapping("api.hell-low.com/post-management/posts/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable String id) {
         PostResponseDto post = postService.findById(id).toResponse();
-        if(post.getPostFile()!=null){
+        if (post.getPostFile() != null) {
             s3Service.deleteImg(post.getPostFile());
         }
         postService.delete(id);
@@ -92,14 +92,25 @@ public class PostController {
     }
 
     /**
-     * @param id
      * @return Post : 수정한 post
      * @author cjw
      * 게시물을 수정하는 API
      */
-    @PutMapping("api.hell-low.com/post-management/posts/{id}")
-    public ResponseEntity<Post> updatePost(@PathVariable String id, @RequestBody PostRequestDto request) {
-        Post updatedPost = postService.update(id, request);
+    @PutMapping("api.hell-low.com/post-management/{userId}/{postId}")
+    public ResponseEntity<Post> updatePost(@PathVariable(name = "userId") String userId,
+                                           @PathVariable(name = "postId") String postId,
+                                           @RequestPart(value = "postRequest") PostRequestDto request,
+                                           @RequestPart(value = "img", required = false) MultipartFile file) throws IOException {
+        PostResponseDto post = postService.findById(postId).toResponse();
+        String imgUrl = null;
+
+        if (post.getPostFile() == null) { //원래 post에 이미지가 없었을 경우
+            imgUrl = s3Service.uploadImg(file);
+        } else { //이미지가 원래 있었을 경우
+            imgUrl = s3Service.updateImg(file, post.getPostFile());
+        }
+
+        Post updatedPost = postService.update(postId, request, imgUrl);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(updatedPost);
     }

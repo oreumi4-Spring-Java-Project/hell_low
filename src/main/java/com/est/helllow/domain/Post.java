@@ -1,6 +1,7 @@
 package com.est.helllow.domain;
 
 import com.est.helllow.config.BaseTimeEntity;
+import com.est.helllow.domain.dto.PostRequestDto;
 import com.est.helllow.domain.dto.PostResponseDto;
 import com.est.helllow.utils.IdGenerator;
 import jakarta.persistence.*;
@@ -70,9 +71,11 @@ public class Post extends BaseTimeEntity {
                 .build();
     }
 
-    public void update(String title, String content) {
-        this.postTitle = title;
-        this.postContent = content;
+    public void update(PostRequestDto request, String imgUrl) {
+        this.category = request.getCategory();
+        this.postTitle = request.getPostTitle();
+        this.postContent = request.getPostContent();
+        this.postFile = imgUrl;
     }
 
     public int incLikeCount() {
