@@ -6,34 +6,30 @@ import com.est.helllow.domain.dto.PostRes;
 import com.est.helllow.domain.dto.PostResponseDto;
 
 import com.est.helllow.domain.dto.PostSearchCondition;
-import com.est.helllow.dto.ResponseDTO;
 import com.est.helllow.exception.BaseException;
 import com.est.helllow.exception.BaseExceptionCode;
 import com.est.helllow.exception.BaseResponse;
-import com.est.helllow.service.LikePostService;
-import com.est.helllow.service.PostService;
-import com.est.helllow.service.ReplyService;
-import com.est.helllow.service.S3Service;
+import com.est.helllow.service.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class PostController {
     PostService postService;
     S3Service s3Service;
     ReplyService replyService;
-
+    UserGradeService userGradeService;
     LikePostService likePostService;
 
-    public PostController(PostService postService, S3Service s3Service, ReplyService replyService, LikePostService likePostService) {
+    public PostController(PostService postService, S3Service s3Service, ReplyService replyService, LikePostService likePostService,UserGradeService userGradeService) {
         this.likePostService=likePostService;
         this.postService = postService;
         this.s3Service = s3Service;
         this.replyService = replyService;
+        this.userGradeService=userGradeService;
     }
 
     /**
@@ -49,11 +45,12 @@ public class PostController {
         try {
             String imgUrl = s3Service.uploadImg(file);
             Post newPost = postService.savePost(userId, request, imgUrl);
+            userGradeService.upgradeUserGrade(userId);
             return new BaseResponse<>(newPost);
         } catch (IOException exception) {
-            return new BaseResponse(BaseExceptionCode.NOT_EXIST_IMG);
+            return new BaseResponse<>(BaseExceptionCode.NOT_EXIST_IMG);
         } catch (BaseException exception) {
-            return new BaseResponse(exception.getExceptionCode());
+            return new BaseResponse<>(exception.getExceptionCode());
         }
     }
 
