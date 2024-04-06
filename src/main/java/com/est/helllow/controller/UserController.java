@@ -33,13 +33,14 @@ public class UserController {
     }
 
     @PutMapping("api.hell-low.com/user-management/users/{userId}")
-    public ResponseDTO updateMyInfo(@PathVariable String userId, @RequestBody UserResponseDto userResponseDto) {
-        userResponseDto.setUserId(userId);
-        UserResponseDto userResponseDto1 = userService.updateUser(userResponseDto);
-        if (userResponseDto1 != null)
-            return new ResponseDTO("success", "update ok");
-        else
-            return new ResponseDTO("fail", "update fail");
+    public BaseResponse updateMyInfo(@PathVariable String userId, @RequestBody UserResponseDto userResponseDto) {
+        try {
+            userResponseDto.setUserId(userId);
+            UserResponseDto updateUser = userService.updateUser(userResponseDto);
+            return new BaseResponse<>(updateUser);
+        }catch (BaseException exception){
+            return new BaseResponse<>(exception.getExceptionCode());
+        }
     }
 
     @DeleteMapping("api.hell-low.com/user-management/users/{userId}")
@@ -56,7 +57,7 @@ public class UserController {
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getExceptionCode());
         }
-        return new BaseResponse("No User Exist");
+        return new BaseResponse<>(BaseExceptionCode.SUCCESS);
     }
 
 }

@@ -27,17 +27,15 @@ public class UserService {
     }
 
     //작성자 - 김민규, 유저 정보 수정 코드
-    public UserResponseDto updateUser(UserResponseDto userResponseDto) {
-        User user = userRepository.findById(userResponseDto.getUserId()).orElse(null);
-        if (user != null) {
+    public UserResponseDto updateUser(UserResponseDto userResponseDto) throws BaseException {
+        User user = userRepository.findById(userResponseDto.getUserId()).orElseThrow(()->new BaseException(BaseExceptionCode.NOT_INVALID_USER));
+
             /*if (userResponseDto.getUserName() != null) {
                 user.setUserName(userResponseDto.getUserName()); // only name change
             }*/
-            BeanUtils.copyProperties(userResponseDto, user, getNullPropertyNames(userResponseDto));
-            user = userRepository.save(user);
-            return UserResponseDto.toDTO(user);
-        }
-        return null;
+        BeanUtils.copyProperties(userResponseDto, user, getNullPropertyNames(userResponseDto));
+        user = userRepository.save(user);
+        return UserResponseDto.toDTO(user);
     }
 
     // UserDTO에서 값이 있는 프로퍼티 이름 목록 반환
