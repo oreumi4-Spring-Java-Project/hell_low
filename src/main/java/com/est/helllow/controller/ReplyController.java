@@ -64,7 +64,7 @@ public class ReplyController {
                                   @RequestParam(value = "content") ReplyRequestDto replyRequestDto){
         try {
             Reply reply = replyService.replySave(postId,userId,replyRequestDto);
-            userGradeService.upgradeUserGradeBasedOnActivity(userId);
+            userGradeService.upgradeUserGrade(userId);
             ReplyResponseDto response = reply.toResponse();
             return new BaseResponse<>(response);
         }catch (BaseException exception){

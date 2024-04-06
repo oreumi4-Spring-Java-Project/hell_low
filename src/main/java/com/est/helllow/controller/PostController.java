@@ -6,7 +6,6 @@ import com.est.helllow.domain.dto.PostRes;
 import com.est.helllow.domain.dto.PostResponseDto;
 
 import com.est.helllow.domain.dto.PostSearchCondition;
-import com.est.helllow.dto.ResponseDTO;
 import com.est.helllow.exception.BaseException;
 import com.est.helllow.exception.BaseExceptionCode;
 import com.est.helllow.exception.BaseResponse;
@@ -16,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class PostController {
@@ -47,7 +45,7 @@ public class PostController {
         try {
             String imgUrl = s3Service.uploadImg(file);
             Post newPost = postService.savePost(userId, request, imgUrl);
-            userGradeService.upgradeUserGradeBasedOnActivity(userId);
+            userGradeService.upgradeUserGrade(userId);
             return new BaseResponse<>(newPost);
         } catch (IOException exception) {
             return new BaseResponse<>(BaseExceptionCode.NOT_EXIST_IMG);

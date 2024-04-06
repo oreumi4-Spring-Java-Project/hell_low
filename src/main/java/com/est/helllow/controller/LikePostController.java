@@ -5,7 +5,6 @@ import com.est.helllow.exception.BaseResponse;
 import com.est.helllow.service.LikePostService;
 import com.est.helllow.service.UserGradeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +30,7 @@ public class LikePostController {
                                              @PathVariable(name = "userId") String userId) {
         try {
             int likePostCount = likePostService.likePost(postId, userId);
-            userGradeService.upgradeUserGradeBasedOnActivity(userId);
+            userGradeService.upgradeUserGrade(userId);
             return new BaseResponse<>(likePostCount);
         }catch (BaseException exception){
             return new BaseResponse<>(exception.getExceptionCode());
