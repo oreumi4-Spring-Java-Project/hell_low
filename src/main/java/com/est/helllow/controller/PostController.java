@@ -173,4 +173,19 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(postList);
     }
+
+    /**
+     * @param category
+     * @return List<Post> : 검색한 post
+     * @author cjw
+     * category가 일치하는 모든 게시물을 탐색하는 API
+     */
+    @GetMapping("api.hell-low.com/post-management/category/{category}")
+    public ResponseEntity<List<PostResponseDto>> findPostByCategory(@PathVariable(name="category") String category){
+        List<PostResponseDto> postList = postService.findByCategory(category)
+                .stream().map(PostResponseDto::new)
+                .toList();
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(postList);
+    }
 }

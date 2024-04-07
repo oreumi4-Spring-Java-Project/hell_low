@@ -76,4 +76,8 @@ public class PostService {
         return postRepository.findAllByUser_UserId(userId);
     }
 
+    public List<Post> findByCategory(String category){
+        return postRepository.findAllByCategory(category);
+    }
+
 }
