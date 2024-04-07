@@ -11,4 +11,5 @@ public interface PostRepository extends JpaRepository<Post, String>,PostCustomRe
     List<Post> findAllByUser_UserId(String userId);
     Long countAllByUser_userId(String userId);
     void deleteByUser_userId(String userId);
+    List<Post> findAllByCategory(String category);
 }

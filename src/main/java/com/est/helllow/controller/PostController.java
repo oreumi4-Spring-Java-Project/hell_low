@@ -215,4 +215,18 @@ public class PostController {
         return new BaseResponse<>(postList);
     }
 
+    /**
+     * @param category
+     * @return List<Post> : 검색한 post
+     * @author cjw
+     * category가 일치하는 모든 게시물을 탐색하는 API
+     */
+    @GetMapping("api.hell-low.com/post-management/category/{category}")
+    public BaseResponse findPostByCategory(@PathVariable(name="category") String category){
+        List<PostResponseDto> postList = postService.findByCategory(category)
+                .stream().map(PostResponseDto::new)
+                .toList();
+        return new BaseResponse<>(postList);
+    }
+
 }
