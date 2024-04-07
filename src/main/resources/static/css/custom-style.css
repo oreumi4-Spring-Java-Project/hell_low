@@ -1,0 +1,50 @@
+/* src/main/resources/static/css/custom-style.css */
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa; /* 헤더 배경색 */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 10px 0;
+}
+
+.header-content a img {
+    height: 80px; /* 로고 이미지의 높이 조정 */
+}
+
+.search-bar {
+    position: relative;
+    width: 100%; /* 검색 바 너비 */
+    max-width: 500px; /* 최대 너비 설정 */
+}
+
+.search-bar input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+}
+
+.search-bar button {
+    position: absolute;
+    right: 10px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* 검색 아이콘 이미지 스타일 */
+.search-bar img {
+    height: 24px; /* 아이콘 크기 */
+}
+
+/* 추가 이미지 스타일이 필요하다면 여기에 작성 */
+.additional-image {
+    /* 공간 확보를 위해 임시로 설정 */
+    width: 80px;
+    height: 80px;
+    background-color: #ddd; /* 임시 배경색 */
+}

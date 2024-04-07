@@ -49,7 +49,7 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 					() -> registerNewUser(email, name, picture));
 		}
 		this.setAlwaysUseDefaultTargetUrl(true);
-		this.setDefaultTargetUrl("/index.html");
+		this.setDefaultTargetUrl("/postList");
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
 

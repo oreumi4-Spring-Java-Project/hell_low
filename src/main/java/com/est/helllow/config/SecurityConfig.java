@@ -42,7 +42,7 @@ public class SecurityConfig {
 				.cors(cors -> cors.configurationSource(corsConfiguration()))
 				.authorizeHttpRequests(auth -> {
 					//접근 제어
-					auth
+					auth.anyRequest().permitAll();
 //							.requestMatchers(anonymousUserUrl).anonymous()
 //							.requestMatchers(authenticatedUserUrl).authenticated()
 //							//3대 300 관련
@@ -64,7 +64,7 @@ public class SecurityConfig {
 //							.requestMatchers().hasAnyAuthority()
 //							.requestMatchers().hasAnyAuthority()
 //							.requestMatchers().hasAnyAuthority()
-							.anyRequest().authenticated();
+// 							.anyRequest().authenticated();
 				})
 				//로그인 폼
 				.formLogin(httpSecurityFormLoginConfigurer ->
@@ -80,7 +80,7 @@ public class SecurityConfig {
 	@Bean
 	CorsConfigurationSource corsConfiguration() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(List.of("/index.html"));
+		configuration.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:63342"));
 		configuration.addAllowedHeader("*");
 		configuration.addAllowedMethod("*");
 		configuration.setAllowCredentials(true);

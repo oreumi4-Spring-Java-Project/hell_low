@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Header Bar</title>
+  <style>
+    /* 사이드바 스타일 */
+    .sidebar {
+      background-color: #C35B5B; /* 사진에서의 배경색 */
+      color: white; /* 흰색 텍스트 */
+      width: 250px; /* 사이드바 너비 */
+      height: 100vh; /* 전체 뷰포트 높이 */
+      padding: 20px; /* 안쪽 여백 */
+      box-sizing: border-box; /* 패딩을 포함한 너비 */
+      font-family: 'Arial', sans-serif; /* 기본 폰트 설정 */
+    }
+
+    /* 프로필 이미지와 이름이 포함된 상단 부분 스타일 */
+    .profile {
+      text-align: center; /* 중앙 정렬 */
+      border-bottom: 2px solid white; /* 하단 테두리 */
+      padding-bottom: 20px; /* 테두리와 내용 사이의 여백 */
+    }
+
+    .profile-image {
+      margin: 20px 0; /* 상하 여백 */
+      border: 5px solid white; /* 이미지 주변의 흰색 테두리 */
+      display: inline-block; /* 이미지를 인라인 블록으로 설정 */
+      border-radius: 50%; /* 이미지를 원형으로 만듦 */
+      overflow: hidden; /* 이미지가 원형을 벗어나지 않도록 설정 */
+    }
+
+    .profile-image img {
+      width: 80px; /* 이미지 크기 */
+      height: 80px; /* 이미지 크기 */
+    }
+
+    .kakao-image img {
+      width: 220px; /* 이미지 크기 */
+      height: 60px; /* 이미지 크기 */
+    }
+
+    .user-info {
+      margin: 10px 0; /* 상하 여백 */
+    }
+
+    .user-info h3 {
+      margin: 0; /* 마진 제거 */
+      font-weight: bold; /* 글자 굵게 */
+    }
+
+    .user-info p {
+      margin: 0; /* 마진 제거 */
+      font-size: 0.8em; /* 작은 폰트 크기 */
+    }
+
+    /* 네비게이션 메뉴 스타일 */
+    .navigation-menu {
+      list-style-type: none; /* 기본 목록 스타일 제거 */
+      padding: 0; /* 기본 패딩 제거 */
+      margin-top: 20px; /* 상단 여백 */
+    }
+
+    .navigation-menu .menu-item {
+      display: block; /* 각 메뉴 항목을 블록 요소로 만듦 */
+      padding: 10px; /* 클릭 영역 확대 */
+      color: white; /* 흰색 텍스트 */
+      text-decoration: none; /* 링크 밑줄 제거 */
+      margin: 10px 0; /* 메뉴 항목 사이의 여백 */
+      border-bottom: 1px solid white; /* 하단 테두리 */
+    }
+
+    .menu-item:hover {
+      background-color: #f1c40f; /* 호버 시 배경색 변경 */
+      color: #c0392b; /* 호버 시 텍스트 색상 변경 */
+      transition: background-color 0.3s, color 0.3s; /* 부드러운 색상 전환 */
+    }
+
+    .navigation-menu div {
+      text-align: center; /* 텍스트를 가운데로 정렬 */
+      margin: 10px 0; /* 상단과 하단에 마진을 추가하여 공간을 만듦 */
+      padding: 10px 0; /* 내용과 테두리 사이에 패딩을 추가 */
+      border-bottom: 1px solid #7f8c8d; /* 하단에 경계선 추가 */
+      font-weight: bold; /* 글자 굵게 만듦 */
+      font-size: 1.1em; /* 글자 크기를 조금 더 크게 설정 */
+    }
+
+    .navigation-menu a.menu-item {
+      display: block; /* 메뉴 항목을 블록 레벨 요소로 만듦 */
+      padding: 10px 0; /* 패딩을 조정 */
+      /* 기타 스타일은 이전에 설정한 대로 유지 */
+    }
+
+
+    .menu-item img {
+      width: 24px; /* 이미지 크기 설정 */
+      height: 24px; /* 이미지 크기 설정 */
+      margin-right: 10px; /* 이미지와 텍스트 사이의 여백 */
+    }
+
+    /* 기타 필요한 스타일... */
+
+  </style>
+</head>
+<body>
+
+<!-- 헤더 바 정의 -->
+<div th:fragment="header-bar">
+  <!-- 헤더 내용... -->
+</div>
+
+<!-- 사이드바 시작 -->
+<div class="sidebar">
+  <div class="user-info">
+    <h3>HELL LOW</h3>
+    <p>HEALTH COMMUNITY</p>
+  </div>
+  <!-- 프로필 섹션 -->
+  <div class="profile">
+    <!-- 사용자 프로필 이미지 -->
+    <div class="profile-image">
+      <img src="../static/images/logo.png" alt="User Profile">
+    </div>
+    <a href="http://localhost:8080/login" class="kakao-image">
+      <img src="../static/images/kakao.png" alt="User Profile">
+    </a>
+    <!-- 사용자 정보 표시 -->
+  </div>
+
+  <!-- 네비게이션 메뉴 -->
+  <nav class="navigation-menu">
+    <div>게시판</div>
+    <a href="../templates/list.html" class="menu-item">
+      <img src="../static/images/book.png" alt="Image Description" style="margin-right: 8px;">
+      몰아보기
+    </a>
+    <div>양도</div>
+    <a href="/give" class="menu-item">
+      <img src="../static/images/book.png" alt="Image Description" style="margin-right: 8px;">
+      나 대신 운동할 사람
+    </a>
+    <div>사진 공유</div>
+    <a href="/food" class="menu-item">
+      <img src="../static/images/book.png" alt="Image Description" style="margin-right: 8px;">
+      제대로 챙겨먹었냐?
+    </a>
+    <a href="/picture" class="menu-item">
+      <img src="../static/images/book.png" alt="Image Description" style="margin-right: 8px;">
+      몸이 왜 그래?
+    </a>
+    <!-- 기타 메뉴 항목 -->
+  </nav>
+</div>
+<!-- 사이드바 끝 -->
+
+<!-- 페이지의 주요 내용 -->
+<div class="content">
+  <!-- 여기에 페이지 본문의 내용이 들어갑니다. -->
+</div>
+
+</body>
+</html>

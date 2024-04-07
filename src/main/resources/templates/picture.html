@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Header Bar</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <!-- 내부 CSS -->
+    <style>
+        /* 모든 요소의 기본 마진과 패딩을 제거합니다 */
+        html, body, header {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* body와 html에 대한 기본 스타일 */
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: Arial, sans-serif; /* 원하는 폰트로 변경 가능 */
+        }
+
+        /* 헤더 바 스타일 */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #F0F0F0;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* 그림자 효과 추가 */
+        }
+
+        /* 로고 스타일 */
+        .logo {
+            font-size: 24px;
+            color: #333;
+        }
+
+        /* 검색창 스타일 */
+        .search-bar input[type="search"] {
+            padding: 5px 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-right: none; /* 검색 버튼과 연결되는 테두리 제거 */
+        }
+
+        /* 검색 아이콘 버튼 스타일 */
+        .search-icon {
+            padding: 5px 10px;
+            font-size: 16px;
+            background: #ddd;
+            border: 2px solid #ddd;
+            cursor: pointer;
+
+        }
+
+        /* 로고와 이미지를 감싸는 컨테이너 스타일 */
+        .logo-container {
+            display: flex; /* Flexbox를 사용하여 요소들을 가로로 배치 */
+            align-items: center; /* 로고와 이미지를 수직 중앙 정렬 */
+        }
+
+        .logo-image {
+            height: 35px; /* 이미지의 높이를 설정하여 크기를 줄임 */
+            width: auto; /* 이미지의 너비를 자동으로 조절하여 비율 유지 */
+            margin-right: 10px; /* 로고 텍스트와의 여백을 설정 */
+        }
+
+        .logo-text {
+            font-size: 24px;
+            color: #333;
+            margin: 0; /* 여백을 없애기 위해 마진을 0으로 설정 */
+        }
+
+        .sidebar {
+            background-color: #C35B5B; /* 사진에서의 배경색 */
+            color: white; /* 흰색 텍스트 */
+            width: 250px; /* 사이드바 너비 */
+            height: 100vh; /* 전체 뷰포트 높이 */
+            padding: 20px; /* 안쪽 여백 */
+            box-sizing: border-box; /* 패딩을 포함한 너비 */
+            font-family: 'Arial', sans-serif; /* 기본 폰트 설정 */
+        }
+
+        /* 프로필 이미지와 이름이 포함된 상단 부분 스타일 */
+        .profile {
+            text-align: center; /* 중앙 정렬 */
+            border-bottom: 2px solid white; /* 하단 테두리 */
+            padding-bottom: 20px; /* 테두리와 내용 사이의 여백 */
+        }
+
+        .profile-image {
+            margin: 20px 0; /* 상하 여백 */
+            border: 5px solid white; /* 이미지 주변의 흰색 테두리 */
+            display: inline-block; /* 이미지를 인라인 블록으로 설정 */
+            border-radius: 50%; /* 이미지를 원형으로 만듦 */
+            overflow: hidden; /* 이미지가 원형을 벗어나지 않도록 설정 */
+        }
+
+        .profile-image img {
+            width: 80px; /* 이미지 크기 */
+            height: 80px; /* 이미지 크기 */
+        }
+
+        .kakao-image img {
+            width: 220px; /* 이미지 크기 */
+            height: 60px; /* 이미지 크기 */
+        }
+
+        .user-info {
+            margin: 10px 0; /* 상하 여백 */
+        }
+
+        .user-info h3 {
+            margin: 0; /* 마진 제거 */
+            font-weight: bold; /* 글자 굵게 */
+        }
+
+        .user-info p {
+            margin: 0; /* 마진 제거 */
+            font-size: 0.8em; /* 작은 폰트 크기 */
+        }
+
+        /* 네비게이션 메뉴 스타일 */
+        .navigation-menu {
+            list-style-type: none; /* 기본 목록 스타일 제거 */
+            padding: 0; /* 기본 패딩 제거 */
+            margin-top: 20px; /* 상단 여   백 */
+        }
+
+        .navigation-menu .menu-item {
+            display: block; /* 각 메뉴 항목을 블록 요소로 만듦 */
+            padding: 10px; /* 클릭 영역 확대 */
+            color: white; /* 흰색 텍스트 */
+            text-decoration: none; /* 링크 밑줄 제거 */
+            margin: 10px 0; /* 메뉴 항목 사이의 여백 */
+            border-bottom: 1px solid white; /* 하단 테두리 */
+        }
+
+        .menu-item:hover {
+            transition: background-color 0.3s, color 0.3s; /* 부드러운 색상 전환 */
+        }
+
+        .navigation-menu div {
+            text-align: center; /* 텍스트를 가운데로 정렬 */
+            margin: 10px 0; /* 상단과 하단에 마진을 추가하여 공간을 만듦 */
+            padding: 10px 0; /* 내용과 테두리 사이에 패딩을 추가 */
+            border-bottom: 1px solid #7f8c8d; /* 하단에 경계선 추가 */
+            font-weight: bold; /* 글자 굵게 만듦 */
+            font-size: 1.1em; /* 글자 크기를 조금 더 크게 설정 */
+        }
+
+        .navigation-menu a.menu-item {
+            display: block; /* 메뉴 항목을 블록 레벨 요소로 만듦 */
+            padding: 10px 0; /* 패딩을 조정 */
+            /* 기타 스타일은 이전에 설정한 대로 유지 */
+        }
+
+
+        .menu-item img {
+            width: 24px; /* 이미지 크기 설정 */
+            height: 24px; /* 이미지 크기 설정 */
+            margin-right: 10px; /* 이미지와 텍스트 사이의 여백 */
+        }
+
+        .page-container {
+            display: flex;
+            flex-direction: row; /* 가로 방향으로 요소를 정렬 */
+            /*width: 100%; !* 전체 너비를 사용 *!*/
+        }
+
+        .main-content {
+            flex: 1; /* 사용 가능한 공간을 균등하게 차지 */
+            padding: 10px; /* 내부 여백 */
+        }
+
+        .sub-content {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;/* 세로 방향으로 내부 요소를 정렬 */
+        }
+
+        .top-content, .bottom-content {
+            flex: 1; /* 사용 가능한 공간을 균등하게 차지 */
+        }
+
+        .top-content {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .bottom-content {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .post {
+            display: flex; /* 가로로 내부 아이템들을 정렬 */
+        }
+
+        .post-col {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;/* This stacks .post-card-body-image, h6, and h6 vertically */
+        }
+
+        .post-card-body-image {
+            width: 160px; /* Ensures the image takes up the full width of its container */
+            max-width: 220px; /* Limits the image size */
+            height: 220px; /* Maintains aspect ratio */
+            margin-bottom: 0.5rem;
+            border-radius: 10px;/* Space between image and text */
+        }
+
+        .custom-link {
+            color: inherit; /* 링크 색상을 상위 요소로부터 상속받습니다 */
+            text-decoration: none; /* 밑줄 없애기 */
+        }
+
+        .post-line {
+            border-bottom: 1px solid #ccc; /* 하단에 회색 테두리 추가 */
+            padding-bottom: 5px; /* 내용과 테두리 사이 간격 추가 */
+            margin-bottom: 10px; /* 다음 요소와 간격 추가 */
+        }
+
+        .post-card-body {
+            display: flex;
+            align-items: center; /* 세로 정렬 */
+            justify-content: space-between; /* 요소들 사이에 공간을 균일하게 분배 */
+            min-height: 10px; /* 최소 높이 설정 */
+
+        }
+        .board Profile{
+            width: 30px;
+        }
+
+
+
+
+
+        /* 기타 필요한 스타일... */
+
+
+
+    </style>
+</head>
+<body>
+
+
+<!-- 헤더 바 정의 -->
+<div th:fragment="header-bar">
+    <header>
+        <!-- 로고 -->
+        <div class="logo-container">
+            <!-- 이미지 추가 -->
+            <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/mainpage.png" alt="Main Page Logo" class="logo-image">
+            <!-- 로고 텍스트 -->
+            <div class="logo-text">HELL LOW</div>
+        </div>
+
+        <!-- 검색창 -->
+        <div class="search-bar">
+            <form action="http://localhost:8080/post-management/posts-search" method="get">
+                <input type="search" name="searchText" placeholder="원하시는 내용을 입력하세요.">
+                <button type="submit" class="search-icon">?</button>
+            </form>
+        </div>
+    </header>
+</div>
+
+<div class="page-container">
+
+    <!-- 사이드바 시작 -->
+    <div class="sidebar">
+        <div class="user-info">
+            <h3>HELL LOW</h3>
+            <p>HEALTH COMMUNITY</p>
+        </div>
+        <!-- 프로필 섹션 -->
+        <div class="profile">
+            <!-- 사용자 프로필 이미지 -->
+            <div class="profile-image">
+                <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/logo.png" alt="User Profile">
+            </div>
+            <a href="http://localhost:8080/login" class="kakao-image">
+                <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/kakao.png" alt="User Profile">
+            </a>
+            <a href="/post" class="board-image">
+                <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/%EC%B9%B4%ED%8E%98%EA%B8%80%EC%93%B0%EA%B8%B0.png"  width="230" alt="board Profile">
+            </a>
+            <!-- 사용자 정보 표시 -->
+        </div>
+
+
+
+        <!-- 네비게이션 메뉴 -->
+        <nav class="navigation-menu">
+            <div>게시판</div>
+            <a href="/postListAll" class="menu-item">
+                <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/book.png" alt="Image Description" style="margin-right: 8px;">
+                몰아보기
+            </a>
+            <div>양도</div>
+            <a href="/postListGive" class="menu-item">
+                <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/book.png" alt="Image Description" style="margin-right: 8px;">
+                나 대신 운동할 사람
+            </a>
+            <div>사진 공유</div>
+            <a href="/postListFood" class="menu-item">
+                <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/book.png" alt="Image Description" style="margin-right: 8px;">
+                제대로 챙겨먹었냐?
+            </a>
+            <a href="/postListPicture" class="menu-item">
+                <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/book.png" alt="Image Description" style="margin-right: 8px;">
+                몸이 왜 그래?
+            </a>
+            <!-- 기타 메뉴 항목 -->
+        </nav>
+    </div>
+    <!-- 사이드바 끝 -->
+
+
+    <h4><a th:href="picture" class="custom-link">몸이 왜 그래?</a></h4>
+    <div class="bottom-content">
+        <div class="row-6" th:each="post, iterStat : ${postList.subList(0, 4)}">
+            <div class="post">
+                <div class="post-col">
+                    <img class="post-card-body-image" th:src="${post.postFile}" alt="Profile Image" />
+                    <h6 class="post-card-body">
+                        <a th:href="@{'/list/' + ${post.postId}}" th:text="${post.postTitle}" class="custom-link"></a>
+                    </h6>
+                    <h6 class="post-card-body">
+                        <span th:text="'좋아요: ' + ${post.likeCounts}"></span>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+</body>
+</html>

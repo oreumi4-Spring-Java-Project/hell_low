@@ -54,7 +54,7 @@ public class PostController {
      * @return List<PostResponseDto> : 등록된 모든 post
      * @author cjw
      */
-    @GetMapping("api.hell-low.com/post-management/posts")
+    @GetMapping("/api.hell-low.com/post-management/posts")
     public BaseResponse findAllPosts() {
         List<PostResponseDto> postList = postService.findAll()
                 .stream().map(PostResponseDto::new)
@@ -133,7 +133,7 @@ public class PostController {
      * @return postRes : 검색한 post
      * @author lsh
      */
-    @GetMapping("api.hell-low.com/post-management/posts/{id}")
+    @GetMapping("/post-management/posts/{id}")
     public BaseResponse getPost(@PathVariable(name = "id") String postId) {
         try {
             PostRes postRes = postService.getPost(postId);
