@@ -8,6 +8,7 @@ import com.est.helllow.domain.dto.ReplyResponseDto;
 import com.est.helllow.exception.BaseException;
 import com.est.helllow.exception.BaseResponse;
 import com.est.helllow.service.ReplyService;
+import com.est.helllow.service.UserGradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +18,11 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+
 public class ReplyController {
 
     private final ReplyService replyService;
+    private final UserGradeService userGradeService;
 
     //LSH
 
@@ -61,6 +64,7 @@ public class ReplyController {
                                   @RequestParam(value = "content") ReplyRequestDto replyRequestDto){
         try {
             Reply reply = replyService.replySave(postId,userId,replyRequestDto);
+            userGradeService.upgradeUserGrade(userId);
             ReplyResponseDto response = reply.toResponse();
             return new BaseResponse<>(response);
         }catch (BaseException exception){
@@ -122,6 +126,7 @@ public class ReplyController {
      * @author kmg
      */
     @GetMapping("api.hell-low.com/comment-management/users/{id}/count")
+    @ResponseBody
     public BaseResponse mypostcount(@PathVariable(name = "id") String userId) {
         Long postCount = replyService.getReplyCountByUserId(userId);
         return new BaseResponse(postCount);
@@ -135,6 +140,7 @@ public class ReplyController {
      * @author kmg
      */
     @GetMapping("api.hell-low.com/comment-management/users/{id}")
+    @ResponseBody
     public BaseResponse getMyReplys(@PathVariable(name = "id") String userId) {
         List<ReplyResponseDto> replyList = replyService.getMyReplys(userId)
                 .stream().map(ReplyResponseDto::new)

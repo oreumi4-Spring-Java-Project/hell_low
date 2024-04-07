@@ -13,4 +13,6 @@ public interface ReplyRepository extends JpaRepository<Reply, String> {
       List<Reply> findAllByUser_UserId(String userId);
       List<Reply> findByPost_PostId(String postId);
       Long countAllByUser_userId(String userId);
+      void deleteByPost_PostId(String postId);
+      void deleteByUser_UserId(String userId);
 }

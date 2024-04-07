@@ -9,8 +9,7 @@ import com.est.helllow.domain.dto.PostSearchCondition;
 import com.est.helllow.exception.BaseException;
 import com.est.helllow.exception.BaseExceptionCode;
 import com.est.helllow.exception.BaseResponse;
-import com.est.helllow.service.PostService;
-import com.est.helllow.service.S3Service;
+import com.est.helllow.service.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,10 +20,16 @@ import java.util.List;
 public class PostController {
     PostService postService;
     S3Service s3Service;
+    ReplyService replyService;
+    UserGradeService userGradeService;
+    LikePostService likePostService;
 
-    public PostController(PostService postService, S3Service s3Service) {
+    public PostController(PostService postService, S3Service s3Service, ReplyService replyService, LikePostService likePostService,UserGradeService userGradeService) {
+        this.likePostService=likePostService;
         this.postService = postService;
         this.s3Service = s3Service;
+        this.replyService = replyService;
+        this.userGradeService=userGradeService;
     }
 
     /**
@@ -33,18 +38,19 @@ public class PostController {
      * @return PostResponseDto : 등록한 post
      * @author cjw
      */
-    @PostMapping("api.hell-low.com/post-management/users/{id}")
-    public BaseResponse addPost(@PathVariable(name = "id") String userId,
+    @PostMapping("api.hell-low.com/post-management/{userId}")
+    public BaseResponse addPost(@PathVariable(name = "userId") String userId,
                                 @RequestPart(value = "postRequest") PostRequestDto request,
                                 @RequestPart(value = "img", required = false) MultipartFile file) {
         try {
             String imgUrl = s3Service.uploadImg(file);
             Post newPost = postService.savePost(userId, request, imgUrl);
+            userGradeService.upgradeUserGrade(userId);
             return new BaseResponse<>(newPost);
         } catch (IOException exception) {
-            return new BaseResponse(BaseExceptionCode.NOT_EXIST_IMG);
+            return new BaseResponse<>(BaseExceptionCode.NOT_EXIST_IMG);
         } catch (BaseException exception) {
-            return new BaseResponse(exception.getExceptionCode());
+            return new BaseResponse<>(exception.getExceptionCode());
         }
     }
 
@@ -59,7 +65,7 @@ public class PostController {
         List<PostResponseDto> postList = postService.findAll()
                 .stream().map(PostResponseDto::new)
                 .toList();
-        return new BaseResponse(postList);
+        return new BaseResponse<>(postList);
     }
 
     /**
@@ -68,10 +74,20 @@ public class PostController {
      * @return void
      * @author cjw
      */
-    @DeleteMapping("api.hell-low.com/post-management/posts/{id}")
-    public BaseResponse deletePost(@PathVariable(name = "id") String postId) {
+    @DeleteMapping("api.hell-low.com/post-management/{userId}/{postId}")
+    public BaseResponse deletePost(@PathVariable(name = "userId") String userId,
+                                   @PathVariable(name = "postId") String postId) {
         try {
-            postService.delete(postId);
+            //댓글리스트 삭제
+            replyService.deleteCommentByPostId(postId);
+            //좋아요 삭제
+            likePostService.deleteLikeByPostId(postId);
+
+            PostResponseDto post = postService.findById(postId).toResponse();
+            if(post.getPostFile() != null){
+                s3Service.deleteImg(post.getPostFile());
+            }
+            postService.delete(postId,userId);
             return new BaseResponse<>(postId + "번 게시물이 삭제되었습니다");
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getExceptionCode());
@@ -84,10 +100,22 @@ public class PostController {
      * @return Post : 수정한 post
      * @author cjw
      */
-    @PutMapping("api.hell-low.com/post-management/posts/{id}")
-    public BaseResponse updatePost(@PathVariable(name = "id") String postId, @RequestBody PostRequestDto request) {
+    @PutMapping("api.hell-low.com/post-management/{userId}/{postId}")
+    public BaseResponse updatePost(@PathVariable(name = "userId") String userId,
+                                   @PathVariable(name = "postId") String postId,
+                                   @RequestPart(value = "postRequest") PostRequestDto request,
+                                   @RequestPart(value = "img", required = false) MultipartFile file) throws IOException{
         try {
-            Post updatedPost = postService.update(postId, request);
+            PostResponseDto post = postService.findById(postId).toResponse();
+            String imgUrl = null;
+
+            if (post.getPostFile() == null) { //원래 post에 이미지가 없었을 경우
+                imgUrl = s3Service.uploadImg(file);
+            } else { //이미지가 원래 있었을 경우
+                imgUrl = s3Service.updateImg(file, post.getPostFile());
+            }
+
+            Post updatedPost = postService.update(postId, request, imgUrl, userId);
             PostResponseDto response = updatedPost.toResponse();
             return new BaseResponse<>(response);
         } catch (BaseException exception) {
@@ -113,7 +141,7 @@ public class PostController {
 
 //    /**
 //     * @author cjw
-//     * 특정 게시물을 반환하는 API
+//     * 특정 게시물정보만 반환하는 API
 //     *
 //     * @return PostResponseDto : 특정 postId의 post
 //     */
@@ -146,7 +174,7 @@ public class PostController {
     /**
      * 게시물 검색 기능 API
      *
-     * @return List<Post> : 검색한 post
+     * @return List<PostResponseDto> : 검색한 post
      * @author lsh
      * 테스트 위한 구조 , 이후 변경 예정
      */
@@ -168,19 +196,34 @@ public class PostController {
     @GetMapping("api.hell-low.com/post-management/users/{id}/count")
     public BaseResponse mypostcount(@PathVariable(name = "id") String userId) {
         Long postCount = postService.getPostCountByUserId(userId);
-        return new BaseResponse(postCount);
+        return new BaseResponse<>(postCount);
     }
 
     /**
      * userId가 일치하는 모든 게시물을 탐색하는 API
      *
      * @param userId
-     * @return List<Post> : 검색한 post
+     * @return List<PostResponseDto> : 검색한 post
      * @author kmg
      */
+
     @GetMapping("api.hell-low.com/post-management/users/{id}")
     public BaseResponse getMyPosts(@PathVariable(name = "id") String userId) {
         List<PostResponseDto> postList = postService.getMyPosts(userId)
+                .stream().map(PostResponseDto::new)
+                .toList();
+        return new BaseResponse<>(postList);
+    }
+
+    /**
+     * @param category
+     * @return List<Post> : 검색한 post
+     * @author cjw
+     * category가 일치하는 모든 게시물을 탐색하는 API
+     */
+    @GetMapping("api.hell-low.com/post-management/category/{category}")
+    public BaseResponse findPostByCategory(@PathVariable(name="category") String category){
+        List<PostResponseDto> postList = postService.findByCategory(category)
                 .stream().map(PostResponseDto::new)
                 .toList();
         return new BaseResponse<>(postList);

@@ -1,6 +1,7 @@
 package com.est.helllow.domain;
 
 import com.est.helllow.config.BaseTimeEntity;
+import com.est.helllow.domain.dto.PostRequestDto;
 import com.est.helllow.domain.dto.PostResponseDto;
 import com.est.helllow.utils.IdGenerator;
 import jakarta.persistence.*;
@@ -28,20 +29,20 @@ public class Post extends BaseTimeEntity {
     }
 
     @Id
-    @Column(name = "POST_ID", updatable = false)
+    @Column(name = "POST_ID", updatable = false,length = 100)
     private String postId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @Column(name = "CATEGORY", nullable = false)
+    @Column(name = "CATEGORY", nullable = false,length = 20)
     private String category;
 
-    @Column(name = "POST_TITLE", nullable = false)
+    @Column(name = "POST_TITLE", nullable = false,length = 50)
     private String postTitle;
 
-    @Column(name = "POST_CONTENT", nullable = false)
+    @Column(name = "POST_CONTENT", nullable = false,length = 3000)
     private String postContent;
 
     @Column(name = "LIKE_COUNTS")
@@ -52,6 +53,8 @@ public class Post extends BaseTimeEntity {
 
     @Column(name = "POST_FILE")
     private String postFile;
+
+
 
     public PostResponseDto toResponse() {
         return PostResponseDto.builder()
@@ -66,9 +69,11 @@ public class Post extends BaseTimeEntity {
                 .build();
     }
 
-    public void update(String title, String content) {
-        this.postTitle = title;
-        this.postContent = content;
+    public void update(PostRequestDto request, String imgUrl) {
+        this.category = request.getCategory();
+        this.postTitle = request.getPostTitle();
+        this.postContent = request.getPostContent();
+        this.postFile = imgUrl;
     }
 
     public int incLikeCount() {

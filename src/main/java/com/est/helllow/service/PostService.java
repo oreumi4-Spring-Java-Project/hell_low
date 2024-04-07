@@ -64,20 +64,40 @@ public class PostService {
     }
 
     //게시물 삭제 - CJW
-    public void delete(String id) throws BaseException {
-        // 게시물 존재 여부 체크
-        postRepository.findById(id).orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
-        // 게시물 작성자 여부(이후 로그인 로직 반영 시 추가)
+    public void delete(String postId,String userId) throws BaseException {
+        Post findPost = postRepository.findById(postId).orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
 
-        postRepository.deleteById(id);
+        // 게시물 존재 여부 체크
+        if(findPost.getPostId()==null){
+            throw new BaseException(BaseExceptionCode.NOT_EXIST_POST);
+        }
+
+        // 게시물 작성자 여부(이후 로그인 로직 반영 시 추가)
+        if(!findPost.getUser().getUserId().equals(userId)){
+            throw new BaseException(BaseExceptionCode.NOT_INVALID_USER);
+        }
+
+
+
+        postRepository.deleteById(postId);
     }
 
     //게시물 수정 - CJW
     @Transactional
-    public Post update(String id, PostRequestDto request) throws BaseException {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
-        post.update(request.getPostTitle(), request.getPostContent());
+    public Post update(String postId, PostRequestDto request, String imgUrl,String userId) throws BaseException {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
+
+        // 게시물 존재 여부 체크
+        if(post.getPostId()==null){
+            throw new BaseException(BaseExceptionCode.NOT_EXIST_POST);
+        }
+
+        // 게시물 작성자 여부(이후 로그인 로직 반영 시 추가)
+        if(!post.getUser().getUserId().equals(userId)){
+            throw new BaseException(BaseExceptionCode.NOT_INVALID_USER);
+        }
+
+        post.update(request, imgUrl);
         return post;
     }
 
@@ -96,5 +116,14 @@ public class PostService {
     //user가 작성한 post 정보 - KMG
     public List<Post> getMyPosts(String userId) {
         return postRepository.findAllByUser_UserId(userId);
+    }
+
+    //user가 작성한 post 삭제
+    public void deletePostByUserId(String userId){
+        postRepository.deleteByUser_userId(userId);
+    }
+
+    public List<Post> findByCategory(String category){
+        return postRepository.findAllByCategory(category);
     }
 }

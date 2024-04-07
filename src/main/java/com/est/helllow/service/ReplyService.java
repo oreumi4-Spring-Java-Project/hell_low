@@ -42,6 +42,15 @@ public class ReplyService {
 //    }
 
     @Transactional
+    public void deleteCommentByPostId(String postId){
+        replyRepository.deleteByPost_PostId(postId);
+    }
+    @Transactional
+    public void deleteCommentsByUserId(String userId) {
+        replyRepository.deleteByUser_UserId(userId);
+    }
+
+    @Transactional
     public Reply replySave(String postId, String userId, ReplyRequestDto replyRequestDto) throws BaseException {
         Post post = postRepository.findById(postId).orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_EXIST_POST));
         User user = userRepository.findById(userId).orElseThrow(() -> new BaseException(BaseExceptionCode.NOT_INVALID_USER));
