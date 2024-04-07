@@ -122,4 +122,8 @@ public class PostService {
     public void deletePostByUserId(String userId){
         postRepository.deleteByUser_userId(userId);
     }
+
+    public List<Post> findByCategory(String category){
+        return postRepository.findAllByCategory(category);
+    }
 }
