@@ -96,7 +96,7 @@
 
 <div class="section">
   <h2 class="section-title">🚀  배포 주소</h2>
-  <a href="" class="member-github">HELL-LOW</a>
+  <a href="http://3.39.8.24:8080/postList" class="member-github">HELL-LOW</a>
 </div>
 </body>
 </html>
