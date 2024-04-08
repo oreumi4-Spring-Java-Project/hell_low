@@ -168,33 +168,21 @@
             /*width: 100%; !* 전체 너비를 사용 *!*/
         }
 
-        .main-content {
-            flex: 1; /* 사용 가능한 공간을 균등하게 차지 */
-            padding: 10px; /* 내부 여백 */
-        }
-
-        .sub-content {
-            display: flex;
-            flex-direction: column;
-            padding: 10px;/* 세로 방향으로 내부 요소를 정렬 */
-        }
-
         .top-content, .bottom-content {
+            margin-top: 20px;
+            margin-left: 150px;
             flex: 1; /* 사용 가능한 공간을 균등하게 차지 */
         }
 
         .top-content {
             display: flex;
             flex-direction: row;
-        }
-
-        .bottom-content {
-            display: flex;
-            flex-direction: row;
-        }
+          }
 
         .post {
             display: flex; /* 가로로 내부 아이템들을 정렬 */
+            margin-top: 20px;
+            margin-left: 50px;
         }
 
         .post-col {
@@ -247,12 +235,14 @@
 <div th:fragment="header-bar">
     <header>
         <!-- 로고 -->
+        <a href="/postList" class="logo-image">
         <div class="logo-container">
             <!-- 이미지 추가 -->
             <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/mainpage.png" alt="Main Page Logo" class="logo-image">
             <!-- 로고 텍스트 -->
             <div class="logo-text">HELL LOW</div>
         </div>
+        </a>
 
         <!-- 검색창 -->
         <div class="search-bar">
@@ -312,10 +302,10 @@
         </nav>
     </div>
     <!-- 사이드바 끝 -->
-
+    <div class="main-content">
     <h4><a th:href="food" class="custom-link">제대로 챙겨 먹었냐</a></h4>
     <div class="top-content">
-        <div class="row-6" th:each="post, iterStat : ${postList.subList(0, 4)}">
+        <div th:each="post : ${postList}">
             <div class="post">
                 <div class="post-col">
                     <img class="post-card-body-image" th:src="${post.postFile}" alt="Profile Image" />
@@ -328,6 +318,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 

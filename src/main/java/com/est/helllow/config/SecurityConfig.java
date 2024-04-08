@@ -40,32 +40,11 @@ public class SecurityConfig {
 		return  http
 				.csrf(AbstractHttpConfigurer::disable)
 				.cors(cors -> cors.configurationSource(corsConfiguration()))
-				.authorizeHttpRequests(auth -> {
-					//접근 제어
-					auth.anyRequest().permitAll();
-//							.requestMatchers(anonymousUserUrl).anonymous()
-//							.requestMatchers(authenticatedUserUrl).authenticated()
-//							//3대 300 관련
-//							.requestMatchers().hasAnyAuthority()
-//							.requestMatchers().hasAnyAuthority()
-//							.requestMatchers().hasAnyAuthority()
-//							.requestMatchers().hasAnyAuthority()
-//							//3대 400 관련
-//							.requestMatchers().hasAnyAuthority()
-//							.requestMatchers().hasAnyAuthority()
-//							.requestMatchers().hasAnyAuthority()
-//							.requestMatchers().hasAnyAuthority()
-//							//3대 500 관련
-//							.requestMatchers("/hand-over").hasAnyAuthority("SBD_400","SBD_500")
-//							.requestMatchers().hasAnyAuthority()
-//							.requestMatchers().hasAnyAuthority()
-//							// 관리자 권한 (ADMIN)
-//							.requestMatchers().hasAuthority("ROLE_ADMIN")
-//							.requestMatchers().hasAnyAuthority()
-//							.requestMatchers().hasAnyAuthority()
-//							.requestMatchers().hasAnyAuthority()
-// 							.anyRequest().authenticated();
-				})
+			.authorizeHttpRequests(auth -> {
+				auth
+					// .requestMatchers("/post/**").hasAnyAuthority("SBD_300","SBD_400", "SBD_500")
+					.anyRequest().permitAll();
+			})
 				//로그인 폼
 				.formLogin(httpSecurityFormLoginConfigurer ->
 						httpSecurityFormLoginConfigurer

@@ -62,18 +62,17 @@ public class ViewController {
 				throw new IllegalStateException("사용자 인증 정보가 없습니다.");
 			}
 
-			if (file.isEmpty()) {
+			if (file == null || file.isEmpty()) {
 				throw new IllegalStateException("업로드할 파일이 없습니다.");
 			}
 
 			String imageUrl = s3Service.uploadImg(file);
 			PostRequestDto requestDto = new PostRequestDto(category, postTitle, postContent);
 			postService.savePost(userId, requestDto, imageUrl);
-			return "redirect:/success"; // 성공시 리디렉트 될 페이지
+			return "redirect:/postList";
 		} catch (Exception e) {
-			String errorMessage = "파일 업로드 실패: " + e.getMessage();
-			model.addAttribute("error", errorMessage);
-			return "error"; // 에러 페이지
+			model.addAttribute("error", "파일 업로드 실패: " + e.getMessage());
+			return "redirect:/postList";
 		}
 	}
 
@@ -84,7 +83,7 @@ public class ViewController {
 
 		if (authentication.getPrincipal() instanceof DefaultOAuth2User) {
 			DefaultOAuth2User oauthUser = (DefaultOAuth2User) authentication.getPrincipal();
-			return oauthUser.getAttribute("email"); // 사용자 고유 식별자로 이메일 사용
+			return oauthUser.getAttribute("email");
 		} else if (authentication.getPrincipal() instanceof String) {
 			return (String) authentication.getPrincipal();
 		}
@@ -96,7 +95,7 @@ public class ViewController {
 
 	@GetMapping("/postListGive")
 	public String findAllPostGive(Model model) {
-		List<PostTextResponseDto> postList = postService.findAll().stream()
+		List<PostTextResponseDto> postList = postService.findByCategory("handover").stream()
 			.map(PostTextResponseDto::new)
 			.collect(Collectors.toList());
 		model.addAttribute("postList", postList);
@@ -105,16 +104,17 @@ public class ViewController {
 
 	@GetMapping("/postListFood")
 	public String findAllPostFood(Model model) {
-		List<PostTextResponseDto> postList = postService.findAll().stream()
+		// 카테고리 '음식'에 해당하는 게시글만 필터링
+		List<PostTextResponseDto> postList = postService.findByCategory("menu").stream()
 			.map(PostTextResponseDto::new)
 			.collect(Collectors.toList());
 		model.addAttribute("postList", postList);
-		return "food"; // "posts"는 게시글 목록을 보여줄 Thymeleaf 템플릿 파일 이름입니다.
+		return "food"; // 'food'는 음식 관련 게시글 목록을 보여줄 Thymeleaf 템플릿 파일 이름
 	}
 
 	@GetMapping("/postListPicture")
 	public String findAllPostPicture(Model model) {
-		List<PostTextResponseDto> postList = postService.findAll().stream()
+		List<PostTextResponseDto> postList = postService.findByCategory("photo").stream()
 			.map(PostTextResponseDto::new)
 			.collect(Collectors.toList());
 		model.addAttribute("postList", postList);
@@ -141,6 +141,8 @@ public class ViewController {
 			return "error"; // "error"는 에러 페이지를 보여줄 Thymeleaf 템플릿 파일 이름
 		}
 	}
+
+
 
 
 

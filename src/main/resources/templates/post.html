@@ -205,6 +205,7 @@
 
     .post-card-body-image {
       width: 160px; /* Ensures the image takes up the full width of its container */
+      max-width: 220px; /* Limits the image size */
       height: 220px; /* Maintains aspect ratio */
       margin-bottom: 0.5rem;
       border-radius: 10px;/* Space between image and text */
@@ -228,6 +229,9 @@
       min-height: 10px; /* 최소 높이 설정 */
 
     }
+    .board Profile{
+      width: 30px;
+    }
 
 
 
@@ -241,16 +245,19 @@
 </head>
 <body>
 
+
 <!-- 헤더 바 정의 -->
 <div th:fragment="header-bar">
   <header>
     <!-- 로고 -->
-    <div class="logo-container">
-      <!-- 이미지 추가 -->
-      <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/mainpage.png" alt="Main Page Logo" class="logo-image">
-      <!-- 로고 텍스트 -->
-      <div class="logo-text">HELL LOW</div>
-    </div>
+    <a href="/postList" class="logo-image">
+      <div class="logo-container">
+        <!-- 이미지 추가 -->
+        <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/mainpage.png" alt="Main Page Logo" class="logo-image">
+        <!-- 로고 텍스트 -->
+        <div class="logo-text">HELL LOW</div>
+      </div>
+    </a>
 
     <!-- 검색창 -->
     <div class="search-bar">
@@ -285,6 +292,8 @@
       <!-- 사용자 정보 표시 -->
     </div>
 
+
+
     <!-- 네비게이션 메뉴 -->
     <nav class="navigation-menu">
       <div>게시판</div>
@@ -311,7 +320,6 @@
   </div>
   <!-- 사이드바 끝 -->
 
-
   <div class="container mt-5">
     <h2>게시글 작성</h2>
     <!-- 양식의 action 경로는 컨트롤러의 @PostMapping 경로와 일치해야 합니다 -->
@@ -335,7 +343,6 @@
       <button type="submit" class="btn btn-primary">제출</button>
     </form>
   </div>
-
 
 </div>
 

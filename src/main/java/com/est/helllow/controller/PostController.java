@@ -38,7 +38,7 @@ public class PostController {
      * @return PostResponseDto : 등록한 post
      * @author cjw
      */
-    @PostMapping("api.hell-low.com/post-management/{userId}")
+    @PostMapping("/post-management/{userId}")
     public BaseResponse addPost(@PathVariable(name = "userId") String userId,
                                 @RequestPart(value = "postRequest") PostRequestDto request,
                                 @RequestPart(value = "img", required = false) MultipartFile file) {
@@ -74,7 +74,7 @@ public class PostController {
      * @return void
      * @author cjw
      */
-    @DeleteMapping("api.hell-low.com/post-management/{userId}/{postId}")
+    @DeleteMapping("/post-management/{userId}/{postId}")
     public BaseResponse deletePost(@PathVariable(name = "userId") String userId,
                                    @PathVariable(name = "postId") String postId) {
         try {
@@ -100,7 +100,7 @@ public class PostController {
      * @return Post : 수정한 post
      * @author cjw
      */
-    @PutMapping("api.hell-low.com/post-management/{userId}/{postId}")
+    @PutMapping("/post-management/{userId}/{postId}")
     public BaseResponse updatePost(@PathVariable(name = "userId") String userId,
                                    @PathVariable(name = "postId") String postId,
                                    @RequestPart(value = "postRequest") PostRequestDto request,
@@ -221,7 +221,7 @@ public class PostController {
      * @author cjw
      * category가 일치하는 모든 게시물을 탐색하는 API
      */
-    @GetMapping("api.hell-low.com/post-management/category/{category}")
+    @GetMapping("/post-management/category/{category}")
     public BaseResponse findPostByCategory(@PathVariable(name="category") String category){
         List<PostResponseDto> postList = postService.findByCategory(category)
                 .stream().map(PostResponseDto::new)

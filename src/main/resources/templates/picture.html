@@ -191,10 +191,14 @@
         .bottom-content {
             display: flex;
             flex-direction: row;
+            margin-top: 20px;
+            margin-left: 150px;
         }
 
         .post {
             display: flex; /* 가로로 내부 아이템들을 정렬 */
+            margin-top: 20px;
+            margin-left: 50px;
         }
 
         .post-col {
@@ -250,12 +254,14 @@
 <div th:fragment="header-bar">
     <header>
         <!-- 로고 -->
-        <div class="logo-container">
-            <!-- 이미지 추가 -->
-            <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/mainpage.png" alt="Main Page Logo" class="logo-image">
-            <!-- 로고 텍스트 -->
-            <div class="logo-text">HELL LOW</div>
-        </div>
+        <a href="/postList" class="logo-image">
+            <div class="logo-container">
+                <!-- 이미지 추가 -->
+                <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/mainpage.png" alt="Main Page Logo" class="logo-image">
+                <!-- 로고 텍스트 -->
+                <div class="logo-text">HELL LOW</div>
+            </div>
+        </a>
 
         <!-- 검색창 -->
         <div class="search-bar">
@@ -318,10 +324,10 @@
     </div>
     <!-- 사이드바 끝 -->
 
-
+    <div class="main-content">
     <h4><a th:href="picture" class="custom-link">몸이 왜 그래?</a></h4>
     <div class="bottom-content">
-        <div class="row-6" th:each="post, iterStat : ${postList.subList(0, 4)}">
+        <div th:each="post : ${postList}">
             <div class="post">
                 <div class="post-col">
                     <img class="post-card-body-image" th:src="${post.postFile}" alt="Profile Image" />
@@ -334,6 +340,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 

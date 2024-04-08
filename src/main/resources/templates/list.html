@@ -168,65 +168,9 @@
             /*width: 100%; !* 전체 너비를 사용 *!*/
         }
 
-        .main-content {
-            flex: 1; /* 사용 가능한 공간을 균등하게 차지 */
-            padding: 10px; /* 내부 여백 */
-        }
-
-        .sub-content {
-            display: flex;
-            flex-direction: column;
-            padding: 10px;/* 세로 방향으로 내부 요소를 정렬 */
-        }
-
-        .top-content, .bottom-content {
-            flex: 1; /* 사용 가능한 공간을 균등하게 차지 */
-        }
-
-        .top-content {
-            display: flex;
-            flex-direction: row;
-        }
-
-        .bottom-content {
-            display: flex;
-            flex-direction: row;
-        }
-
-        .post {
-            display: flex; /* 가로로 내부 아이템들을 정렬 */
-        }
-
-        .post-col {
-            display: flex;
-            flex-direction: column;
-            padding: 10px;/* This stacks .post-card-body-image, h6, and h6 vertically */
-        }
-
-        .post-card-body-image {
-            width: 160px; /* Ensures the image takes up the full width of its container */
-            height: 220px; /* Maintains aspect ratio */
-            margin-bottom: 0.5rem;
-            border-radius: 10px;/* Space between image and text */
-        }
-
-        .custom-link {
-            color: inherit; /* 링크 색상을 상위 요소로부터 상속받습니다 */
-            text-decoration: none; /* 밑줄 없애기 */
-        }
-
-        .post-line {
-            border-bottom: 1px solid #ccc; /* 하단에 회색 테두리 추가 */
-            padding-bottom: 5px; /* 내용과 테두리 사이 간격 추가 */
-            margin-bottom: 10px; /* 다음 요소와 간격 추가 */
-        }
-
-        .post-card-body {
-            display: flex;
-            align-items: center; /* 세로 정렬 */
-            justify-content: space-between; /* 요소들 사이에 공간을 균일하게 분배 */
-            min-height: 10px; /* 최소 높이 설정 */
-
+        .Profile-Image{
+            width: 150px;
+            height: 220px;
         }
 
 
@@ -245,12 +189,14 @@
 <div th:fragment="header-bar">
     <header>
         <!-- 로고 -->
-        <div class="logo-container">
-            <!-- 이미지 추가 -->
-            <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/mainpage.png" alt="Main Page Logo" class="logo-image">
-            <!-- 로고 텍스트 -->
-            <div class="logo-text">HELL LOW</div>
-        </div>
+        <a href="/postList" class="logo-image">
+            <div class="logo-container">
+                <!-- 이미지 추가 -->
+                <img src="https://hell-low.s3.ap-northeast-2.amazonaws.com/front/mainpage.png" alt="Main Page Logo" class="logo-image">
+                <!-- 로고 텍스트 -->
+                <div class="logo-text">HELL LOW</div>
+            </div>
+        </a>
 
         <!-- 검색창 -->
         <div class="search-bar">
@@ -314,15 +260,31 @@
     <div class="container">
         <div th:if="${post != null}">
             <h1 th:text="${post.post.postTitle}"></h1>
-            <img th:src="${post.post.postFile}" alt="Profile Image" />
+            <img th:src="${post.post.postFile}" alt="Profile Image" class="Profile-Image" />
             <p th:text="${post.post.postContent}"></p>
             <p>Likes: <span th:text="${post.post.likeCounts}"></span></p>
             <p>Views: <span th:text="${post.post.viewCounts}"></span></p>
             <!-- 다른 필요한 정보를 추가로 표시 -->
         </div>
-        <div th:if="${post == null}">
-            <p>게시글을 찾을 수 없습니다.</p>
+        <button type="submit" class="btn btn-danger">삭제</button>
+        <button type="submit" class="btn btn-danger">수정</button>
+
+        <div class="comment-box">
+            <h4>Comments:</h4>
+            <div th:each="reply : ${post.replies}">
+                <div>
+                    <strong th:text="${reply.nickname}"></strong>
+                    <span th:text="${reply.content}"></span>
+                    <div class="comment-info">
+                        <span th:text="${#dates.format(reply.comCreated, 'yyyy-MM-dd HH:mm')}"></span>
+                        <span th:text="${#dates.format(reply.comModified, 'yyyy-MM-dd HH:mm')}"></span>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+        <div th:if="${post == null}">
+
     </div>
 
 
