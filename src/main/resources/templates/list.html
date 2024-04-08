@@ -262,23 +262,33 @@
             <h1 th:text="${post.post.postTitle}"></h1>
             <img th:src="${post.post.postFile}" alt="Profile Image" class="Profile-Image" />
             <p th:text="${post.post.postContent}"></p>
-            <p>Likes: <span th:text="${post.post.likeCounts}"></span></p>
-            <p>Views: <span th:text="${post.post.viewCounts}"></span></p>
+            <p>좋아요: <span th:text="${post.post.likeCounts}"></span></p>
+            <p>조회수: <span th:text="${post.post.viewCounts}"></span></p>
             <!-- 다른 필요한 정보를 추가로 표시 -->
         </div>
-        <button type="submit" class="btn btn-danger">삭제</button>
+        <button type="submit" id="delete-btn" class="btn btn-danger">삭제</button>
         <button type="submit" class="btn btn-danger">수정</button>
+
+        <div class="container">
+            <!-- 댓글 입력 폼 -->
+            <form id="commentForm">
+                <div class="form-group">
+                    <label for="content">댓글:</label>
+                    <textarea class="form-control" id="content" name="content" required></textarea>
+                </div>
+                <!-- Hidden fields for postId and userId -->
+                <input type="hidden" id="postId" value="POST_ID_HERE">
+                <input type="hidden" id="userId" value="USER_ID_HERE">
+                <button type="button" class="btn btn-primary" onclick="submitComment()">댓글 작성</button>
+            </form>
+        </div>
 
         <div class="comment-box">
             <h4>Comments:</h4>
             <div th:each="reply : ${post.replies}">
                 <div>
-                    <strong th:text="${reply.nickname}"></strong>
+                    <strong th:text="${reply.comId}"></strong>
                     <span th:text="${reply.content}"></span>
-                    <div class="comment-info">
-                        <span th:text="${#dates.format(reply.comCreated, 'yyyy-MM-dd HH:mm')}"></span>
-                        <span th:text="${#dates.format(reply.comModified, 'yyyy-MM-dd HH:mm')}"></span>
-                    </div>
                 </div>
             </div>
         </div>
@@ -289,6 +299,7 @@
 
 
 </div>
+
 
 
 </body>
