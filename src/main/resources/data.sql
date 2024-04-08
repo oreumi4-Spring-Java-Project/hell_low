@@ -12,8 +12,9 @@ INSERT INTO post (created_at, modified_at, category, like_counts, post_content, 
 
 INSERT INTO comment (created_at, modified_at,com_content, com_id, post_id, user_id) VALUES
                                                                                            ('2024-03-27 10:00:00.000000', '2024-03-27 10:05:00.000000', 'Great post!', 1, 1, 1),
-                                                                                           ('2024-03-27 10:00:00.000000', '2024-03-27 10:10:00.000000', 'Nice work!', 2, 1, 1),
-                                                                                           ('2024-03-27 10:00:00.000000', '2024-03-27 10:15:00.000000', 'Well written.', 3, 1, 1);
+                                                                                           ('2024-03-27 10:00:00.000000', '2024-03-27 10:05:00.000000', '내꺼임!', 4, 1, 1),
+                                                                                           ('2024-03-27 10:00:00.000000', '2024-03-27 10:10:00.000000', 'Nice work!', 2, 2, 1),
+                                                                                           ('2024-03-27 10:00:00.000000', '2024-03-27 10:15:00.000000', 'Well written.', 3, 11, 1);
 #
 # INSERT INTO comment (com_content, com_id, post_id, user_id) VALUES
 #                                                                                            ('2024-03-27 10:00:00.000000', '2024-03-27 10:20:00.000000', 'Interesting!', 4, 2, 3),
