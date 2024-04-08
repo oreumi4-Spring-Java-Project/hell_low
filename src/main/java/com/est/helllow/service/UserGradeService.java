@@ -45,11 +45,10 @@ public class UserGradeService {
     }
 
     // 등급 변경 계산
-    // 토의 후 수정 예정 , 테스트 위해 임계점 낮춤
     private UserGrade calculateGrade(long postCount, long replyCount, long likeCount) {
-        if (postCount >= 2 && replyCount >= 2 && likeCount >= 2) {
+        if (postCount >= 10 && replyCount >= 10 && likeCount >= 10) {
             return SBD_500;
-        } else if (postCount >= 1 && replyCount >= 1 && likeCount >= 1) {
+        } else if (postCount >= 5 && replyCount >= 5 && likeCount >= 5) {
             return SBD_400;
         } else {
             return SBD_300;
