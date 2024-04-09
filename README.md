@@ -68,19 +68,19 @@
 
 <div class="section">
   <h2 class="section-title">🖼️ 화면 구성도</h2>
-  <a href="[https://www.figma.com/file/vP3BiserxBBpIFT6WSNpRt/Hell-Low?type=design&node-id=0-1&mode=design&t=sykzizLaSKqpm4VH-0]" class="link-placeholder">화면 구성도 상세 보기</a>
+  <a href="https://www.figma.com/file/vP3BiserxBBpIFT6WSNpRt/Hell-Low?type=design&node-id=0-1&mode=design&t=sykzizLaSKqpm4VH-0" class="link-placeholder">화면 구성도 상세 보기</a>
   <img src="docs/images/figma.png" alt="피그마 이미지" class="image-placeholder">
 </div>
 
 <div class="section">
   <h2 class="section-title">📊 ERD 구조</h2>
-  <a href="[https://www.erdcloud.com/d/eqGbZDcwbMGdatRMp]" class="link-placeholder">ERD 상세 보기</a>
+  <a href="https://www.erdcloud.com/d/eqGbZDcwbMGdatRMp" class="link-placeholder">ERD 상세 보기</a>
     <img src="docs/images/erd.png" alt="프로젝트 아키텍처 이미지" class="image-placeholder">
 </div>
 
 <div class="section">
   <h2 class="section-title">📄 API 명세서</h2>
-  <a href="[https://www.notion.so/oreumi/API-5009803210a8464081d36c84d9c7ec9a]" class="link-placeholder">API 명세서 상세 보기</a>
+    <a href="[https://www.notion.so/oreumi/API-5009803210a8464081d36c84d9c7ec9a]" class="link-placeholder">API 명세서 상세 보기</a>
     <img src="docs/images/api.png" alt="api 이미지" class="image-placeholder">
 </div>
 
@@ -97,7 +97,7 @@
 
 <div class="section">
   <h2 class="section-title">🚀  배포 주소</h2>
-  <a href="" class="member-github">HELL-LOW</a>
+  <a href="http://3.39.8.24:8080/postList" class="member-github">HELL-LOW</a>
 </div>
 </body>
 </html>
