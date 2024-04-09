@@ -80,7 +80,8 @@
 
 <div class="section">
   <h2 class="section-title">📄 API 명세서</h2>
-  <a href="https://www.notion.so/oreumi/API-5009803210a8464081d36c84d9c7ec9a" class="link-placeholder">API 명세서 상세 보기</a>
+    <a href="[https://www.notion.so/oreumi/API-5009803210a8464081d36c84d9c7ec9a]" class="link-placeholder">API 명세서 상세 보기</a>
+    <img src="docs/images/api.png" alt="api 이미지" class="image-placeholder">
 </div>
 
 <div class="section">
